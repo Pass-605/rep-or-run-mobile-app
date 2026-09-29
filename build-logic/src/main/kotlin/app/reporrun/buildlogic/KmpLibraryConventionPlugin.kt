@@ -1,4 +1,4 @@
-package app.gymdi.buildlogic
+package app.reporrun.buildlogic
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Plugin
@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  *
  * Con AGP 9 una librería KMP usa `com.android.kotlin.multiplatform.library` y se
  * configura en `kotlin { androidLibrary { } }`; `com.android.library` no convive con KMP.
- * El namespace por defecto sale de la ruta (`:core:model` → `app.gymdi.core.model`);
+ * El namespace por defecto sale de la ruta (`:core:model` → `app.reporrun.core.model`);
  * el módulo puede sobrescribirlo en su propio `androidLibrary { }`.
  */
 class KmpLibraryConventionPlugin : Plugin<Project> {
@@ -26,7 +26,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             jvmToolchain(21)
 
             (this as ExtensionAware).extensions.configure<KotlinMultiplatformAndroidLibraryTarget>("androidLibrary") {
-                namespace = "app.gymdi" + path.replace(':', '.')
+                namespace = "app.reporrun" + path.replace(':', '.')
                 compileSdk = libs.intVersion("compileSdk")
                 minSdk = libs.intVersion("minSdk")
                 compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }

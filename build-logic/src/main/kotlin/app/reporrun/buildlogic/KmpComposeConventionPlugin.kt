@@ -1,4 +1,4 @@
-package app.gymdi.buildlogic
+package app.reporrun.buildlogic
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -11,7 +11,7 @@ import org.jetbrains.compose.ComposeExtension
  */
 class KmpComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("gymdi.kmp.library")
+        pluginManager.apply("reporrun.kmp.library")
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
         pluginManager.apply("org.jetbrains.compose")
 

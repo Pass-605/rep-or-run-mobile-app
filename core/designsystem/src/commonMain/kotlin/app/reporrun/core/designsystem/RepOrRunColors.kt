@@ -1,15 +1,15 @@
-package app.gymdi.core.designsystem
+package app.reporrun.core.designsystem
 
 import androidx.compose.ui.graphics.Color
 
 /**
- * Paleta de Gymdi. Es la traducción literal del Anexo A del plan de trabajo, que es
+ * Paleta de Rep or Run. Es la traducción literal del Anexo A del plan de trabajo, que es
  * la referencia normativa: si esto y el Anexo A se contradicen, manda el Anexo A.
  *
  * Los cinco derivados no son gusto, salen de medir contraste, y el motivo está en cada uno.
  * No los cambies sin volver a medir.
  */
-object GymdiPalette {
+object RepOrRunPalette {
     /** El único color del sistema. Va en detalles, nunca en superficies grandes. */
     val Accent = Color(0xFFF2522E)
 

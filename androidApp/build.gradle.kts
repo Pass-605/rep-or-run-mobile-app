@@ -17,11 +17,11 @@ kotlin {
 }
 
 android {
-    namespace = "app.gymdi"
+    namespace = "app.reporrun"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "app.gymdi"
+        applicationId = "app.reporrun"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1

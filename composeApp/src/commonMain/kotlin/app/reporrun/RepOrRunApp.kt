@@ -1,4 +1,4 @@
-package app.gymdi
+package app.reporrun
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,15 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.gymdi.core.designsystem.GymdiTheme
+import app.reporrun.core.designsystem.RepOrRunTheme
 
 /**
  * Punto de entrada común. Por ahora solo comprueba que el esqueleto compila y
  * que el tema llega a la pantalla; las pantallas reales llegan con la línea C.
  */
 @Composable
-fun GymdiApp() {
-    GymdiTheme {
+fun RepOrRunApp() {
+    RepOrRunTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
@@ -29,7 +29,7 @@ fun GymdiApp() {
                 verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Gymdi", style = MaterialTheme.typography.displaySmall)
+                Text("Rep or Run", style = MaterialTheme.typography.displaySmall)
                 Text(
                     "Esqueleto listo",
                     style = MaterialTheme.typography.bodyMedium,

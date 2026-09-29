@@ -1,4 +1,4 @@
-package app.gymdi.buildlogic
+package app.reporrun.buildlogic
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -11,8 +11,8 @@ import org.gradle.api.Project
  */
 class FeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("gymdi.kmp.compose")
-        pluginManager.apply("gymdi.test")
+        pluginManager.apply("reporrun.kmp.compose")
+        pluginManager.apply("reporrun.test")
 
         kotlinMultiplatform {
             sourceSets.getByName("commonMain").dependencies {

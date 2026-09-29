@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.gymdi.kmp.compose)
-    alias(libs.plugins.gymdi.test)
+    alias(libs.plugins.reporrun.kmp.compose)
+    alias(libs.plugins.reporrun.test)
 }
 
 kotlin {

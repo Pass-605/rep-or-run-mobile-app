@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "app.gymdi.buildlogic"
+group = "app.reporrun.buildlogic"
 
 // compileOnly: los plugins reales los pone en el classpath el build.gradle.kts raíz
 // (con `apply false`); aquí solo hacen falta para compilar contra su API.
@@ -16,20 +16,20 @@ dependencies {
 gradlePlugin {
     plugins {
         register("kmpLibrary") {
-            id = "gymdi.kmp.library"
-            implementationClass = "app.gymdi.buildlogic.KmpLibraryConventionPlugin"
+            id = "reporrun.kmp.library"
+            implementationClass = "app.reporrun.buildlogic.KmpLibraryConventionPlugin"
         }
         register("kmpCompose") {
-            id = "gymdi.kmp.compose"
-            implementationClass = "app.gymdi.buildlogic.KmpComposeConventionPlugin"
+            id = "reporrun.kmp.compose"
+            implementationClass = "app.reporrun.buildlogic.KmpComposeConventionPlugin"
         }
         register("feature") {
-            id = "gymdi.feature"
-            implementationClass = "app.gymdi.buildlogic.FeatureConventionPlugin"
+            id = "reporrun.feature"
+            implementationClass = "app.reporrun.buildlogic.FeatureConventionPlugin"
         }
         register("test") {
-            id = "gymdi.test"
-            implementationClass = "app.gymdi.buildlogic.TestConventionPlugin"
+            id = "reporrun.test"
+            implementationClass = "app.reporrun.buildlogic.TestConventionPlugin"
         }
     }
 }

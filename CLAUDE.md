@@ -1,4 +1,4 @@
-# CLAUDE.md: gymdi-app
+# CLAUDE.md: rep-or-run-mobile-app
 
 Repo de la **app KMP (Android + iOS)**. Lee también el `CLAUDE.md` del workspace (`../CLAUDE.md`): dominio, contrato, seguridad y flujo de trabajo comunes. La documentación está en `../docs/` (local, fuera de git).
 
@@ -13,26 +13,26 @@ Este repo usa **spec-driven development con OpenSpec** (`schema: spec-driven`). 
 
 Comandos: `/opsx:explore` para pensar, `/opsx:propose` para crear los artefactos, `/opsx:apply` para implementar, `/opsx:archive` para cerrar.
 
-No todo merece una change: lo mecánico (añadir detekt, subir una versión) se implementa directo. La skill `gymdi-tarea-backlog` tiene el criterio y el procedimiento completo.
+No todo merece una change: lo mecánico (añadir detekt, subir una versión) se implementa directo. La skill `reporrun-tarea-backlog` tiene el criterio y el procedimiento completo.
 
 **Skills de este repo** (`.claude/skills/`), además de las de OpenSpec:
 
 | Skill | Cuándo |
 |---|---|
-| `gymdi-tarea-backlog` | Empezar una tarea con ID; decidir si merece una change |
-| `gymdi-pantalla-figma` | Construir o retocar una pantalla, un componente o el tema |
-| `gymdi-contrato` | Tocar un `.schema.json`, los DTOs de `contract`, `schemaVersion` o los prompts |
-| `gymdi-reglas-dominio` | Antes de cerrar algo que toque planes, revisiones, validadores o prompts |
+| `reporrun-tarea-backlog` | Empezar una tarea con ID; decidir si merece una change |
+| `reporrun-pantalla-figma` | Construir o retocar una pantalla, un componente o el tema |
+| `reporrun-contrato` | Tocar un `.schema.json`, los DTOs de `contract`, `schemaVersion` o los prompts |
+| `reporrun-reglas-dominio` | Antes de cerrar algo que toque planes, revisiones, validadores o prompts |
 
 ---
 
 ## 1. Estructura
 
 ```text
-gymdi-app/
+rep-or-run-mobile-app/
 ├── CLAUDE.md  README.md  CHANGELOG.md
 ├── settings.gradle.kts  build.gradle.kts  gradle/libs.versions.toml
-├── build-logic/                 # convention plugins: gymdi.kmp.library, gymdi.kmp.compose, gymdi.feature, gymdi.test
+├── build-logic/                 # convention plugins: reporrun.kmp.library, reporrun.kmp.compose, reporrun.feature, reporrun.test
 ├── androidApp/                  # módulo de aplicación Android: MainActivity, manifest, R8
 ├── composeApp/                  # UI compartida (librería KMP): navegación raíz, grafo Koin
 ├── iosApp/                      # proyecto Xcode que consume el framework
@@ -46,7 +46,7 @@ gymdi-app/
 │   ├── ai/                      # adaptadores del proxy, DTOs del contrato (paquete `contract`), fakes
 │   ├── pdf/                     # DocumentModel común + PdfRenderer expect/actual
 │   ├── notifications/           # ReminderScheduler expect/actual
-│   ├── designsystem/            # GymdiTheme, colores, tipografía Outfit, componentes
+│   ├── designsystem/            # RepOrRunTheme, colores, tipografía Outfit, componentes
 │   └── ui/                      # utilidades UI compartidas
 ├── feature/
 │   └── onboarding/  profile/  gym/  plansetup/  plan/  review/
@@ -100,14 +100,14 @@ En Windows usa `gradlew.bat`.
 - Room KMP con `exportSchema = true`; los esquemas se versionan en `core/database/schemas/`.
 - Tras la primera release interna, nada de migraciones destructivas: cada cambio lleva `Migration` + test.
 - Las entidades no salen de `:core:database`/`:core:data`; dominio y UI usan `:core:model`.
-- Un plan no se edita en el sitio: una versión nueva es un `Plan` nuevo (`GYMDI-AAAA-MM-DD-vN`) enlazado por `PlanChange`.
+- Un plan no se edita en el sitio: una versión nueva es un `Plan` nuevo (`ROR-AAAA-MM-DD-vN`) enlazado por `PlanChange`.
 
 ## 6. UI y diseño
 
 - Figma es la fuente de verdad; cuando la pantalla exista allí, implementa desde Figma (Figma MCP).
-- Nunca uses colores ni tamaños de texto hardcodeados: todo sale de `GymdiTheme` / `MaterialTheme`.
+- Nunca uses colores ni tamaños de texto hardcodeados: todo sale de `RepOrRunTheme` / `MaterialTheme`.
 
-**Dos temas.** `GymdiTheme(darkTheme = …)` sigue el ajuste del sistema (`isSystemInDarkTheme()`) y `ThemeMode` (`System` / `Dark` / `Light`) se guarda en DataStore desde Ajustes. Referencia: páginas *Pantallas · v2 · Claro* y *Pantallas · v2 · Oscuro* del archivo de Figma, y el **Anexo A del plan**, que es la tabla normativa de tokens. Si esta tabla y el Anexo A se contradicen, manda el Anexo A.
+**Dos temas.** `RepOrRunTheme(darkTheme = …)` sigue el ajuste del sistema (`isSystemInDarkTheme()`) y `ThemeMode` (`System` / `Dark` / `Light`) se guarda en DataStore desde Ajustes. Referencia: páginas *Pantallas · v2 · Claro* y *Pantallas · v2 · Oscuro* del archivo de Figma, y el **Anexo A del plan**, que es la tabla normativa de tokens. Si esta tabla y el Anexo A se contradicen, manda el Anexo A.
 
 | Token semántico | Claro | Oscuro | Uso |
 |---|---|---|---|
@@ -123,7 +123,7 @@ En Windows usa `gradlew.bat`.
 - **La acción principal no es naranja.** Es `inverseSurface`: negra en claro, blanca en oscuro. El naranja marca estado, no manda.
 - **El naranja nunca es texto ni lleva texto blanco.** Como texto va `extendedColors.accentText`; encima del naranja va `#232323`.
 - **`#979797` no es color de texto** en ninguno de los dos temas: bordes, separadores e iconos inactivos, nada más.
-- **Superficies constantes:** la bienvenida, la portada del PDF y la vista previa del PDF dentro de la app se ven igual en los dos temas. En Compose se resuelven con un `GymdiTheme(darkTheme = true)` anidado o con colores fijos documentados, no dejándolos al tema.
+- **Superficies constantes:** la bienvenida, la portada del PDF y la vista previa del PDF dentro de la app se ven igual en los dos temas. En Compose se resuelven con un `RepOrRunTheme(darkTheme = true)` anidado o con colores fijos documentados, no dejándolos al tema.
 - **Forma:** radio 24 en tarjetas y campos, 28 en el bloque de énfasis y los botones, 16-18 en chips, círculo en botones de icono. **Sin elevación ni sombras.** Botones de 60 dp, botones de icono de 44 dp, chips de 34 dp.
 - **Patrones que se implementan una vez** y se reutilizan en todas las pantallas: tarjeta, fila de lista con chevron, chip de filtro, campo con etiqueta encima, stepper de tres nodos, interruptor, botón de icono circular y barra inferior en pastilla con el ítem activo etiquetado.
 - **Contraste:** las reglas del Anexo A salen de medir, no de criterio. Antes de dar por buena una pantalla, compruébalas; las 14 de Figma están auditadas en verde en los dos temas.

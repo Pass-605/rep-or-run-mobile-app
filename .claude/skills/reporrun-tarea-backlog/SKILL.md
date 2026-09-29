@@ -1,6 +1,6 @@
 ---
-name: gymdi-tarea-backlog
-description: Conecta una tarea del backlog de Gymdi con una change de OpenSpec y la cierra en los dos sitios. Úsala al empezar a trabajar en una tarea con ID (S-03, C-04, A-16…) o cuando haya que decidir si algo merece una change.
+name: reporrun-tarea-backlog
+description: Conecta una tarea del backlog de Rep or Run con una change de OpenSpec y la cierra en los dos sitios. Úsala al empezar a trabajar en una tarea con ID (S-03, C-04, A-16…) o cuando haya que decidir si algo merece una change.
 ---
 
 # Del backlog a una change
@@ -31,7 +31,7 @@ resultado sin ambigüedad, no hace falta spec.
 
 1. **Una sola tarea.** Comprueba en `../docs/backlog/` que sus dependencias están en
    `done` y que no está `blocked:accounts` ni `needs:macos` sin un Mac delante. Mira el
-   campo **Repo**: si no es `gymdi-app`, no se trabaja aquí.
+   campo **Repo**: si no es `rep-or-run-mobile-app`, no se trabaja aquí.
 2. **Crea la change con el ID en el nombre**, en kebab-case:
    `openspec new change "c-04-design-system-outfit"`. El ID por delante hace que change y
    backlog se puedan cruzar de un vistazo, en los dos sentidos.
@@ -49,7 +49,7 @@ resultado sin ambigüedad, no hace falta spec.
 ## Reglas que no se negocian
 
 - **Nunca una change que abarque los dos repos.** Un cambio de contrato se divide en una
-  change por repo. `gymdi-lambda` todavía no tiene OpenSpec.
+  change por repo. `reporrun-lambda` todavía no tiene OpenSpec.
 - **Una change no edita `../docs/`.** Ni el plan, ni el backlog más allá del estado de su
   propia tarea, ni el contrato. Son fuentes de verdad del workspace, no de este repo. Si
   hace falta cambiarlas, el proposal lo dice y se hace aparte.

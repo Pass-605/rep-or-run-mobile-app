@@ -2,13 +2,13 @@
 <resources>
     <!--
       Tema de ventana, solo para el arranque: lo que se ve en cuanto la app existe y
-      antes de que Compose pinte nada. El color real lo pone GymdiTheme.
+      antes de que Compose pinte nada. El color real lo pone RepOrRunTheme.
       windowBackground es el lienzo claro del Anexo A (#F1EEEB); la variante de
       values-night usa el oscuro. Sin esto, abrir la app en modo oscuro da un
       destello blanco.
     -->
-    <style name="Theme.Gymdi" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@color/gymdi_window_background</item>
+    <style name="Theme.RepOrRun" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/reporrun_window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>

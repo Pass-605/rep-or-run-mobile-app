@@ -1,7 +1,7 @@
-rootProject.name = "gymdi-app"
+rootProject.name = "rep-or-run-mobile-app"
 
 pluginManagement {
-    // Convention plugins gymdi.* (ver build-logic/).
+    // Convention plugins reporrun.* (ver build-logic/).
     includeBuild("build-logic")
     repositories {
         google()
