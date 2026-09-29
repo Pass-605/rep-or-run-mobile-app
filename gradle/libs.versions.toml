@@ -1,0 +1,35 @@
+# Versiones verificadas el 26/09/2026 contra kotlinlang.org y developer.android.com.
+# Al subir cualquiera de las cuatro primeras hay que revisar la matriz de compatibilidad
+# de Compose Multiplatform: https://kotlinlang.org/docs/multiplatform/compose-compatibility-and-versioning.html
+
+[versions]
+kotlin = "2.4.20"                 # última estable, 07/09/2026
+agp = "9.1.1"                     # Android Gradle Plugin 9; 9.1 es el mínimo que piden los AAR de Compose 1.12
+composeMultiplatform = "1.12.1"   # última estable, 22/09/2026
+activityCompose = "1.13.0"        # androidx.activity, 11/03/2026
+compileSdk = "37"                 # lo exigen los AAR de androidx.compose 1.12.1; ver README
+minSdk = "26"
+targetSdk = "36"                  # se queda en 36 a proposito: subirlo opta por comportamientos nuevos
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+
+# Solo para compilar build-logic contra la API de los plugins (compileOnly).
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidKmpLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+
+# Convention plugins de build-logic/ (sin versión: vienen del build incluido).
+gymdi-kmp-library = { id = "gymdi.kmp.library" }
+gymdi-kmp-compose = { id = "gymdi.kmp.compose" }
+gymdi-feature = { id = "gymdi.feature" }
+gymdi-test = { id = "gymdi.test" }

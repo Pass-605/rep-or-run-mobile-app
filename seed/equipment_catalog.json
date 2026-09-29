@@ -1,0 +1,875 @@
+{
+  "catalogVersion": 1,
+  "description": "Semilla de solo lectura del catálogo de equipos (EquipmentCatalog, plan §10). Nombres en inglés, como los rotula el gimnasio, con alias en español para el buscador. No contiene datos de ninguna persona ni de ningún gimnasio concreto.",
+  "items": [
+    {
+      "key": "chest_press",
+      "name": "Chest Press",
+      "aliases": [
+        "Press de pecho",
+        "Chest Press convergente",
+        "Press pecho en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "incline_chest_press",
+      "name": "Incline Chest Press",
+      "aliases": [
+        "Press inclinado en máquina",
+        "Press pecho inclinado"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CHEST",
+        "SHOULDERS"
+      ]
+    },
+    {
+      "key": "pec_deck",
+      "name": "Pec Deck",
+      "aliases": [
+        "Peck Deck",
+        "Contractor de pecho",
+        "Mariposa",
+        "Cable Fly en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CHEST"
+      ]
+    },
+    {
+      "key": "shoulder_press_machine",
+      "name": "Shoulder Press Machine",
+      "aliases": [
+        "Press de hombro en máquina",
+        "Press militar en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "SHOULDERS",
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "lateral_raise_machine",
+      "name": "Lateral Raise Machine",
+      "aliases": [
+        "Elevaciones laterales en máquina",
+        "Máquina de deltoide lateral"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "SHOULDERS"
+      ]
+    },
+    {
+      "key": "triceps_extension_machine",
+      "name": "Triceps Extension Machine",
+      "aliases": [
+        "Extensión de tríceps en máquina",
+        "Máquina de tríceps"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "dip_machine",
+      "name": "Assisted Dip Machine",
+      "aliases": [
+        "Fondos asistidos",
+        "Máquina de fondos"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "lat_pulldown",
+      "name": "Lat Pulldown",
+      "aliases": [
+        "Jalón al pecho",
+        "Jalón dorsal",
+        "Polea dorsal",
+        "Lat Pulldown neutro"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "chest_supported_row",
+      "name": "Chest-Supported Row",
+      "aliases": [
+        "Remo con apoyo pectoral",
+        "Remo con pecho apoyado"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "seated_row_machine",
+      "name": "Seated Row Machine",
+      "aliases": [
+        "Remo sentado en máquina",
+        "Remo horizontal en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "high_row",
+      "name": "High Row",
+      "aliases": [
+        "Remo alto",
+        "Remo en máquina agarre alto"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "BACK"
+      ]
+    },
+    {
+      "key": "reverse_pec_deck",
+      "name": "Reverse Pec Deck",
+      "aliases": [
+        "Pec Deck inverso",
+        "Deltoide posterior en máquina",
+        "Contractor inverso"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "SHOULDERS",
+        "BACK"
+      ]
+    },
+    {
+      "key": "assisted_pullup_machine",
+      "name": "Assisted Pull-Up Machine",
+      "aliases": [
+        "Dominadas asistidas",
+        "Gravitrón"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "biceps_curl_machine",
+      "name": "Biceps Curl Machine",
+      "aliases": [
+        "Curl de bíceps en máquina",
+        "Máquina de bíceps"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "t_bar_row",
+      "name": "T-Bar Row",
+      "aliases": [
+        "Remo en T",
+        "Remo en barra T"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "leg_press",
+      "name": "Leg Press",
+      "aliases": [
+        "Prensa de piernas",
+        "Prensa 45",
+        "Single-Leg Press"
+      ],
+      "category": "MACHINE",
+      "loadType": "SLED",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "hack_squat",
+      "name": "Hack Squat",
+      "aliases": [
+        "Sentadilla hack",
+        "Máquina hack"
+      ],
+      "category": "MACHINE",
+      "loadType": "SLED",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "pendulum_squat",
+      "name": "Pendulum Squat",
+      "aliases": [
+        "Sentadilla péndulo",
+        "Péndulo"
+      ],
+      "category": "MACHINE",
+      "loadType": "SLED",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "belt_squat",
+      "name": "Belt Squat",
+      "aliases": [
+        "Sentadilla con cinturón",
+        "Máquina de sentadilla con cinturón"
+      ],
+      "category": "MACHINE",
+      "loadType": "SLED",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "leg_extension",
+      "name": "Leg Extension",
+      "aliases": [
+        "Extensión de rodilla",
+        "Extensión de cuádriceps",
+        "Silla de cuádriceps"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "QUADS"
+      ]
+    },
+    {
+      "key": "seated_leg_curl",
+      "name": "Seated Leg Curl",
+      "aliases": [
+        "Curl femoral sentado",
+        "Femoral sentado"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "key": "lying_leg_curl",
+      "name": "Lying Leg Curl",
+      "aliases": [
+        "Curl femoral tumbado",
+        "Femoral tumbado",
+        "Camilla de femoral"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "key": "hip_thrust_machine",
+      "name": "Hip Thrust Machine",
+      "aliases": [
+        "Máquina de hip thrust",
+        "Empuje de cadera en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "key": "glute_kickback_machine",
+      "name": "Glute Kickback Machine",
+      "aliases": [
+        "Patada de glúteo en máquina",
+        "Máquina de glúteo"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "hip_abductor_machine",
+      "name": "Hip Abductor Machine",
+      "aliases": [
+        "Máquina de abductores",
+        "Abducción de cadera"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "ABDUCTORS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "adductor_machine",
+      "name": "Adductor Machine",
+      "aliases": [
+        "Máquina de aductores",
+        "Aducción de cadera"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "ADDUCTORS"
+      ]
+    },
+    {
+      "key": "standing_calf_raise",
+      "name": "Standing Calf Raise Machine",
+      "aliases": [
+        "Elevación de talones de pie",
+        "Gemelos de pie"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "CALVES"
+      ]
+    },
+    {
+      "key": "seated_calf_raise",
+      "name": "Seated Calf Raise Machine",
+      "aliases": [
+        "Gemelos sentado",
+        "Máquina de sóleo"
+      ],
+      "category": "MACHINE",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "CALVES"
+      ]
+    },
+    {
+      "key": "glute_ham_raise",
+      "name": "Glute-Ham Raise Bench",
+      "aliases": [
+        "Banco GHR",
+        "Femoral nórdico"
+      ],
+      "category": "BENCH",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "abdominal_crunch_machine",
+      "name": "Abdominal Crunch Machine",
+      "aliases": [
+        "Máquina de abdominales",
+        "Crunch en máquina"
+      ],
+      "category": "MACHINE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CORE"
+      ]
+    },
+    {
+      "key": "back_extension_bench",
+      "name": "Back Extension Bench",
+      "aliases": [
+        "Banco de lumbares",
+        "Hiperextensiones",
+        "Silla romana"
+      ],
+      "category": "BENCH",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "CORE",
+        "GLUTES",
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "key": "captains_chair",
+      "name": "Captain's Chair",
+      "aliases": [
+        "Silla del capitán",
+        "Paralelas de abdominales",
+        "Elevación de rodillas"
+      ],
+      "category": "BODYWEIGHT",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "CORE"
+      ]
+    },
+    {
+      "key": "ab_wheel",
+      "name": "Ab Wheel",
+      "aliases": [
+        "Rueda abdominal"
+      ],
+      "category": "OTHER",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "CORE"
+      ]
+    },
+    {
+      "key": "cable_crossover",
+      "name": "Cable Crossover",
+      "aliases": [
+        "Poleas cruzadas",
+        "Torre de poleas doble",
+        "Crossover"
+      ],
+      "category": "CABLE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "CHEST",
+        "BACK",
+        "SHOULDERS"
+      ]
+    },
+    {
+      "key": "high_pulley",
+      "name": "High Pulley",
+      "aliases": [
+        "Polea alta",
+        "Jalón en polea alta"
+      ],
+      "category": "CABLE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "TRICEPS",
+        "BACK",
+        "CORE"
+      ]
+    },
+    {
+      "key": "low_pulley",
+      "name": "Low Pulley",
+      "aliases": [
+        "Polea baja",
+        "Remo en polea baja"
+      ],
+      "category": "CABLE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS",
+        "SHOULDERS"
+      ]
+    },
+    {
+      "key": "functional_trainer",
+      "name": "Functional Trainer",
+      "aliases": [
+        "Máquina funcional",
+        "Jaula de poleas ajustables",
+        "Poleas ajustables"
+      ],
+      "category": "CABLE",
+      "loadType": "SELECTOR",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "smith_machine",
+      "name": "Smith Machine",
+      "aliases": [
+        "Multipower",
+        "Máquina Smith",
+        "Smith"
+      ],
+      "category": "SMITH",
+      "loadType": "SMITH",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "squat_rack",
+      "name": "Squat Rack",
+      "aliases": [
+        "Jaula de sentadillas",
+        "Power rack",
+        "Rack de sentadilla"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "BARBELL",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES",
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "olympic_barbell",
+      "name": "Olympic Barbell",
+      "aliases": [
+        "Barra olímpica",
+        "Barra de 20 kg",
+        "Barra recta"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "BARBELL",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "ez_curl_bar",
+      "name": "EZ Curl Bar",
+      "aliases": [
+        "Barra Z",
+        "Barra W"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "BARBELL",
+      "primaryMuscles": [
+        "BICEPS",
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "trap_bar",
+      "name": "Trap Bar",
+      "aliases": [
+        "Barra hexagonal",
+        "Barra trap"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "BARBELL",
+      "primaryMuscles": [
+        "FULL_BODY",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "landmine",
+      "name": "Landmine",
+      "aliases": [
+        "Barra en T",
+        "Anclaje landmine"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "BARBELL",
+      "primaryMuscles": [
+        "BACK",
+        "SHOULDERS",
+        "CORE"
+      ]
+    },
+    {
+      "key": "dumbbells",
+      "name": "Dumbbells",
+      "aliases": [
+        "Mancuernas",
+        "Pesas"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "DUMBBELL",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "kettlebells",
+      "name": "Kettlebells",
+      "aliases": [
+        "Pesas rusas",
+        "Kettlebell"
+      ],
+      "category": "FREE_WEIGHT",
+      "loadType": "DUMBBELL",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "medicine_ball",
+      "name": "Medicine Ball",
+      "aliases": [
+        "Balón medicinal",
+        "Pelota medicinal"
+      ],
+      "category": "OTHER",
+      "loadType": "DUMBBELL",
+      "primaryMuscles": [
+        "CORE",
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "farmers_handles",
+      "name": "Farmer's Walk Handles",
+      "aliases": [
+        "Agarres de granjero",
+        "Maletas de carga"
+      ],
+      "category": "OTHER",
+      "loadType": "DUMBBELL",
+      "primaryMuscles": [
+        "FOREARMS",
+        "CORE"
+      ]
+    },
+    {
+      "key": "weight_sled",
+      "name": "Weight Sled",
+      "aliases": [
+        "Trineo",
+        "Prowler"
+      ],
+      "category": "OTHER",
+      "loadType": "PLATES_TOTAL",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES",
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "resistance_bands",
+      "name": "Resistance Bands",
+      "aliases": [
+        "Bandas elásticas",
+        "Ligas",
+        "Gomas"
+      ],
+      "category": "OTHER",
+      "loadType": "NONE",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "flat_bench",
+      "name": "Flat Bench",
+      "aliases": [
+        "Banco plano"
+      ],
+      "category": "BENCH",
+      "loadType": "NONE",
+      "primaryMuscles": [
+        "CHEST"
+      ]
+    },
+    {
+      "key": "adjustable_bench",
+      "name": "Adjustable Bench",
+      "aliases": [
+        "Banco inclinable",
+        "Banco regulable",
+        "Banco ajustable"
+      ],
+      "category": "BENCH",
+      "loadType": "NONE",
+      "primaryMuscles": [
+        "CHEST",
+        "SHOULDERS"
+      ]
+    },
+    {
+      "key": "preacher_bench",
+      "name": "Preacher Bench",
+      "aliases": [
+        "Banco Scott",
+        "Banco predicador"
+      ],
+      "category": "BENCH",
+      "loadType": "NONE",
+      "primaryMuscles": [
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "exercise_mat",
+      "name": "Exercise Mat",
+      "aliases": [
+        "Colchoneta",
+        "Tapete",
+        "Mat"
+      ],
+      "category": "BODYWEIGHT",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "CORE"
+      ]
+    },
+    {
+      "key": "pullup_bar",
+      "name": "Pull-Up Bar",
+      "aliases": [
+        "Barra de dominadas",
+        "Barra fija"
+      ],
+      "category": "BODYWEIGHT",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "BACK",
+        "BICEPS"
+      ]
+    },
+    {
+      "key": "dip_station",
+      "name": "Dip Station",
+      "aliases": [
+        "Paralelas",
+        "Fondos en paralelas"
+      ],
+      "category": "BODYWEIGHT",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ]
+    },
+    {
+      "key": "plyo_box",
+      "name": "Plyo Box",
+      "aliases": [
+        "Cajón pliométrico",
+        "Cajón de salto"
+      ],
+      "category": "BODYWEIGHT",
+      "loadType": "BODYWEIGHT",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "key": "treadmill",
+      "name": "Treadmill",
+      "aliases": [
+        "Caminadora",
+        "Cinta de correr",
+        "Trotadora"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "stationary_bike",
+      "name": "Stationary Bike",
+      "aliases": [
+        "Bicicleta estática",
+        "Bici estática",
+        "Spinning"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "QUADS",
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "elliptical",
+      "name": "Elliptical",
+      "aliases": [
+        "Elíptica"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "stair_climber",
+      "name": "Stair Climber",
+      "aliases": [
+        "Escaladora",
+        "Escalera sin fin",
+        "Simulador de escaleras"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES",
+        "CALVES"
+      ]
+    },
+    {
+      "key": "rowing_machine",
+      "name": "Rowing Machine",
+      "aliases": [
+        "Remo ergómetro",
+        "Remadora",
+        "Remo de cardio"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "BACK",
+        "FULL_BODY"
+      ]
+    },
+    {
+      "key": "air_bike",
+      "name": "Air Bike",
+      "aliases": [
+        "Bicicleta de aire",
+        "Assault bike"
+      ],
+      "category": "CARDIO",
+      "loadType": "CARDIO",
+      "primaryMuscles": [
+        "FULL_BODY"
+      ]
+    }
+  ]
+}

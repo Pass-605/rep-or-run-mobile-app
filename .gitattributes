@@ -1,0 +1,19 @@
+# Normaliza finales de línea: se trabaja en Windows y la CI corre en ubuntu-latest.
+# Sin esto, cada checkout produce diffs fantasma de archivos completos.
+* text=auto eol=lf
+
+# Binarios: que git no intente normalizarlos.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.pdf binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.keystore binary
+*.jks binary
+
+# El wrapper de Gradle se versiona y debe conservar sus permisos y su formato.
+gradlew text eol=lf
+gradlew.bat text eol=crlf

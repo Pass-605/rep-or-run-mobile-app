@@ -1,0 +1,39 @@
+# Gradle / Kotlin
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+.kotlin/
+*.class
+
+# Android
+local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
+captures/
+.externalNativeBuild/
+.cxx/
+
+# iOS / Xcode
+iosApp/Pods/
+iosApp/**/xcuserdata/
+*.xcuserstate
+DerivedData/
+*.xcworkspace/xcuserdata/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.fleet/
+
+# Secretos y configuración local
+.env
+.env.*
+*.pem
+secrets.properties
+
+# SO
+.DS_Store
+Thumbs.db

@@ -1,0 +1,62 @@
+schema: spec-driven
+
+# Este bloque se inyecta en TODO artefacto que genere OpenSpec (`openspec instructions`).
+# Regla de oro: aquí se APUNTA a las fuentes de verdad, no se copian.
+# Si algo de aquí contradice el plan o los CLAUDE.md, mandan ellos: corrige este archivo.
+context: |
+  Gymdi es una app Android + iOS (Kotlin Multiplatform + Compose Multiplatform) que
+  genera planes de gimnasio para cualquier gimnasio. Local-first: sin login ni backend
+  propio, los datos viven en el dispositivo. El único componente remoto es una Lambda
+  que hace de proxy de OpenAI y vive en OTRO repo (gymdi-lambda). Entrega del MVP:
+  viernes 02/10/2026.
+
+  Lee antes de escribir cualquier artefacto:
+  - CLAUDE.md (este repo): capas, dependencias permitidas entre módulos, UI, tokens,
+    tests y convenciones. Es la referencia técnica.
+  - ../CLAUDE.md (workspace): dominio, contrato entre repos, seguridad, flujo de trabajo.
+  - ../docs/plan/PLAN_TRABAJO_MVP.md: alcance, modelo de datos, timeline. Su seccion 4
+    son las reglas de dominio completas y su Anexo A es la tabla normativa de tokens.
+  - ../docs/backlog/: las tareas y su estado. Toda change debe corresponder a una tarea.
+  - ../docs/contract/v1/*.schema.json: el contrato app <-> Lambda.
+  - ../docs/adr/: decisiones ya tomadas, con el criterio que las reabriria.
+
+  Reglas de dominio que ninguna spec puede contradecir (detalle en el plan, seccion 4):
+  1. Ningun ejercicio sin maquina del inventario del gimnasio activo.
+  2. Las alternativas no suman series; los ejercicios unilaterales cuentan series por lado.
+  3. Las cargas son de ensayo (texto); nada calcula kilos a partir de edad, talla o peso.
+  4. La convencion de carga depende del LoadType del equipo.
+  5. Nada cambia el plan sin aprobacion: una revision produce propuestas, y solo la
+     aprobacion crea una version nueva conservando la anterior.
+  6. Con datos insuficientes, la revision lo dice y no propone subir cargas.
+  7. Sin consejos nutricionales, de suplementos ni diagnosticos, en ningun sitio.
+
+  Restricciones vigentes:
+  - No hay cuentas de AWS, OpenAI, Apple Developer ni Google Play. Nada de despliegues,
+    llamadas reales ni secretos escritos en archivos. Se trabaja con fakes y el runner
+    local de la Lambda.
+  - iOS necesita macOS: en Windows se escribe iosMain, pero esas tareas no se cierran.
+  - Figma, el contrato y el plan son fuentes de verdad FUERA de este repo. Una change no
+    los edita por su cuenta: si necesita cambiarlos, lo dice en el proposal.
+
+  Idioma: espanol en artefactos, UI, commits y PR; ingles en codigo e identificadores.
+
+rules:
+  proposal:
+    - Empieza nombrando el ID de la tarea de ../docs/backlog/ que cubre esta change. Si no existe ninguna, dilo y propon crearla antes de seguir.
+    - Incluye siempre una seccion "No objetivos".
+    - Maximo 400 palabras. Es un documento para decidir, no para explicar la solucion.
+    - Di de forma explicita si la change necesita tocar el contrato, Figma o el plan.
+  design:
+    - Encaja la solucion en las capas y las dependencias permitidas del CLAUDE.md, seccion 3. Una dependencia nueva entre modulos no es un detalle de diseno: es un ADR.
+    - Nombra los modulos concretos que se tocan y, si hay UI, la pantalla de Figma y los tokens de GymdiTheme. Nunca inventes colores, radios ni tamanos de texto.
+    - No reabras una decision de ../docs/adr/ sin nombrar el ADR y decir que cambio respecto a su criterio de reapertura.
+    - Si hay mas de una opcion razonable, ponlas con su coste y elige una. No dejes la eleccion abierta.
+  specs:
+    - Requisitos de comportamiento observable, en espanol y verificables. Sin nombres de clase, firmas ni detalles de implementacion.
+    - Nunca redefinas los JSON Schemas. El contrato es ../docs/contract/v1/ y una spec solo puede referenciarlo.
+    - Todo requisito que toque generacion o revision de planes tiene que ser compatible con las siete reglas de dominio del contexto. Si alguna queda en tension, dilo en vez de resolverlo por tu cuenta.
+  tasks:
+    - Trozos de dos horas como maximo, cada uno verificable por separado.
+    - La ultima tarea es siempre la verificacion, con los comandos del CLAUDE.md seccion 2 que apliquen y su resultado.
+    - Etiqueta needs:macos lo que requiera Xcode y blocked:accounts lo que requiera cuentas. No incluyas tareas de despliegue mientras no haya cuentas.
+    - No metas en la misma change tareas de los dos repos. Un cambio de contrato se divide en una change por repo.
