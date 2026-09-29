@@ -1,4 +1,4 @@
-package app.gymdi.core.model
+package app.reporrun.core.model
 
 /**
  * Enumeraciones del dominio. Los nombres coinciden exactamente con los del contrato

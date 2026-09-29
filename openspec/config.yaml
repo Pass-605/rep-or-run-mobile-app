@@ -4,10 +4,10 @@ schema: spec-driven
 # Regla de oro: aquí se APUNTA a las fuentes de verdad, no se copian.
 # Si algo de aquí contradice el plan o los CLAUDE.md, mandan ellos: corrige este archivo.
 context: |
-  Gymdi es una app Android + iOS (Kotlin Multiplatform + Compose Multiplatform) que
+  Rep or Run es una app Android + iOS (Kotlin Multiplatform + Compose Multiplatform) que
   genera planes de gimnasio para cualquier gimnasio. Local-first: sin login ni backend
   propio, los datos viven en el dispositivo. El único componente remoto es una Lambda
-  que hace de proxy de OpenAI y vive en OTRO repo (gymdi-lambda). Entrega del MVP:
+  que hace de proxy de OpenAI y vive en OTRO repo (reporrun-lambda). Entrega del MVP:
   viernes 02/10/2026.
 
   Lee antes de escribir cualquier artefacto:
@@ -48,7 +48,7 @@ rules:
     - Di de forma explicita si la change necesita tocar el contrato, Figma o el plan.
   design:
     - Encaja la solucion en las capas y las dependencias permitidas del CLAUDE.md, seccion 3. Una dependencia nueva entre modulos no es un detalle de diseno: es un ADR.
-    - Nombra los modulos concretos que se tocan y, si hay UI, la pantalla de Figma y los tokens de GymdiTheme. Nunca inventes colores, radios ni tamanos de texto.
+    - Nombra los modulos concretos que se tocan y, si hay UI, la pantalla de Figma y los tokens de RepOrRunTheme. Nunca inventes colores, radios ni tamanos de texto.
     - No reabras una decision de ../docs/adr/ sin nombrar el ADR y decir que cambio respecto a su criterio de reapertura.
     - Si hay mas de una opcion razonable, ponlas con su coste y elige una. No dejes la eleccion abierta.
   specs:

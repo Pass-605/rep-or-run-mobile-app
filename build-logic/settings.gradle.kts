@@ -1,4 +1,4 @@
-// Build incluido con los convention plugins de gymdi-app. Es un build aparte: no hereda
+// Build incluido con los convention plugins de rep-or-run-mobile-app. Es un build aparte: no hereda
 // los repositorios ni el catálogo del raíz, así que los declara aquí.
 rootProject.name = "build-logic"
 

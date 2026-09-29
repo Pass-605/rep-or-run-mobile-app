@@ -1,6 +1,6 @@
 ---
-name: gymdi-pantalla-figma
-description: Implementa una pantalla de Gymdi en Compose partiendo del diseño de Figma, con la auditoría de contraste obligatoria antes de darla por buena. Úsala siempre que la tarea sea construir, portar o retocar una pantalla, un componente visual o el tema.
+name: reporrun-pantalla-figma
+description: Implementa una pantalla de Rep or Run en Compose partiendo del diseño de Figma, con la auditoría de contraste obligatoria antes de darla por buena. Úsala siempre que la tarea sea construir, portar o retocar una pantalla, un componente visual o el tema.
 ---
 
 # Pantalla desde Figma

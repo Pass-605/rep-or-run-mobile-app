@@ -20,7 +20,7 @@
 ## Comprobaciones
 
 - [ ] Sin secretos, sin datos personales reales, sin payloads en logs.
-- [ ] Reglas de dominio respetadas (ver skill `gymdi-reglas-dominio`), o no aplican.
+- [ ] Reglas de dominio respetadas (ver skill `reporrun-reglas-dominio`), o no aplican.
 - [ ] Sin versiones de AGP, Kotlin, Compose Multiplatform ni SDK cambiadas. Si cambian,
       explica por qué aquí.
 - [ ] `docs/` actualizado: estado de la tarea en el backlog y, si aplica, ADR o contrato.

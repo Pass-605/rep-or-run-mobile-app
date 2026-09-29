@@ -1,4 +1,4 @@
-package app.gymdi.buildlogic
+package app.reporrun.buildlogic
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog

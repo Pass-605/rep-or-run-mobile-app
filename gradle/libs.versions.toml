@@ -29,7 +29,7 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidKmpLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 
 # Convention plugins de build-logic/ (sin versión: vienen del build incluido).
-gymdi-kmp-library = { id = "gymdi.kmp.library" }
-gymdi-kmp-compose = { id = "gymdi.kmp.compose" }
-gymdi-feature = { id = "gymdi.feature" }
-gymdi-test = { id = "gymdi.test" }
+reporrun-kmp-library = { id = "reporrun.kmp.library" }
+reporrun-kmp-compose = { id = "reporrun.kmp.compose" }
+reporrun-feature = { id = "reporrun.feature" }
+reporrun-test = { id = "reporrun.test" }

@@ -1,5 +1,5 @@
 ---
-name: gymdi-contrato
+name: reporrun-contrato
 description: Cambia el contrato entre la app y la Lambda (JSON Schemas de docs/contract) sin romper ninguno de los dos repos ni el modo estricto de OpenAI. Úsala en cuanto una tarea toque un .schema.json, los DTOs del paquete contract, schemaVersion o los prompts.
 ---
 

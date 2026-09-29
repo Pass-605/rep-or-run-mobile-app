@@ -1,6 +1,6 @@
 ---
-name: gymdi-reglas-dominio
-description: Verifica código, specs o prompts contra las reglas del dominio de entrenamiento de Gymdi. Úsala antes de cerrar cualquier trabajo que toque generación de planes, revisión, validadores, el catálogo de equipos o los prompts de la Lambda.
+name: reporrun-reglas-dominio
+description: Verifica código, specs o prompts contra las reglas del dominio de entrenamiento de Rep or Run. Úsala antes de cerrar cualquier trabajo que toque generación de planes, revisión, validadores, el catálogo de equipos o los prompts de la Lambda.
 ---
 
 # Reglas de dominio

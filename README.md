@@ -1,6 +1,6 @@
-# gymdi-app
+# rep-or-run-mobile-app
 
-App de Gymdi en Kotlin Multiplatform con Compose Multiplatform (Android e iOS). Genera planes de gimnasio a partir del perfil, el inventario de máquinas y las preferencias de la persona. Local-first y sin cuentas.
+App de Rep or Run en Kotlin Multiplatform con Compose Multiplatform (Android e iOS). Genera planes de gimnasio a partir del perfil, el inventario de máquinas y las preferencias de la persona. Local-first y sin cuentas.
 
 La documentación del proyecto —plan, backlog, ADRs, contrato y diseño— vive **fuera de este repo**, en `../docs/`. Las reglas para trabajar aquí están en [`CLAUDE.md`](CLAUDE.md).
 
@@ -33,7 +33,7 @@ Versiones de Kotlin, AGP y Compose Multiplatform: `gradle/libs.versions.toml`, v
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
 composeApp/          UI compartida (librería KMP) y framework de iOS
 core/model/          modelos de dominio, sin dependencias
-core/designsystem/   GymdiTheme: paleta, formas y (más adelante) componentes
+core/designsystem/   RepOrRunTheme: paleta, formas y (más adelante) componentes
 iosApp/              proyecto Xcode que consume el framework
 ```
 

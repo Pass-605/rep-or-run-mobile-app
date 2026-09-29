@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- GymdiPalette.Canvas -->
-    <color name="gymdi_window_background">#F1EEEB</color>
+    <!-- RepOrRunPalette.Canvas -->
+    <color name="reporrun_window_background">#F1EEEB</color>
 </resources>
