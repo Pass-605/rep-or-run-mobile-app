@@ -1,6 +1,7 @@
 package app.reporrun.core.designsystem
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
@@ -12,7 +13,6 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.shape.RoundedCornerShape
 
 /**
  * Colores del sistema que Material 3 no cubre.
@@ -21,9 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
  * oscurecerlo y en oscuro aclararlo. Nunca uses [RepOrRunPalette.Accent] para una letra.
  */
 @Immutable
-data class RepOrRunExtendedColors(
-    val accentText: Color,
-)
+data class RepOrRunExtendedColors(val accentText: Color)
 
 private val LocalRepOrRunExtendedColors = staticCompositionLocalOf {
     RepOrRunExtendedColors(accentText = RepOrRunPalette.AccentInk)
@@ -67,10 +65,7 @@ val RepOrRunShapes = Shapes(
 )
 
 @Composable
-fun RepOrRunTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
+fun RepOrRunTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val extended = RepOrRunExtendedColors(
         accentText = if (darkTheme) RepOrRunPalette.AccentLight else RepOrRunPalette.AccentInk,
     )
@@ -85,5 +80,6 @@ fun RepOrRunTheme(
 
 object RepOrRunTheme {
     val extendedColors: RepOrRunExtendedColors
-        @Composable @ReadOnlyComposable get() = LocalRepOrRunExtendedColors.current
+        @Composable @ReadOnlyComposable
+        get() = LocalRepOrRunExtendedColors.current
 }
