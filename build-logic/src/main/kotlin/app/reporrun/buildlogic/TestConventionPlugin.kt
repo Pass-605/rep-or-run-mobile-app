@@ -7,9 +7,9 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 
 /**
- * Dependencias de test comunes en `commonTest`. Se aplica sobre un módulo KMP
- * (`reporrun.kmp.library` o derivados); aquí entrarán Turbine y coroutines-test cuando
- * estén en el catálogo.
+ * Dependencias de test comunes en `commonTest`: `kotlin.test` y coroutines-test (`runTest`).
+ * Se aplica sobre un módulo KMP (`reporrun.kmp.library` o derivados); Turbine entrará aquí
+ * cuando esté en el catálogo.
  *
  * Activa además los tests en host de Android (`androidHostTest`), que ejecutan
  * `commonTest` en la JVM: en Windows y Linux los targets de iOS no se compilan, así que
@@ -21,6 +21,7 @@ class TestConventionPlugin : Plugin<Project> {
             kotlinMultiplatform {
                 sourceSets.getByName("commonTest").dependencies {
                     implementation(kotlin("test"))
+                    implementation(libs.findLibrary("kotlinx-coroutines-test").get())
                 }
             }
         }
