@@ -63,4 +63,46 @@ enum class LoadType {
     NONE,
 }
 
+/** Unidad de la métrica de un ejercicio: repeticiones, metros o segundos (plan §4.8). */
 enum class Metric { REPS, METERS, SECONDS }
+
+/**
+ * Unidad de carga del bloque. En el contrato se llama `Unit`; aquí no, para no tapar a
+ * [kotlin.Unit]. v1 solo admite kilos.
+ */
+enum class LoadUnit { KG, }
+
+/**
+ * Cuántos datos hay para revisar (plan §4.13). Con [INSUFFICIENT] la revisión lo dice y no
+ * propone cambios: ver [ReviewResult].
+ */
+enum class DataQuality { SUFFICIENT, LIMITED, INSUFFICIENT }
+
+/** Tipo de cambio que propone una revisión. [KEEP] es proponer no tocar nada. */
+enum class ProposalType {
+    KEEP,
+    INCREASE_LOAD,
+    ADJUST_REPS,
+    ADJUST_SETS,
+    SWAP_EXERCISE,
+    MOVE_DAY,
+    ADJUST_CARDIO,
+    OTHER,
+    ;
+
+    /** Si la propuesta tiene que apuntar a un ejercicio concreto del plan. */
+    val targetsExercise: Boolean
+        get() = this in setOf(INCREASE_LOAD, ADJUST_REPS, ADJUST_SETS, SWAP_EXERCISE)
+
+    /** Si la propuesta puede apuntar a un día (contrato: solo en estas dos). */
+    val targetsDay: Boolean
+        get() = this == MOVE_DAY || this == ADJUST_CARDIO
+}
+
+enum class Confidence { LOW, MEDIUM, HIGH }
+
+/**
+ * Valoración de un ejercicio en el check-in. El backlog la llama `ExerciseRating`; se
+ * mantiene el nombre del contrato (`FeedbackRating`), que es la fuente de verdad.
+ */
+enum class FeedbackRating { TOO_EASY, OK, TOO_HARD, NOT_DONE }
