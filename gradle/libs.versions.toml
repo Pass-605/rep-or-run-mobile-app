@@ -16,9 +16,13 @@ targetSdk = "36"                  # se queda en 36 a proposito: subirlo opta por
 detekt = "2.0.0-alpha.6"
 spotless = "8.10.3"
 ktlint = "1.8.0"
+# Fechas y horas del dominio (B-02), verificada el 29/09/2026 en Maven Central. Instant y
+# Clock ya vienen de kotlin.time (stdlib); de aqui salen LocalDate y LocalTime.
+kotlinxDatetime = "0.8.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # Solo para compilar build-logic contra la API de los plugins (compileOnly).
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
