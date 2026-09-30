@@ -72,7 +72,10 @@ class ModuleDependencyRulesTest {
 
     @Test
     fun rejectsAiDependingOnData() {
-        assertEquals(listOf(":core:data"), ModuleDependencyRules.violations(":core:ai", setOf(":core:domain", ":core:data")))
+        assertEquals(
+            listOf(":core:data"),
+            ModuleDependencyRules.violations(":core:ai", setOf(":core:domain", ":core:data")),
+        )
     }
 
     @Test
@@ -84,7 +87,10 @@ class ModuleDependencyRulesTest {
 
     @Test
     fun rejectsDataDependingOnAFeature() {
-        assertEquals(listOf(":feature:plan"), ModuleDependencyRules.violations(":core:data", setOf(":core:domain", ":feature:plan")))
+        assertEquals(
+            listOf(":feature:plan"),
+            ModuleDependencyRules.violations(":core:data", setOf(":core:domain", ":feature:plan")),
+        )
     }
 
     // ---------------------------------------------------------------- sin regla
