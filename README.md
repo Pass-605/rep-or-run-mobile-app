@@ -33,12 +33,15 @@ Versiones de Kotlin, AGP y Compose Multiplatform: `gradle/libs.versions.toml`, v
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
 composeApp/          UI compartida (librería KMP) y framework de iOS
 core/model/          modelos de dominio, sin dependencias
+core/domain/         interfaces de repositorio (y, más adelante, casos de uso y validadores)
+core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
+core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
 core/designsystem/   RepOrRunTheme: paleta, formas y (más adelante) componentes
 iosApp/              proyecto Xcode que consume el framework
 ```
 
-Los demás módulos del plan (`core:domain`, `core:data`, `core:network`, `core:ai`, `core:pdf`, `core:notifications`, `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
+Los demás módulos del plan (`core:network`, `core:ai`, `core:pdf`, `core:notifications`, `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
 
 ## Comandos
 
