@@ -19,10 +19,19 @@ ktlint = "1.8.0"
 # Fechas y horas del dominio (B-02), verificada el 29/09/2026 en Maven Central. Instant y
 # Clock ya vienen de kotlin.time (stdlib); de aqui salen LocalDate y LocalTime.
 kotlinxDatetime = "0.8.0"
+# Persistencia (B-03, ADR 0002), verificadas el 30/09/2026 en Google Maven y Maven Central.
+# sqlite-bundled va a la par que declara room-runtime 2.8.5. KSP 2.3 ya no lleva la versión
+# de Kotlin en el número: se publica aparte y sirve para Kotlin 2.x.
+room = "2.8.5"
+sqlite = "2.6.2"
+ksp = "2.3.12"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 # Solo para compilar build-logic contra la API de los plugins (compileOnly).
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -41,6 +50,8 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidKmpLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 
 # Convention plugins de build-logic/ (sin versión: vienen del build incluido).
 reporrun-kmp-library = { id = "reporrun.kmp.library" }
