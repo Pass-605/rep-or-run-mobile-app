@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
+    // No es KMP, así que no hereda la calidad de reporrun.kmp.library.
+    alias(libs.plugins.reporrun.quality)
 }
 
 kotlin {

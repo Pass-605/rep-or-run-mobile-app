@@ -1,0 +1,10 @@
+# Configuración base de detekt para rep-or-run-mobile-app.
+# Se aplica encima de la configuración por defecto (buildUponDefaultConfig = true):
+# aquí solo va lo que cambia, con su motivo. El formato es cosa de ktlint (Spotless),
+# así que detekt no repite reglas de estilo.
+
+naming:
+  FunctionNaming:
+    # Los @Composable se nombran en PascalCase, como los tipos.
+    ignoreAnnotated:
+      - Composable

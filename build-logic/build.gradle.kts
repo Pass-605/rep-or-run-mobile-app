@@ -11,6 +11,11 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.compiler.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
+    compileOnly(libs.spotless.gradlePlugin)
+
+    // La regla de dependencias entre módulos se prueba con grafos de ejemplo.
+    testImplementation(kotlin("test-junit"))
 }
 
 gradlePlugin {
@@ -30,6 +35,14 @@ gradlePlugin {
         register("test") {
             id = "reporrun.test"
             implementationClass = "app.reporrun.buildlogic.TestConventionPlugin"
+        }
+        register("quality") {
+            id = "reporrun.quality"
+            implementationClass = "app.reporrun.buildlogic.QualityConventionPlugin"
+        }
+        register("root") {
+            id = "reporrun.root"
+            implementationClass = "app.reporrun.buildlogic.RootConventionPlugin"
         }
     }
 }

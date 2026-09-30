@@ -10,6 +10,12 @@ activityCompose = "1.13.0"        # androidx.activity, 11/03/2026
 compileSdk = "37"                 # lo exigen los AAR de androidx.compose 1.12.1; ver README
 minSdk = "26"
 targetSdk = "36"                  # se queda en 36 a proposito: subirlo opta por comportamientos nuevos
+# Calidad (S-04), verificadas el 28/09/2026. detekt va en 2.0 alpha porque la 1.23.8
+# (feb 2025) embebe Kotlin 2.0.21; la 2.0.0-alpha.6 embebe 2.4.10 y declara soporte
+# de configuration cache.
+detekt = "2.0.0-alpha.6"
+spotless = "8.10.3"
+ktlint = "1.8.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -19,6 +25,8 @@ android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref 
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+detekt-gradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -27,9 +35,13 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidKmpLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 # Convention plugins de build-logic/ (sin versión: vienen del build incluido).
 reporrun-kmp-library = { id = "reporrun.kmp.library" }
 reporrun-kmp-compose = { id = "reporrun.kmp.compose" }
 reporrun-feature = { id = "reporrun.feature" }
 reporrun-test = { id = "reporrun.test" }
+reporrun-quality = { id = "reporrun.quality" }
+reporrun-root = { id = "reporrun.root" }

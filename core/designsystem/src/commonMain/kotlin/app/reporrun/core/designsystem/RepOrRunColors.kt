@@ -1,3 +1,6 @@
+// El plan llama a este archivo RepOrRunColors.kt; C-04 le añade los ColorScheme.
+@file:Suppress("MatchingDeclarationName", "ktlint:standard:filename")
+
 package app.reporrun.core.designsystem
 
 import androidx.compose.ui.graphics.Color
