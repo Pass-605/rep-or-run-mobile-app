@@ -37,7 +37,7 @@ core/domain/         interfaces de repositorio (y, más adelante, casos de uso y
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
-core/designsystem/   RepOrRunTheme: paleta, formas y (más adelante) componentes
+core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
 iosApp/              proyecto Xcode que consume el framework
 ```
 
