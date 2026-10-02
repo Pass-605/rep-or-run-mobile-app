@@ -33,7 +33,7 @@ Versiones de Kotlin, AGP y Compose Multiplatform: `gradle/libs.versions.toml`, v
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
 composeApp/          UI compartida (librería KMP) y framework de iOS
 core/model/          modelos de dominio, sin dependencias
-core/domain/         interfaces de repositorio (y, más adelante, casos de uso y validadores)
+core/domain/         interfaces de repositorio y casos de uso de captura (más adelante, validadores)
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
