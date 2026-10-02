@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 
 /**
@@ -19,15 +21,33 @@ import androidx.compose.ui.unit.dp
  *
  * `accentText` existe porque el naranja no se puede usar como texto: en claro hay que
  * oscurecerlo y en oscuro aclararlo. Nunca uses [RepOrRunPalette.Accent] para una letra.
+ * Va sobre `surface`: sobre `background` en claro se queda en 4,07:1 y no vale para texto
+ * normal.
+ *
+ * `iconPrimary` es el `icon/primary` del Anexo A: los iconos activos. En oscuro coincide con
+ * `onSurface`, pero en claro es un gris más suave que el del texto. Los inactivos van en
+ * `outline` y los que están sobre el bloque de énfasis, en `inverseOnSurface`.
  */
 @Immutable
-data class RepOrRunExtendedColors(val accentText: Color)
+data class RepOrRunExtendedColors(val accentText: Color, val iconPrimary: Color)
 
-private val LocalRepOrRunExtendedColors = staticCompositionLocalOf {
-    RepOrRunExtendedColors(accentText = RepOrRunPalette.AccentInk)
+internal val LightExtendedColors = RepOrRunExtendedColors(
+    accentText = RepOrRunPalette.AccentInk,
+    iconPrimary = RepOrRunPalette.Gray800,
+)
+
+internal val DarkExtendedColors = RepOrRunExtendedColors(
+    accentText = RepOrRunPalette.AccentLight,
+    iconPrimary = RepOrRunPalette.Paper,
+)
+
+private val LocalRepOrRunExtendedColors = staticCompositionLocalOf { LightExtendedColors }
+
+private val LocalRepOrRunExtendedTypography = staticCompositionLocalOf {
+    repOrRunExtendedTypography(FontFamily.Default)
 }
 
-private val LightColors = lightColorScheme(
+internal val LightColors = lightColorScheme(
     background = RepOrRunPalette.Canvas,
     onBackground = RepOrRunPalette.Gray900,
     surface = RepOrRunPalette.Paper,
@@ -41,7 +61,7 @@ private val LightColors = lightColorScheme(
     outlineVariant = RepOrRunPalette.Gray400,
 )
 
-private val DarkColors = darkColorScheme(
+internal val DarkColors = darkColorScheme(
     background = RepOrRunPalette.Gray900,
     onBackground = RepOrRunPalette.Paper,
     surface = RepOrRunPalette.Gray800,
@@ -66,13 +86,17 @@ val RepOrRunShapes = Shapes(
 
 @Composable
 fun RepOrRunTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val extended = RepOrRunExtendedColors(
-        accentText = if (darkTheme) RepOrRunPalette.AccentLight else RepOrRunPalette.AccentInk,
-    )
-    CompositionLocalProvider(LocalRepOrRunExtendedColors provides extended) {
+    val fontFamily = outfitFontFamily()
+    val typography = remember(fontFamily) { repOrRunTypography(fontFamily) }
+    val extendedTypography = remember(fontFamily) { repOrRunExtendedTypography(fontFamily) }
+    CompositionLocalProvider(
+        LocalRepOrRunExtendedColors provides if (darkTheme) DarkExtendedColors else LightExtendedColors,
+        LocalRepOrRunExtendedTypography provides extendedTypography,
+    ) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColors else LightColors,
             shapes = RepOrRunShapes,
+            typography = typography,
             content = content,
         )
     }
@@ -82,4 +106,8 @@ object RepOrRunTheme {
     val extendedColors: RepOrRunExtendedColors
         @Composable @ReadOnlyComposable
         get() = LocalRepOrRunExtendedColors.current
+
+    val extendedTypography: RepOrRunExtendedTypography
+        @Composable @ReadOnlyComposable
+        get() = LocalRepOrRunExtendedTypography.current
 }
