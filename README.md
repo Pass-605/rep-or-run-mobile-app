@@ -31,7 +31,7 @@ Versiones de Kotlin, AGP y Compose Multiplatform: `gradle/libs.versions.toml`, v
 
 ```text
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
-composeApp/          UI compartida (librería KMP) y framework de iOS
+composeApp/          UI compartida (librería KMP) y framework de iOS; grafo de Koin y navegación raíz
 core/model/          modelos de dominio, sin dependencias
 core/domain/         interfaces de repositorio y casos de uso de captura (más adelante, validadores)
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
@@ -42,6 +42,18 @@ iosApp/              proyecto Xcode que consume el framework
 ```
 
 Los demás módulos del plan (`core:network`, `core:ai`, `core:pdf`, `core:notifications`, `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
+
+## Una pantalla nueva
+
+El modelo es `composeApp/src/commonMain/kotlin/app/reporrun/scaffold/` (S-09), con el porqué de cada decisión en los comentarios:
+
+- `ScaffoldContract.kt`: `XxxUiState`, `XxxEvent` y `XxxEffect`.
+- `ScaffoldViewModel.kt`: solo casos de uso por constructor, un `StateFlow` de estado, un `Flow` de efectos y `onEvent` como única entrada. Su test, `ScaffoldViewModelTest`, es el modelo de test.
+- `ScaffoldScreen.kt`: `XxxRoute` (con ViewModel) y `XxxScreen` (función de estado y `onEvent`).
+- `ScaffoldNavigation.kt`: rutas `@Serializable` y `NavGraphBuilder.xxxGraph(...)`, que recibe lambdas y no el `NavController`.
+- `ScaffoldModule.kt`: el `val xxxModule` de Koin, que se añade a `appModules()` en `di/AppModule.kt`.
+
+Los dos destinos de prueba se borran cuando entre la primera pantalla real.
 
 ## Comandos
 
