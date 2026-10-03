@@ -31,6 +31,13 @@ ksp = "2.3.12"
 kotlinxCoroutines = "1.11.0"
 kotlinxSerialization = "1.11.0"
 datastore = "1.2.1"
+# Armazón (S-09), verificadas el 02/10/2026 en Maven Central. Navigation se queda en la 2.9
+# porque la 2.10 sigue en beta. Lifecycle 2.9.6 es la que ya arrastran Compose Multiplatform
+# 1.12.1 y Koin 4.2.2: declarar otra metería dos versiones en el grafo.
+koin = "4.2.2"
+navigationCompose = "2.9.2"
+androidxLifecycle = "2.9.6"
+turbine = "1.2.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -42,6 +49,14 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # Solo para compilar build-logic contra la API de los plugins (compileOnly).
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
