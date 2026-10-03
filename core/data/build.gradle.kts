@@ -30,6 +30,7 @@ kotlin {
                 implementation(project(":core:database"))
                 implementation(project(":core:datastore"))
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.koin.core)
             }
         }
     }

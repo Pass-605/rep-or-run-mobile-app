@@ -13,6 +13,8 @@ kotlin {
             // `api`: los repositorios exponen modelos y Flow en su firma pública.
             api(project(":core:model"))
             api(libs.kotlinx.coroutines.core)
+            // Solo para `domainModule` (paquete `di`): los casos de uso no ven Koin.
+            implementation(libs.koin.core)
         }
     }
 }
