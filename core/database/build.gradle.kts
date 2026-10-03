@@ -22,6 +22,7 @@ kotlin {
             api(project(":core:model"))
             api(libs.room.runtime)
             implementation(libs.sqlite.bundled)
+            implementation(libs.koin.core)
         }
     }
 }

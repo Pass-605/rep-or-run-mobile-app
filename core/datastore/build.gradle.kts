@@ -13,6 +13,7 @@ kotlin {
             // `api`: el DataStore que se construye aquí lo inyecta el grafo de la app.
             api(libs.androidx.datastore.preferences.core)
             api(libs.kotlinx.coroutines.core)
+            implementation(libs.koin.core)
         }
     }
 }
