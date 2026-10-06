@@ -43,6 +43,13 @@ object RepOrRunDimens {
     val ListRowLeadingIconSize = 17.dp
     val ListRowChevronSize = 18.dp
 
+    /** Separación entre las tarjetas de una lista larga (pantalla 03). */
+    val CardListSpacing = 10.dp
+
+    val SearchFieldVerticalPadding = 15.dp
+    val SearchFieldIconSize = 18.dp
+    val SearchFieldSpacing = 10.dp
+
     val CheckMarkSize = 28.dp
     val CheckMarkIconSize = 14.dp
     val CheckMarkBorder = 1.5.dp
