@@ -1,9 +1,11 @@
 package app.reporrun.core.domain.di
 
+import app.reporrun.core.domain.usecase.AcceptConsentUseCase
 import app.reporrun.core.domain.usecase.AddEquipmentUseCase
 import app.reporrun.core.domain.usecase.BuildGenerationSummaryUseCase
 import app.reporrun.core.domain.usecase.CreateGymUseCase
 import app.reporrun.core.domain.usecase.IdGenerator
+import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
 import app.reporrun.core.domain.usecase.SavePreferencesUseCase
 import app.reporrun.core.domain.usecase.SaveProfileUseCase
@@ -33,4 +35,6 @@ val domainModule: Module = module {
     factoryOf(::ToggleEquipmentUseCase)
     factoryOf(::SavePreferencesUseCase)
     factoryOf(::BuildGenerationSummaryUseCase)
+    factoryOf(::ObserveConsentUseCase)
+    factoryOf(::AcceptConsentUseCase)
 }
