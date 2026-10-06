@@ -116,6 +116,19 @@ internal class FakeEquipmentCatalogRepository(items: List<EquipmentCatalogItem>)
     override suspend fun loadSeed(): Int = 0
 }
 
+/** Cuenta las cargas de la semilla y devuelve [inserted] en cada una. */
+internal class CountingCatalogRepository(private val inserted: Int) : EquipmentCatalogRepository {
+    var loadCalls = 0
+        private set
+
+    override fun observeCatalog(): Flow<List<EquipmentCatalogItem>> = MutableStateFlow(emptyList())
+
+    override suspend fun loadSeed(): Int {
+        loadCalls++
+        return inserted
+    }
+}
+
 internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : SettingsRepository {
     private val consent = MutableStateFlow(consentAcceptedAt)
 
