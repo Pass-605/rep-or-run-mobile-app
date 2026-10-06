@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunTheme
+import app.reporrun.feature.gym.GymGraphRoute
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
 import app.reporrun.feature.profile.ProfileGraphRoute
 import app.reporrun.navigation.RepOrRunNavHost
@@ -28,12 +29,14 @@ fun RepOrRunApp() {
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             when (state.start) {
-                // Un instante, lo que tarda DataStore: se ve el fondo, sin indicador.
+                // Un instante, lo que tardan DataStore y Room: se ve el fondo, sin indicador.
                 StartDestination.Loading -> Unit
 
                 StartDestination.Onboarding -> RepOrRunNavHost(startDestination = OnboardingGraphRoute)
 
-                StartDestination.Main -> RepOrRunNavHost(startDestination = ProfileGraphRoute)
+                StartDestination.Profile -> RepOrRunNavHost(startDestination = ProfileGraphRoute)
+
+                StartDestination.Gyms -> RepOrRunNavHost(startDestination = GymGraphRoute)
             }
         }
     }

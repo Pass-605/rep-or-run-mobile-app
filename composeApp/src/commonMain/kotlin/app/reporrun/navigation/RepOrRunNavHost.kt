@@ -5,6 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import app.reporrun.feature.gym.GymGraphRoute
+import app.reporrun.feature.gym.gymGraph
+import app.reporrun.feature.gym.navigateToGymEditor
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
 import app.reporrun.feature.onboarding.navigateToNotice
 import app.reporrun.feature.onboarding.onboardingGraph
@@ -41,12 +44,18 @@ internal fun RepOrRunNavHost(
             onContinue = navController::navigateToProfileGoal,
             onBack = { navController.popBackStack() },
             onProfileSaved = {
-                // Todavía no hay a dónde seguir: el gimnasio es C-07, que cambia este destino.
-                // Hasta entonces se vuelve a entrar al perfil, que se abre con lo guardado.
-                navController.navigate(ProfileGraphRoute) {
+                navController.navigate(GymGraphRoute) {
+                    // El perfil sale de la pila: su formulario ya se guardó y atrás no lo reabre
+                    // a medias. Editarlo después es cosa de Ajustes.
                     popUpTo<ProfileGraphRoute> { inclusive = true }
                 }
             },
+        )
+        gymGraph(
+            // El ViewModel de gimnasios vive lo que su grafo: la lista y el formulario lo comparten.
+            graphOwner = { navController.getBackStackEntry(GymGraphRoute) },
+            onOpenEditor = navController::navigateToGymEditor,
+            onCloseEditor = { navController.popBackStack() },
         )
     }
 }
