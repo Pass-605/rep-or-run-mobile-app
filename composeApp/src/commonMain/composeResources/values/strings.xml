@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Destino provisional tras aceptar el aviso. Se borra cuando entre el perfil (C-06). -->
-    <string name="start_title">Aviso aceptado</string>
-    <string name="start_body">El siguiente paso es tu perfil, que todavía no está en esta versión de la app.</string>
-    <string name="start_notice_row">Aviso y consentimiento</string>
-    <string name="start_notice_row_hint">Vuelve a leerlo cuando quieras</string>
-</resources>

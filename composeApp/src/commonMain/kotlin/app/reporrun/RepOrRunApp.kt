@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunTheme
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
+import app.reporrun.feature.profile.ProfileGraphRoute
 import app.reporrun.navigation.RepOrRunNavHost
-import app.reporrun.start.StartPlaceholderRoute
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -33,7 +33,7 @@ fun RepOrRunApp() {
 
                 StartDestination.Onboarding -> RepOrRunNavHost(startDestination = OnboardingGraphRoute)
 
-                StartDestination.Main -> RepOrRunNavHost(startDestination = StartPlaceholderRoute)
+                StartDestination.Main -> RepOrRunNavHost(startDestination = ProfileGraphRoute)
             }
         }
     }
