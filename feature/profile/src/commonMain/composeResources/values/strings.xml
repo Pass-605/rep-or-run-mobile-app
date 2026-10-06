@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Perfil (pantalla 02 de Figma), repartido en dos pasos. -->
+    <string name="profile_title">Tu perfil</string>
+    <string name="profile_subtitle">Con esto ajustamos el volumen y la progresión.</string>
+    <string name="profile_back">Volver</string>
+    <string name="profile_step_basics">Tus datos</string>
+    <string name="profile_step_goal">Tu objetivo</string>
+    <string name="profile_continue">Continuar</string>
+    <string name="profile_save">Guardar perfil</string>
+
+    <!-- Paso 1 -->
+    <string name="profile_alias">Alias (opcional)</string>
+    <string name="profile_age">Edad</string>
+    <string name="profile_height">Altura</string>
+    <string name="profile_weight">Peso (opcional)</string>
+    <string name="profile_waist">Cintura (opcional)</string>
+    <string name="profile_hip">Cadera (opcional)</string>
+    <string name="profile_unit_years">años</string>
+    <string name="profile_unit_cm">cm</string>
+    <string name="profile_unit_kg">kg</string>
+    <string name="profile_experience">Experiencia</string>
+    <string name="profile_experience_beginner">Principiante</string>
+    <string name="profile_experience_intermediate">Intermedio</string>
+    <string name="profile_experience_advanced">Avanzado</string>
+
+    <!-- Paso 2 -->
+    <string name="profile_goal">Objetivo</string>
+    <string name="profile_goal_recomposition">Recomposición</string>
+    <string name="profile_goal_hypertrophy">Hipertrofia</string>
+    <string name="profile_goal_strength">Fuerza</string>
+    <string name="profile_goal_general_fitness">Salud general</string>
+    <string name="profile_priority_muscles">Músculos prioritarios · máx. %1$d</string>
+    <string name="profile_limitations">Limitaciones</string>
+    <string name="profile_limitations_placeholder">Por ejemplo, una molestia al hacer un movimiento concreto.</string>
+    <string name="profile_preferences">Preferencias</string>
+    <string name="profile_preferences_placeholder">Por ejemplo, ejercicios que te gustan o que prefieres evitar.</string>
+    <!-- Aviso de privacidad del texto libre. Dice lo mismo que el aviso completo del onboarding: no se cambia sin preguntar. -->
+    <string name="profile_free_text_privacy">Lo que escribas aquí se envía a OpenAI al generar el plan, igual que el resto del perfil. No pongas tu nombre ni datos que te identifiquen.</string>
+
+    <!--
+        Tarjeta del objetivo. Son constantes de la app, no salida del modelo: una por objetivo,
+        iguales para todas las personas. El de recomposición es el de Figma, literal.
+    -->
+    <string name="profile_goal_card_meaning_title">Qué significa %1$s</string>
+    <string name="profile_goal_card_changes_title">Cómo cambia tu plan</string>
+    <string name="profile_goal_card_reps">Repeticiones</string>
+    <string name="profile_goal_card_volume">Volumen</string>
+    <string name="profile_goal_card_rest">Descanso</string>
+    <string name="profile_goal_card_cardio">Cardio</string>
+
+    <string name="profile_goal_recomposition_meaning">Ganar algo de músculo y perder grasa a la vez. Es el camino más lento en las dos direcciones: en 14 días lo que se mueve son las cargas, no la báscula.</string>
+    <string name="profile_goal_recomposition_reps">8-12 por serie</string>
+    <string name="profile_goal_recomposition_volume">Repartido entre grupos</string>
+    <string name="profile_goal_recomposition_rest">1,5-2,5 min</string>
+    <string name="profile_goal_recomposition_cardio">En los días sin fuerza</string>
+
+    <string name="profile_goal_hypertrophy_meaning">Ganar masa muscular. El plan da más series a los grupos que marques como prioritarios. En 14 días no se mide músculo nuevo: el primer bloque sirve para calibrar las cargas.</string>
+    <string name="profile_goal_hypertrophy_reps">8-15 por serie</string>
+    <string name="profile_goal_hypertrophy_volume">Más en tus prioridades</string>
+    <string name="profile_goal_hypertrophy_rest">1-2 min</string>
+    <string name="profile_goal_hypertrophy_cardio">Corto y suave</string>
+
+    <string name="profile_goal_strength_meaning">Mover más carga en los ejercicios principales. Menos repeticiones por serie y descansos más largos, para llegar a cada serie con fuerzas.</string>
+    <string name="profile_goal_strength_reps">5-8 por serie</string>
+    <string name="profile_goal_strength_volume">Menos series, más pesadas</string>
+    <string name="profile_goal_strength_rest">2-4 min</string>
+    <string name="profile_goal_strength_cardio">Corto y suave</string>
+
+    <string name="profile_goal_general_fitness_meaning">Entrenar todo el cuerpo con regularidad, sin perseguir marcas. Sesiones equilibradas, con fuerza y cardio en proporciones parecidas.</string>
+    <string name="profile_goal_general_fitness_reps">10-15 por serie</string>
+    <string name="profile_goal_general_fitness_volume">Equilibrado</string>
+    <string name="profile_goal_general_fitness_rest">1-1,5 min</string>
+    <string name="profile_goal_general_fitness_cardio">En todas las semanas</string>
+
+    <!-- Nota fija, la misma para los cuatro objetivos. Es la regla de dominio de «sin pautas de alimentación», no un texto de relleno. -->
+    <string name="profile_goal_card_no_nutrition">Ningún objetivo incluye pautas de alimentación ni suplementos: Rep or Run solo ajusta el entrenamiento.</string>
+
+    <!-- Grupos musculares -->
+    <string name="profile_muscle_chest">Pecho</string>
+    <string name="profile_muscle_back">Espalda</string>
+    <string name="profile_muscle_shoulders">Hombros</string>
+    <string name="profile_muscle_biceps">Bíceps</string>
+    <string name="profile_muscle_triceps">Tríceps</string>
+    <string name="profile_muscle_forearms">Antebrazos</string>
+    <string name="profile_muscle_quads">Cuádriceps</string>
+    <string name="profile_muscle_hamstrings">Isquiotibiales</string>
+    <string name="profile_muscle_glutes">Glúteos</string>
+    <string name="profile_muscle_abductors">Abductores</string>
+    <string name="profile_muscle_adductors">Aductores</string>
+    <string name="profile_muscle_calves">Gemelos</string>
+    <string name="profile_muscle_core">Core</string>
+    <string name="profile_muscle_full_body">Cuerpo completo</string>
+
+    <!-- Errores. El límite lo trae el caso de uso; aquí solo está la frase. -->
+    <string name="profile_error_required">Falta este dato</string>
+    <string name="profile_error_out_of_range">Entre %1$s y %2$s</string>
+    <string name="profile_error_too_short">Mínimo %1$d caracteres</string>
+    <string name="profile_error_too_long">Máximo %1$d caracteres</string>
+    <string name="profile_error_too_many">Elige %1$d como máximo</string>
+</resources>

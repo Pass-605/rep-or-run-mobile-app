@@ -40,6 +40,7 @@ core/datastore/      DataStore Preferences: consentimiento e identificador de in
 core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento
+feature/profile/     perfil en dos pasos
 iosApp/              proyecto Xcode que consume el framework
 ```
 
@@ -59,7 +60,9 @@ El modelo es `feature/onboarding/` (C-05), que conserva el patrón del armazón 
 
 La bienvenida es además el ejemplo de **superficie constante**: se ve igual en los dos temas porque envuelve su contenido en `RepOrRunTheme(darkTheme = true)`. Las demás pantallas no lo hacen.
 
-`composeApp/.../start/StartPlaceholderScreen.kt` es un destino provisional: lo que hay tras aceptar el aviso hasta que entre el perfil (C-06), que lo borra.
+`feature/profile/` (C-06) es el ejemplo de **formulario**: dos destinos de un mismo grafo que comparten ViewModel (`profileGraph(graphOwner = …)`), los números como texto en el estado y los errores tal como los devuelve el caso de uso (`Map<ProfileField, FieldIssue>`). La pantalla no compara números: pregunta a `ValidateProfileUseCase`.
+
+Al guardar el perfil todavía no hay a dónde seguir: `RepOrRunNavHost` vuelve a entrar al perfil. Lo cambia el gimnasio (C-07).
 
 ## Comandos
 

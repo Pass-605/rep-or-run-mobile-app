@@ -44,6 +44,7 @@ kotlin {
             api(project(":core:designsystem"))
             // Los features: de cada uno solo se usa su grafo de navegación y su módulo de Koin.
             implementation(project(":feature:onboarding"))
+            implementation(project(":feature:profile"))
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)

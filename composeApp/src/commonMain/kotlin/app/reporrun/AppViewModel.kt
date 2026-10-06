@@ -18,7 +18,7 @@ sealed interface StartDestination {
     /** No hay consentimiento guardado: bienvenida y aviso. */
     data object Onboarding : StartDestination
 
-    /** El aviso ya se aceptó en este dispositivo. */
+    /** El aviso ya se aceptó en este dispositivo: se entra por el perfil. */
     data object Main : StartDestination
 }
 

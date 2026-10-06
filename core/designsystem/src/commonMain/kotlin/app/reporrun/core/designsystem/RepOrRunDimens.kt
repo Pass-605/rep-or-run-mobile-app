@@ -85,6 +85,14 @@ object RepOrRunDimens {
 
     val WatermarkTextSize = 200.dp
     val WatermarkStrokeWidth = 2.dp
+
+    // Perfil (pantalla 02): la tarjeta que explica el objetivo elegido.
+
+    /** Borde en `primary`: es la tarjeta que acaba de aparecer, y ahí el acento sí marca. */
+    val GoalCardBorder = 1.5.dp
+    val GoalCardSpacing = 12.dp
+    val GoalCardRowSpacing = 9.dp
+    val GoalCardDotSize = 8.dp
 }
 
 /** Opacidades del diseño. No son colores: se aplican sobre un rol del tema. */

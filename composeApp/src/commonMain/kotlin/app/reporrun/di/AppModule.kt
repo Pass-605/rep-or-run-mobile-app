@@ -10,6 +10,7 @@ import app.reporrun.core.datastore.di.datastoreModule
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.di.domainModule
 import app.reporrun.feature.onboarding.onboardingModule
+import app.reporrun.feature.profile.profileModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -60,6 +61,7 @@ internal fun appModules(platformModule: Module): List<Module> = listOf(
     dataModule,
     domainModule,
     onboardingModule,
+    profileModule,
 )
 
 /** Arranca Koin. Se llama una vez por proceso, desde el punto de entrada de cada plataforma. */
