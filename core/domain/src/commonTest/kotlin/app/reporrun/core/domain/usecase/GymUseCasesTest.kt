@@ -12,6 +12,8 @@ class GymUseCasesTest {
     private val repository = FakeGymRepository()
     private val createGym = CreateGymUseCase(repository, SequentialIds(), FixedClock(NOW))
     private val setActiveGym = SetActiveGymUseCase(repository)
+    private val renameGym = RenameGymUseCase(repository)
+    private val observeGyms = ObserveGymsUseCase(repository)
 
     @Test
     fun createsAGymWithATrimmedNameAndTheClockDate() = runTest {
@@ -81,5 +83,54 @@ class GymUseCasesTest {
 
         assertEquals(SetActiveGymResult.GymNotFound, result)
         assertEquals(GYM_ID, repository.observeActiveGym().first()?.id)
+    }
+
+    @Test
+    fun renamesAGymWithATrimmedNameAndKeepsEverythingElse() = runTest {
+        val original = gym(isActive = true)
+        repository.saveGym(original)
+
+        val result = renameGym(GYM_ID, "  Gimnasio Sur ")
+
+        assertEquals(RenameGymResult.Renamed(original.copy(name = "Gimnasio Sur")), result)
+        assertEquals(listOf(original.copy(name = "Gimnasio Sur")), repository.savedGyms)
+    }
+
+    @Test
+    fun rejectsRenamingToABlankName() = runTest {
+        val original = gym()
+        repository.saveGym(original)
+
+        val result = renameGym(GYM_ID, "   ")
+
+        assertEquals(RenameGymResult.InvalidName(FieldIssue.Required), result)
+        assertEquals(listOf(original), repository.savedGyms)
+    }
+
+    @Test
+    fun rejectsRenamingToANameThatIsTooLong() = runTest {
+        repository.saveGym(gym())
+
+        val result = renameGym(GYM_ID, "g".repeat(81))
+
+        assertEquals(RenameGymResult.InvalidName(FieldIssue.TooLong(80)), result)
+    }
+
+    @Test
+    fun doesNotCreateAGymWhenRenamingOneThatDoesNotExist() = runTest {
+        val result = renameGym(GymId("gym_borrado"), "Gimnasio Sur")
+
+        assertEquals(RenameGymResult.GymNotFound, result)
+        assertTrue(repository.savedGyms.isEmpty())
+    }
+
+    @Test
+    fun observesEveryGymWithTheActiveOneMarked() = runTest {
+        repository.saveGym(gym(isActive = true))
+        repository.saveGym(gym(GymId("gym_norte")))
+
+        val gyms = observeGyms().first()
+
+        assertEquals(listOf(GYM_ID to true, GymId("gym_norte") to false), gyms.map { it.id to it.isActive })
     }
 }
