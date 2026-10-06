@@ -70,6 +70,21 @@ object RepOrRunDimens {
     val ProgressSize = 44.dp
     val ProgressStroke = 4.dp
     val OutlineThickness = 1.dp
+
+    // Bienvenida (pantalla 01): es la única con composición propia.
+
+    /** Los 64 del frame de Figma menos la barra de estado, que aquí pone el sistema. */
+    val WelcomeTopPadding = 40.dp
+    val WelcomeHeroSpacing = 120.dp
+    val WelcomeSectionSpacing = 18.dp
+
+    /** Lista de puntos con check: el resumen del aviso. */
+    val ChecklistIconSize = 16.dp
+    val ChecklistIconSpacing = 10.dp
+    val ChecklistRowSpacing = 12.dp
+
+    val WatermarkTextSize = 200.dp
+    val WatermarkStrokeWidth = 2.dp
 }
 
 /** Opacidades del diseño. No son colores: se aplican sobre un rol del tema. */
@@ -79,4 +94,10 @@ object RepOrRunAlpha {
 
     /** Componentes deshabilitados. */
     const val DISABLED = 0.38f
+
+    /** Filas rellenas de la marca de agua: el 6 % de la fila por el 50 % del patrón. */
+    const val WATERMARK_FILL = 0.03f
+
+    /** Filas contorneadas de la marca de agua: el 16 % de la fila por el 50 % del patrón. */
+    const val WATERMARK_OUTLINE = 0.08f
 }
