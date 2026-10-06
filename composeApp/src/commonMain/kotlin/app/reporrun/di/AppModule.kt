@@ -1,6 +1,7 @@
 package app.reporrun.di
 
 import androidx.room.RoomDatabase
+import app.reporrun.AppViewModel
 import app.reporrun.core.data.di.dataModule
 import app.reporrun.core.database.RepOrRunDatabase
 import app.reporrun.core.database.buildRepOrRunDatabase
@@ -8,7 +9,7 @@ import app.reporrun.core.database.di.databaseModule
 import app.reporrun.core.datastore.di.datastoreModule
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.di.domainModule
-import app.reporrun.scaffold.scaffoldModule
+import app.reporrun.feature.onboarding.onboardingModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -17,13 +18,14 @@ import kotlinx.datetime.TimeZone
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import kotlin.time.Clock
 
 /**
- * Lo que es del proceso y no de un módulo concreto: el reloj, la zona horaria, los dispatchers
- * y la base de datos. Es el único sitio de la app donde aparecen `Clock.System` y
+ * Lo que es del proceso y no de un módulo concreto: el reloj, la zona horaria, los dispatchers,
+ * la base de datos y el ViewModel de la raíz. Es el único sitio de la app donde aparecen `Clock.System` y
  * `Dispatchers.*`; el resto los recibe por constructor.
  */
 internal val appModule: Module = module {
@@ -40,6 +42,8 @@ internal val appModule: Module = module {
     single<RepOrRunDatabase> {
         get<RoomDatabase.Builder<RepOrRunDatabase>>().buildRepOrRunDatabase(queryContext = get<AppDispatchers>().io)
     }
+
+    viewModelOf(::AppViewModel)
 }
 
 /**
@@ -55,7 +59,7 @@ internal fun appModules(platformModule: Module): List<Module> = listOf(
     datastoreModule,
     dataModule,
     domainModule,
-    scaffoldModule,
+    onboardingModule,
 )
 
 /** Arranca Koin. Se llama una vez por proceso, desde el punto de entrada de cada plataforma. */

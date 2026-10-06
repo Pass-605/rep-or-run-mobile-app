@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Destinos de prueba de S-09. Se borran con ellos cuando entre la primera pantalla real. -->
-    <string name="scaffold_title">Armazón</string>
-    <string name="scaffold_intro">Destino de prueba. Crea un gimnasio para comprobar el grafo, el estado y la navegación.</string>
-    <string name="scaffold_active_gym">Gimnasio activo</string>
-    <string name="scaffold_active_gym_none">Ninguno todavía</string>
-    <string name="scaffold_pending">Datos que faltan para generar</string>
-    <string name="scaffold_gym_name_label">Nombre del gimnasio</string>
-    <string name="scaffold_gym_name_placeholder">Mi gimnasio</string>
-    <string name="scaffold_create">Crear y abrir</string>
-    <string name="scaffold_detail_title">Gimnasio creado</string>
-    <string name="scaffold_detail_id">Identificador</string>
-    <string name="scaffold_back">Volver</string>
-
-    <!-- Motivos por los que se rechaza un campo (FieldIssue). -->
-    <string name="field_required">Este dato es obligatorio</string>
-    <string name="field_too_long">Máximo %1$d caracteres</string>
-    <string name="field_invalid">Este dato no es válido</string>
+    <!-- Destino provisional tras aceptar el aviso. Se borra cuando entre el perfil (C-06). -->
+    <string name="start_title">Aviso aceptado</string>
+    <string name="start_body">El siguiente paso es tu perfil, que todavía no está en esta versión de la app.</string>
+    <string name="start_notice_row">Aviso y consentimiento</string>
+    <string name="start_notice_row_hint">Vuelve a leerlo cuando quieras</string>
 </resources>
