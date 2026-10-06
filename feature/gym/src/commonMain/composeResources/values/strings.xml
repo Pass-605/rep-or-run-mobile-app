@@ -16,6 +16,8 @@
     <string name="gym_active">Activo</string>
     <string name="gym_tap_to_activate">Toca para usarlo</string>
     <string name="gym_rename">Renombrar</string>
+    <string name="gym_machines">Máquinas</string>
+    <string name="gym_continue">Continuar</string>
 
     <!-- Crear y renombrar -->
     <string name="gym_editor_new_title">Nuevo gimnasio</string>
@@ -29,5 +31,75 @@
     <!-- Errores. El límite lo trae el caso de uso; aquí solo está la frase. -->
     <string name="gym_error_required">Ponle un nombre</string>
     <string name="gym_error_too_long">Máximo %1$d caracteres</string>
-    <string name="gym_error_invalid">Ese nombre no vale</string>
+    <string name="gym_error_invalid">Ese dato no vale</string>
+    <string name="gym_error_too_short">Mínimo %1$d caracteres</string>
+    <string name="gym_error_out_of_range">Entre %1$s y %2$s</string>
+    <string name="gym_error_above_zero">Más de 0 y hasta %1$s</string>
+
+    <!-- Inventario (pantalla 03 de Figma). De Figma vienen el título, el buscador, «N marcadas» y los nombres de categoría y de tipo de carga que salen en ella; el resto es de esta tarea. -->
+    <string name="inventory_title">Mi gimnasio</string>
+    <string name="inventory_search">Buscar máquina</string>
+    <string name="inventory_add_custom">Añadir una máquina que no está en la lista</string>
+    <string name="inventory_all">Todas</string>
+    <plurals name="inventory_selected">
+        <item quantity="one">%1$d marcada</item>
+        <item quantity="other">%1$d marcadas</item>
+    </plurals>
+    <string name="inventory_min_hint">Marca al menos %1$d para poder generar un plan.</string>
+    <string name="inventory_done">Listo</string>
+    <string name="inventory_no_results">Ninguna máquina coincide con la búsqueda. Si tu gimnasio la tiene, añádela con el botón +.</string>
+    <string name="inventory_edit_range">Rango de carga</string>
+    <string name="inventory_edit_custom">Editar</string>
+    <string name="inventory_custom">personalizada</string>
+    <string name="inventory_range">%1$s-%2$s kg</string>
+    <string name="inventory_range_min">desde %1$s kg</string>
+    <string name="inventory_range_max">hasta %1$s kg</string>
+    <plurals name="inventory_in_use">
+        <item quantity="one">No se puede quitar: la usa %1$d ejercicio de tus planes guardados. Puedes dejarla fuera del próximo plan.</item>
+        <item quantity="other">No se puede quitar: la usan %1$d ejercicios de tus planes guardados. Puedes dejarla fuera del próximo plan.</item>
+    </plurals>
+    <string name="inventory_full">Este gimnasio ya tiene %1$d máquinas, que es el máximo. Quita alguna para añadir otra.</string>
+    <string name="inventory_unavailable">Esta máquina ya no está disponible en el catálogo.</string>
+
+    <!-- Categorías -->
+    <string name="category_machine">Máquina</string>
+    <string name="category_cable">Polea</string>
+    <string name="category_free_weight">Peso libre</string>
+    <string name="category_smith">Smith</string>
+    <string name="category_bench">Banco</string>
+    <string name="category_cardio">Cardio</string>
+    <string name="category_bodyweight">Peso corporal</string>
+    <string name="category_other">Otros</string>
+
+    <!-- Tipos de carga: cómo se leen los kilos de la máquina. En minúscula, como en el subtítulo de la fila. -->
+    <string name="load_selector">selector</string>
+    <string name="load_plates_total">discos totales</string>
+    <string name="load_smith">discos y barra guiada</string>
+    <string name="load_sled">carro</string>
+    <string name="load_dumbbell">por mancuerna</string>
+    <string name="load_barbell">barra y discos</string>
+    <string name="load_bodyweight">peso corporal</string>
+    <string name="load_cardio">sin carga, por tiempo</string>
+    <string name="load_none">sin carga</string>
+
+    <!-- Añadir y editar una máquina -->
+    <string name="equipment_new_title">Nueva máquina</string>
+    <string name="equipment_edit_title">Editar máquina</string>
+    <string name="equipment_new_subtitle">Para una máquina de tu gimnasio que no está en la lista.</string>
+    <string name="equipment_name">Nombre</string>
+    <string name="equipment_name_placeholder">Como la rotula tu gimnasio</string>
+    <string name="equipment_category">Categoría</string>
+    <string name="equipment_load_type">Cómo se carga</string>
+    <string name="equipment_fixed_type">%1$s · %2$s. La categoría y la forma de cargarla no se cambian: tus planes guardados leen los kilos según ella. Si está mal, quita la máquina y añádela de nuevo.</string>
+    <string name="equipment_range">Rango de carga</string>
+    <string name="equipment_range_hint">Opcional. Son datos de la máquina: lo que marca su pila o sus discos.</string>
+    <string name="equipment_min">Mínimo</string>
+    <string name="equipment_max">Máximo</string>
+    <string name="equipment_increment">Salto entre cargas</string>
+    <string name="equipment_kg">kg</string>
+    <string name="equipment_add">Añadir máquina</string>
+    <string name="equipment_save">Guardar</string>
+    <string name="equipment_remove">Quitar del gimnasio</string>
+    <string name="equipment_error_duplicate">Ya tienes una máquina con ese nombre</string>
+    <string name="equipment_error_min_above_max">El mínimo no puede ser mayor que el máximo</string>
 </resources>
