@@ -2,6 +2,8 @@ package app.reporrun
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.reporrun.core.domain.AppDispatchers
+import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,13 +39,29 @@ data class AppUiState(val start: StartDestination = StartDestination.Loading)
  * cambiara al aceptar o al guardar el perfil, `NavHost` reconstruiría el grafo y competiría con
  * la navegación que disparan los efectos de esas pantallas.
  *
+ * Con un gimnasio ya creado el inicio sigue siendo la lista de gimnasios, no su inventario:
+ * desde ella «Continuar» lleva a las máquinas del activo, y el arranque no puede saber si el
+ * inventario «falta» (cuántas máquinas bastan lo decide el resumen previo a generar).
+ *
+ * **También carga el catálogo semilla**, en cada arranque: es idempotente, y sin él el inventario
+ * no tiene de dónde marcar.
+ *
  * No tiene eventos ni efectos porque la raíz no ofrece nada que pulsar.
  */
-class AppViewModel(observeConsent: ObserveConsentUseCase, observeProfile: ObserveProfileUseCase) : ViewModel() {
+class AppViewModel(
+    observeConsent: ObserveConsentUseCase,
+    observeProfile: ObserveProfileUseCase,
+    loadCatalogSeed: LoadCatalogSeedUseCase,
+    dispatchers: AppDispatchers,
+) : ViewModel() {
     private val _state = MutableStateFlow(AppUiState())
     val state: StateFlow<AppUiState> = _state.asStateFlow()
 
     init {
+        // Aparte y sin esperar: el destino inicial no depende del catálogo, y el inventario lo
+        // observa, así que las máquinas aparecen cuando terminan de cargarse. Fuera del hilo
+        // principal: leer la semilla es parsear un JSON justo cuando se pinta el primer fotograma.
+        viewModelScope.launch(dispatchers.default) { loadCatalogSeed() }
         viewModelScope.launch {
             val start = when {
                 observeConsent().first() == null -> StartDestination.Onboarding

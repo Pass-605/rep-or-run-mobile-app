@@ -7,7 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import app.reporrun.feature.gym.GymGraphRoute
 import app.reporrun.feature.gym.gymGraph
+import app.reporrun.feature.gym.navigateToEquipmentEditor
 import app.reporrun.feature.gym.navigateToGymEditor
+import app.reporrun.feature.gym.navigateToInventory
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
 import app.reporrun.feature.onboarding.navigateToNotice
 import app.reporrun.feature.onboarding.onboardingGraph
@@ -52,10 +54,13 @@ internal fun RepOrRunNavHost(
             },
         )
         gymGraph(
-            // El ViewModel de gimnasios vive lo que su grafo: la lista y el formulario lo comparten.
+            // Los ViewModels de gimnasios viven lo que su grafo: cada lista comparte el suyo con
+            // su formulario.
             graphOwner = { navController.getBackStackEntry(GymGraphRoute) },
             onOpenEditor = navController::navigateToGymEditor,
-            onCloseEditor = { navController.popBackStack() },
+            onOpenInventory = navController::navigateToInventory,
+            onOpenEquipmentEditor = navController::navigateToEquipmentEditor,
+            onBack = { navController.popBackStack() },
         )
     }
 }
