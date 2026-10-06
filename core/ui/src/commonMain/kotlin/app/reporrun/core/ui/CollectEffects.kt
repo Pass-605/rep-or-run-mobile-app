@@ -1,4 +1,4 @@
-package app.reporrun.ui
+package app.reporrun.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,11 +19,9 @@ import kotlinx.coroutines.withContext
  * - `Dispatchers.Main.immediate`: sin él hay un salto entre que el `Channel` entrega el efecto
  *   y que se ejecuta [onEffect], y si la pantalla se para justo ahí el efecto se pierde. Es
  *   código de UI, no lógica: por eso el dispatcher va escrito aquí y no inyectado.
- *
- * Vive en `composeApp` hasta que exista `:core:ui`, que es donde lo necesitan los features.
  */
 @Composable
-internal fun <T> CollectEffects(effects: Flow<T>, onEffect: (T) -> Unit) {
+fun <T> CollectEffects(effects: Flow<T>, onEffect: (T) -> Unit) {
     val lifecycleOwner = LocalLifecycleOwner.current
     // La lambda puede cambiar entre recomposiciones sin que haya que reiniciar la recogida.
     val currentOnEffect by rememberUpdatedState(onEffect)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bienvenida (pantalla 01 de Figma). Los tres puntos del aviso son los del diseño, literales. -->
+    <string name="welcome_brand">Rep or Run</string>
+    <string name="welcome_overline">Rutinas con IA</string>
+    <string name="welcome_headline">Tu plan,\ntu gimnasio.</string>
+    <string name="welcome_body">Cuéntanos qué máquinas tiene tu gimnasio y generamos un plan de 14 días a tu medida.</string>
+    <string name="welcome_notice_title">Antes de empezar</string>
+    <string name="welcome_notice_not_medical">No es consejo médico: el plan es orientativo.</string>
+    <string name="welcome_notice_data_sent">Enviamos tu perfil, inventario y preferencias a OpenAI a través de nuestro servidor; no los guardamos.</string>
+    <string name="welcome_notice_local_data">Tus datos viven solo en este teléfono.</string>
+    <string name="welcome_accept">Aceptar y empezar</string>
+    <string name="welcome_read_notice">Leer aviso completo</string>
+
+    <!-- Aviso completo. Es texto de consentimiento: no se cambia sin preguntar (CLAUDE.md del workspace, §9). -->
+    <string name="notice_back">Volver</string>
+    <string name="notice_title">Aviso y consentimiento</string>
+    <string name="notice_intro">Esto es lo que aceptas al empezar a usar Rep or Run.</string>
+    <string name="notice_not_medical_title">No es consejo médico</string>
+    <string name="notice_not_medical_body">Rep or Run genera planes de entrenamiento orientativos. No sustituye a un profesional de la salud ni del deporte y no hace diagnósticos. Si tienes una lesión, una enfermedad o dudas sobre si puedes entrenar, consulta antes con un profesional.</string>
+    <string name="notice_data_sent_title">Qué se envía</string>
+    <string name="notice_data_sent_body">Para generar un plan se envían tu perfil (edad, talla, peso, las medidas que añadas, experiencia, objetivo, el alias si pones uno y las limitaciones o preferencias que escribas), las máquinas de tu gimnasio activo y tus preferencias del bloque. Para revisar un plan se envían además el plan y tus check-ins. La app no pide tu nombre real ni datos de contacto.</string>
+    <string name="notice_recipient_title">A quién</string>
+    <string name="notice_recipient_body">A OpenAI, que es quien redacta el plan. La petición pasa por un servidor nuestro que la reenvía y no guarda su contenido. Lo que OpenAI hace con esos datos depende de sus propias condiciones.</string>
+    <string name="notice_local_data_title">Qué se queda en tu teléfono</string>
+    <string name="notice_local_data_body">Tu perfil, tus gimnasios, tus planes y tus check-ins se guardan solo en este teléfono. No hay cuentas ni copia en la nube: si desinstalas la app, se borran.</string>
+    <string name="notice_consent_title">Tu consentimiento</string>
+    <string name="notice_consent_body">Al pulsar «Aceptar y empezar» permites ese envío cada vez que generes o revises un plan. Sin aceptar, la app no envía nada y no puede generar planes.</string>
+</resources>
