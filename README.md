@@ -38,22 +38,28 @@ core/data/           repositorios, mappers entidad↔modelo y carga de la semill
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
 core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
+core/ui/             utilidades de UI que comparten los features (CollectEffects)
+feature/onboarding/  bienvenida, aviso y consentimiento
 iosApp/              proyecto Xcode que consume el framework
 ```
 
-Los demás módulos del plan (`core:network`, `core:ai`, `core:pdf`, `core:notifications`, `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
+Los demás módulos del plan (`core:network`, `core:ai`, `core:pdf`, `core:notifications` y el resto de `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
 
 ## Una pantalla nueva
 
-El modelo es `composeApp/src/commonMain/kotlin/app/reporrun/scaffold/` (S-09), con el porqué de cada decisión en los comentarios:
+El modelo es `feature/onboarding/` (C-05), que conserva el patrón del armazón de S-09 con el porqué de cada decisión en los comentarios:
 
-- `ScaffoldContract.kt`: `XxxUiState`, `XxxEvent` y `XxxEffect`.
-- `ScaffoldViewModel.kt`: solo casos de uso por constructor, un `StateFlow` de estado, un `Flow` de efectos y `onEvent` como única entrada. Su test, `ScaffoldViewModelTest`, es el modelo de test.
-- `ScaffoldScreen.kt`: `XxxRoute` (con ViewModel) y `XxxScreen` (función de estado y `onEvent`).
-- `ScaffoldNavigation.kt`: rutas `@Serializable` y `NavGraphBuilder.xxxGraph(...)`, que recibe lambdas y no el `NavController`.
-- `ScaffoldModule.kt`: el `val xxxModule` de Koin, que se añade a `appModules()` en `di/AppModule.kt`.
+- `build.gradle.kts`: el plugin `reporrun.feature`, que trae las únicas dependencias de proyecto permitidas, y los recursos del módulo. El módulo se añade a `settings.gradle.kts` y a las dependencias de `composeApp`.
+- `OnboardingContract.kt`: `XxxUiState`, `XxxEvent` y `XxxEffect`.
+- `OnboardingViewModel.kt`: solo casos de uso por constructor, un `StateFlow` de estado, un `Flow` de efectos y `onEvent` como única entrada. Su test, `OnboardingViewModelTest`, es el modelo de test.
+- `WelcomeScreen.kt`: `XxxRoute` (con ViewModel) y `XxxScreen` (función de estado y `onEvent`). Los efectos se recogen con `CollectEffects`, de `:core:ui`.
+- `OnboardingNavigation.kt`: rutas `@Serializable` y `NavGraphBuilder.xxxGraph(...)`, que recibe lambdas y no el `NavController`.
+- `OnboardingModule.kt`: el `val xxxModule` de Koin, que se añade a `appModules()` en `di/AppModule.kt`.
+- `composeResources/values/strings.xml`: los textos, que no salen del módulo.
 
-Los dos destinos de prueba se borran cuando entre la primera pantalla real.
+La bienvenida es además el ejemplo de **superficie constante**: se ve igual en los dos temas porque envuelve su contenido en `RepOrRunTheme(darkTheme = true)`. Las demás pantallas no lo hacen.
+
+`composeApp/.../start/StartPlaceholderScreen.kt` es un destino provisional: lo que hay tras aceptar el aviso hasta que entre el perfil (C-06), que lo borra.
 
 ## Comandos
 
