@@ -41,22 +41,25 @@ context: |
   Idioma: espanol en artefactos, UI, commits y PR; ingles en codigo e identificadores.
 
 rules:
+  # Cada regla va entrecomillada a proposito: sin comillas, un ": " dentro del texto
+  # hace que YAML lo lea como clave-valor y OpenSpec rechaza el artefacto entero con
+  # "must be an array of strings". Paso el 30/09 con la primera regla de design.
   proposal:
-    - Empieza nombrando el ID de la tarea de ../docs/backlog/ que cubre esta change. Si no existe ninguna, dilo y propon crearla antes de seguir.
-    - Incluye siempre una seccion "No objetivos".
-    - Maximo 400 palabras. Es un documento para decidir, no para explicar la solucion.
-    - Di de forma explicita si la change necesita tocar el contrato, Figma o el plan.
+    - "Empieza nombrando el ID de la tarea de ../docs/backlog/ que cubre esta change. Si no existe ninguna, dilo y propon crearla antes de seguir."
+    - "Incluye siempre una seccion «No objetivos»."
+    - "Maximo 400 palabras. Es un documento para decidir, no para explicar la solucion."
+    - "Di de forma explicita si la change necesita tocar el contrato, Figma o el plan."
   design:
-    - Encaja la solucion en las capas y las dependencias permitidas del CLAUDE.md, seccion 3. Una dependencia nueva entre modulos no es un detalle de diseno: es un ADR.
-    - Nombra los modulos concretos que se tocan y, si hay UI, la pantalla de Figma y los tokens de RepOrRunTheme. Nunca inventes colores, radios ni tamanos de texto.
-    - No reabras una decision de ../docs/adr/ sin nombrar el ADR y decir que cambio respecto a su criterio de reapertura.
-    - Si hay mas de una opcion razonable, ponlas con su coste y elige una. No dejes la eleccion abierta.
+    - "Encaja la solucion en las capas y las dependencias permitidas del CLAUDE.md, seccion 3. Una dependencia nueva entre modulos no es un detalle de diseno, es un ADR."
+    - "Nombra los modulos concretos que se tocan y, si hay UI, la pantalla de Figma y los tokens de RepOrRunTheme. Nunca inventes colores, radios ni tamanos de texto."
+    - "No reabras una decision de ../docs/adr/ sin nombrar el ADR y decir que cambio respecto a su criterio de reapertura."
+    - "Si hay mas de una opcion razonable, ponlas con su coste y elige una. No dejes la eleccion abierta."
   specs:
-    - Requisitos de comportamiento observable, en espanol y verificables. Sin nombres de clase, firmas ni detalles de implementacion.
-    - Nunca redefinas los JSON Schemas. El contrato es ../docs/contract/v1/ y una spec solo puede referenciarlo.
-    - Todo requisito que toque generacion o revision de planes tiene que ser compatible con las siete reglas de dominio del contexto. Si alguna queda en tension, dilo en vez de resolverlo por tu cuenta.
+    - "Requisitos de comportamiento observable, en espanol y verificables. Sin nombres de clase, firmas ni detalles de implementacion."
+    - "Nunca redefinas los JSON Schemas. El contrato es ../docs/contract/v1/ y una spec solo puede referenciarlo."
+    - "Todo requisito que toque generacion o revision de planes tiene que ser compatible con las siete reglas de dominio del contexto. Si alguna queda en tension, dilo en vez de resolverlo por tu cuenta."
   tasks:
-    - Trozos de dos horas como maximo, cada uno verificable por separado.
-    - La ultima tarea es siempre la verificacion, con los comandos del CLAUDE.md seccion 2 que apliquen y su resultado.
-    - Etiqueta needs:macos lo que requiera Xcode y blocked:accounts lo que requiera cuentas. No incluyas tareas de despliegue mientras no haya cuentas.
-    - No metas en la misma change tareas de los dos repos. Un cambio de contrato se divide en una change por repo.
+    - "Trozos de dos horas como maximo, cada uno verificable por separado."
+    - "La ultima tarea es siempre la verificacion, con los comandos del CLAUDE.md seccion 2 que apliquen y su resultado."
+    - "Etiqueta needs:macos lo que requiera Xcode y blocked:accounts lo que requiera cuentas. No incluyas tareas de despliegue mientras no haya cuentas."
+    - "No metas en la misma change tareas de los dos repos. Un cambio de contrato se divide en una change por repo."
