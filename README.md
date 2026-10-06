@@ -41,6 +41,7 @@ core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento
 feature/profile/     perfil en dos pasos
+feature/gym/         gimnasios: lista, crear, renombrar y activar
 iosApp/              proyecto Xcode que consume el framework
 ```
 
@@ -62,7 +63,9 @@ La bienvenida es además el ejemplo de **superficie constante**: se ve igual en 
 
 `feature/profile/` (C-06) es el ejemplo de **formulario**: dos destinos de un mismo grafo que comparten ViewModel (`profileGraph(graphOwner = …)`), los números como texto en el estado y los errores tal como los devuelve el caso de uso (`Map<ProfileField, FieldIssue>`). La pantalla no compara números: pregunta a `ValidateProfileUseCase`.
 
-Al guardar el perfil todavía no hay a dónde seguir: `RepOrRunNavHost` vuelve a entrar al perfil. Lo cambia el gimnasio (C-07).
+`feature/gym/` (C-07) es el ejemplo de **lista que se observa**: el ViewModel recoge `ObserveGymsUseCase` y pinta lo guardado, sin tocar la lista a mano al crear, renombrar o activar. El formulario del nombre es otro destino del mismo grafo y comparte ViewModel, como en el perfil. Borrar un gimnasio no está: no tiene caso de uso y arrastra en cascada inventario y planes.
+
+El flujo hoy es bienvenida → perfil → gimnasios, y `AppViewModel` abre la app por el primer paso que falte. Tras crear el gimnasio todavía no hay a dónde seguir: lo trae el inventario (C-08).
 
 ## Comandos
 
