@@ -1,34 +1,28 @@
 package app.reporrun.feature.profile
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.style.TextAlign
 import app.reporrun.core.designsystem.RepOrRunDimens
-import app.reporrun.core.designsystem.RepOrRunIcons
 import app.reporrun.core.designsystem.RepOrRunTheme
 import app.reporrun.core.designsystem.component.RepOrRunButton
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunChip
-import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunStep
 import app.reporrun.core.designsystem.component.RepOrRunStepper
+import app.reporrun.core.designsystem.component.RepOrRunTopBar
 import app.reporrun.core.domain.usecase.FieldIssue
 import app.reporrun.feature.profile.resources.Res
 import app.reporrun.feature.profile.resources.profile_back
@@ -73,7 +67,11 @@ internal fun ProfileStepScaffold(
                 .padding(vertical = RepOrRunDimens.ScreenPadding),
             verticalArrangement = Arrangement.spacedBy(RepOrRunDimens.SectionSpacing),
         ) {
-            ProfileTopBar(onBack)
+            RepOrRunTopBar(
+                title = stringResource(Res.string.profile_title),
+                backContentDescription = stringResource(Res.string.profile_back),
+                onBack = onBack,
+            )
             RepOrRunCard(modifier = Modifier.fillMaxWidth()) {
                 RepOrRunStepper(
                     steps = listOf(
@@ -94,33 +92,6 @@ internal fun ProfileStepScaffold(
             icon = actionIcon,
             enabled = actionEnabled,
         )
-    }
-}
-
-/** Botón de volver, título centrado y un hueco del mismo ancho al otro lado para que lo esté. */
-@Composable
-private fun ProfileTopBar(onBack: (() -> Unit)?) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ListRowSpacing),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.size(RepOrRunDimens.IconButtonSize)) {
-            if (onBack != null) {
-                RepOrRunIconButton(
-                    icon = RepOrRunIcons.ArrowBack,
-                    contentDescription = stringResource(Res.string.profile_back),
-                    onClick = onBack,
-                )
-            }
-        }
-        Text(
-            stringResource(Res.string.profile_title),
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-        )
-        Box(Modifier.size(RepOrRunDimens.IconButtonSize))
     }
 }
 

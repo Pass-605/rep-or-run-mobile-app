@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Gimnasios. Figma v2 no dibuja esta lista: la pantalla 03 es el inventario de un gimnasio. Todos los textos son de esta tarea. -->
+    <string name="gym_list_title">Gimnasios</string>
+    <string name="gym_list_subtitle">El plan solo usa las máquinas del gimnasio activo.</string>
+    <string name="gym_back">Volver</string>
+    <string name="gym_add">Añadir gimnasio</string>
+
+    <!-- Estado vacío -->
+    <string name="gym_empty_title">Crea tu primer gimnasio</string>
+    <string name="gym_empty_body">Un gimnasio es el sitio donde entrenas y la lista de máquinas que tiene. El plan se arma solo con las máquinas del gimnasio activo.</string>
+    <string name="gym_empty_hint">Empieza por ponerle un nombre. Puedes tener más de uno y cambiar de activo cuando quieras.</string>
+    <string name="gym_create_first">Crear gimnasio</string>
+
+    <!-- Fila de un gimnasio -->
+    <string name="gym_active">Activo</string>
+    <string name="gym_tap_to_activate">Toca para usarlo</string>
+    <string name="gym_rename">Renombrar</string>
+
+    <!-- Crear y renombrar -->
+    <string name="gym_editor_new_title">Nuevo gimnasio</string>
+    <string name="gym_editor_rename_title">Renombrar gimnasio</string>
+    <string name="gym_editor_subtitle">El nombre es para que lo reconozcas tú.</string>
+    <string name="gym_name">Nombre</string>
+    <string name="gym_name_placeholder">Por ejemplo, Gimnasio Central</string>
+    <string name="gym_editor_create">Crear gimnasio</string>
+    <string name="gym_editor_save">Guardar nombre</string>
+
+    <!-- Errores. El límite lo trae el caso de uso; aquí solo está la frase. -->
+    <string name="gym_error_required">Ponle un nombre</string>
+    <string name="gym_error_too_long">Máximo %1$d caracteres</string>
+    <string name="gym_error_invalid">Ese nombre no vale</string>
+</resources>

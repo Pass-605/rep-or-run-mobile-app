@@ -83,6 +83,8 @@ arregla en C-01, que está en `moved:v1.1`.
 | Acción principal en `bg/accent` (pantalla 01, «Aceptar y empezar») | — | `inverseSurface`. **La acción principal nunca es naranja**: negra en claro, blanca en oscuro. El naranja marca estado, no manda. |
 | Checks de tarjeta con `text/accent` y el frame en modo Light (pantalla 01) | **2,24:1** | El token es el correcto, el **modo del frame** es el que está mal: `#DA330E` sobre `#3F3F3F`. En código resuelve al valor del tema oscuro y da 4,54:1. Si ves un contraste absurdo con un token correcto, mira el modo del frame antes que el token. |
 
+| Círculo de selección **sin marcar** en `bg/canvas` sobre `bg/surface` (pantalla 03, fila «Mancuernas»; medido el 05/10 en C-07) | **1,13:1** en claro, **1,46:1** en oscuro | `RepOrRunCheckMark(checked = false)`: el mismo relleno con un borde `onSurfaceVariant` (5,70:1 y 5,08:1). `outline` no vale para ese borde: 2,86:1 en claro. Una marca de estado pide 3:1, como un icono accionable. El círculo marcado (`bg/inverse` con `icon/on-inverse`) está bien. |
+
 Los dos primeros se ven peor en oscuro: la nota de alimentación de la pantalla 02 y el héroe
 en tema oscuro son los dos peores casos del primero.
 

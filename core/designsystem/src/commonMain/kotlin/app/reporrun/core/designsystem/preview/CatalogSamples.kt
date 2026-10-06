@@ -24,6 +24,7 @@ import app.reporrun.core.designsystem.component.RepOrRunBottomNav
 import app.reporrun.core.designsystem.component.RepOrRunButton
 import app.reporrun.core.designsystem.component.RepOrRunButtonStyle
 import app.reporrun.core.designsystem.component.RepOrRunCard
+import app.reporrun.core.designsystem.component.RepOrRunCheckMark
 import app.reporrun.core.designsystem.component.RepOrRunChip
 import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunEmphasisCard
@@ -139,6 +140,12 @@ internal fun ListRowSample() {
         RepOrRunDivider()
         RepOrRunListRow("Datos corporales", subtitle = "Peso y medidas en la portada") {
             RepOrRunSwitch(body, { body = it })
+        }
+        RepOrRunDivider()
+        RepOrRunListRow("Gimnasio Central", subtitle = "Activo") { RepOrRunCheckMark(checked = true) }
+        RepOrRunDivider()
+        RepOrRunListRow("Gimnasio Norte", subtitle = "Toca para usarlo", onClick = {}) {
+            RepOrRunCheckMark(checked = false)
         }
     }
 }

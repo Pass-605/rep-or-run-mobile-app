@@ -3,6 +3,7 @@ package app.reporrun.core.domain.usecase
 import app.reporrun.core.domain.repository.GymRepository
 import app.reporrun.core.model.Gym
 import app.reporrun.core.model.GymId
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlin.time.Clock
 
@@ -22,11 +23,7 @@ sealed interface CreateGymResult {
 class CreateGymUseCase(private val repository: GymRepository, private val ids: IdGenerator, private val clock: Clock) {
     suspend operator fun invoke(name: String, notes: String = ""): CreateGymResult {
         val cleanName = name.trim()
-        val issue = when {
-            cleanName.isEmpty() -> FieldIssue.Required
-            cleanName.length > Gym.MAX_NAME_LENGTH -> FieldIssue.TooLong(Gym.MAX_NAME_LENGTH)
-            else -> null
-        }
+        val issue = gymNameIssue(cleanName)
         return if (issue != null) CreateGymResult.InvalidName(issue) else create(cleanName, notes.trim())
     }
 
@@ -69,6 +66,53 @@ class SetActiveGymUseCase(private val repository: GymRepository) {
     } else {
         SetActiveGymResult.GymNotFound
     }
+}
+
+/** Resultado de [RenameGymUseCase]. */
+sealed interface RenameGymResult {
+    /** El gimnasio tiene ya el nombre nuevo. Lo demás, incluido si está activo, no cambió. */
+    data class Renamed(val gym: Gym) : RenameGymResult
+
+    /** El nombre no vale: [issue] es [FieldIssue.Required] o [FieldIssue.TooLong]. */
+    data class InvalidName(val issue: FieldIssue) : RenameGymResult
+
+    /** Ese gimnasio no existe; no se guardó nada. */
+    data object GymNotFound : RenameGymResult
+}
+
+/**
+ * Cambia el nombre de un gimnasio, con las mismas reglas que [CreateGymUseCase]. Lee el gimnasio
+ * guardado y solo le cambia el nombre: el inventario y los planes cuelgan de su id, no del nombre.
+ */
+class RenameGymUseCase(private val repository: GymRepository) {
+    suspend operator fun invoke(gymId: GymId, name: String): RenameGymResult {
+        val cleanName = name.trim()
+        val issue = gymNameIssue(cleanName)
+        val gym = repository.observeGyms().first().firstOrNull { it.id == gymId }
+        return when {
+            issue != null -> RenameGymResult.InvalidName(issue)
+
+            gym == null -> RenameGymResult.GymNotFound
+
+            else -> {
+                val renamed = gym.copy(name = cleanName)
+                repository.saveGym(renamed)
+                RenameGymResult.Renamed(renamed)
+            }
+        }
+    }
+}
+
+/** Todos los gimnasios, del más antiguo al más reciente; el activo lleva [Gym.isActive]. */
+class ObserveGymsUseCase(private val repository: GymRepository) {
+    operator fun invoke(): Flow<List<Gym>> = repository.observeGyms()
+}
+
+/** Por qué [cleanName], ya sin espacios alrededor, no vale como nombre de gimnasio; `null` si vale. */
+private fun gymNameIssue(cleanName: String): FieldIssue? = when {
+    cleanName.isEmpty() -> FieldIssue.Required
+    cleanName.length > Gym.MAX_NAME_LENGTH -> FieldIssue.TooLong(Gym.MAX_NAME_LENGTH)
+    else -> null
 }
 
 internal suspend fun GymRepository.hasGym(gymId: GymId): Boolean = observeGyms().first().any { it.id == gymId }

@@ -1,7 +1,13 @@
 package app.reporrun
 
+import app.reporrun.core.domain.repository.ProfileRepository
 import app.reporrun.core.domain.repository.SettingsRepository
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
+import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.model.Experience
+import app.reporrun.core.model.Goal
+import app.reporrun.core.model.ProfileId
+import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +32,10 @@ class AppViewModelTest {
     @AfterTest
     fun resetMainDispatcher() = Dispatchers.resetMain()
 
-    private fun viewModel(settings: SettingsRepository) = AppViewModel(ObserveConsentUseCase(settings))
+    private fun viewModel(
+        settings: SettingsRepository,
+        profiles: ProfileRepository = FakeProfileRepository(Stored(null)),
+    ) = AppViewModel(ObserveConsentUseCase(settings), ObserveProfileUseCase(profiles))
 
     @Test
     fun startsInOnboardingWithoutConsent() = runTest {
@@ -36,10 +45,30 @@ class AppViewModelTest {
     }
 
     @Test
-    fun skipsOnboardingWhenConsentWasAlreadyGiven() = runTest {
+    fun startsInTheProfileWhenConsentWasGivenAndThereIsNoProfile() = runTest {
         val viewModel = viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
 
-        assertEquals(StartDestination.Main, viewModel.state.value.start)
+        assertEquals(StartDestination.Profile, viewModel.state.value.start)
+    }
+
+    @Test
+    fun startsInTheGymsWhenTheProfileIsAlreadySaved() = runTest {
+        val viewModel = viewModel(
+            settings = FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)),
+            profiles = FakeProfileRepository(Stored(savedProfile())),
+        )
+
+        assertEquals(StartDestination.Gyms, viewModel.state.value.start)
+    }
+
+    @Test
+    fun asksForConsentFirstEvenWithASavedProfile() = runTest {
+        val viewModel = viewModel(
+            settings = FakeSettingsRepository(Loaded(consentAcceptedAt = null)),
+            profiles = FakeProfileRepository(Stored(savedProfile())),
+        )
+
+        assertEquals(StartDestination.Onboarding, viewModel.state.value.start)
     }
 
     @Test
@@ -54,6 +83,17 @@ class AppViewModelTest {
     }
 
     @Test
+    fun staysLoadingUntilTheProfileIsRead() = runTest {
+        val profiles = FakeProfileRepository(stored = null)
+        val viewModel = viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)), profiles)
+        assertEquals(StartDestination.Loading, viewModel.state.value.start)
+
+        profiles.stored.value = Stored(savedProfile())
+
+        assertEquals(StartDestination.Gyms, viewModel.state.value.start)
+    }
+
+    @Test
     fun doesNotChangeTheStartWhenConsentIsGivenLater() = runTest {
         val settings = FakeSettingsRepository(Loaded(consentAcceptedAt = null))
         val viewModel = viewModel(settings)
@@ -62,6 +102,17 @@ class AppViewModelTest {
 
         // A dónde se va al aceptar lo decide la navegación, no el destino inicial.
         assertEquals(StartDestination.Onboarding, viewModel.state.value.start)
+    }
+
+    @Test
+    fun doesNotChangeTheStartWhenTheProfileIsSavedLater() = runTest {
+        val profiles = FakeProfileRepository(Stored(null))
+        val viewModel = viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)), profiles)
+
+        profiles.saveProfile(savedProfile())
+
+        // A dónde se va al guardar lo decide la navegación, no el destino inicial.
+        assertEquals(StartDestination.Profile, viewModel.state.value.start)
     }
 
     private companion object {
@@ -88,3 +139,34 @@ private class FakeSettingsRepository(stored: Loaded?) : SettingsRepository {
 
     override suspend fun installId(): String = "install-test"
 }
+
+/** El perfil guardado, una vez leído. Distingue «sin perfil» de «aún no se ha leído». */
+private class Stored(val profile: UserProfile?)
+
+/** [stored] en `null` imita a una base de datos que todavía no ha contestado. */
+private class FakeProfileRepository(stored: Stored?) : ProfileRepository {
+    val stored = MutableStateFlow(stored)
+
+    override fun observeProfile(): Flow<UserProfile?> = stored.filterNotNull().map { it.profile }
+
+    override suspend fun saveProfile(profile: UserProfile) {
+        stored.value = Stored(profile)
+    }
+}
+
+/** Perfil sintético: ninguna persona real. */
+private fun savedProfile() = UserProfile(
+    id = ProfileId("profile_previo"),
+    alias = "Sol",
+    age = 30,
+    heightCm = 170.0,
+    weightKg = null,
+    waistCm = null,
+    hipCm = null,
+    experience = Experience.INTERMEDIATE,
+    goal = Goal.RECOMPOSITION,
+    priorityMuscles = emptySet(),
+    limitations = "",
+    preferences = "",
+    updatedAt = Instant.parse("2026-09-21T14:03:11Z"),
+)

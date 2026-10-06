@@ -43,6 +43,10 @@ object RepOrRunDimens {
     val ListRowLeadingIconSize = 17.dp
     val ListRowChevronSize = 18.dp
 
+    val CheckMarkSize = 28.dp
+    val CheckMarkIconSize = 14.dp
+    val CheckMarkBorder = 1.5.dp
+
     val DividerThickness = 1.dp
 
     val SwitchWidth = 48.dp

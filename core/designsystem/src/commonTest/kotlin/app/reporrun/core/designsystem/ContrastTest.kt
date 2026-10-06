@@ -85,6 +85,13 @@ class ContrastTest {
     }
 
     @Test
+    fun selectionMarkReachesThreeToOneCheckedOrNot() {
+        // RepOrRunCheckMark dentro de una tarjeta: el círculo elegido y el borde del que no lo está.
+        assertContrast(GRAPHIC, "inverseSurface sobre surface") { it.scheme.inverseSurface to it.scheme.surface }
+        assertContrast(GRAPHIC, "onSurfaceVariant sobre surface") { it.scheme.onSurfaceVariant to it.scheme.surface }
+    }
+
+    @Test
     fun accentMarksReachThreeToOne() {
         // Nodo en curso del stepper (sobre el bloque de énfasis) e indicador de LoadingState.
         assertContrast(GRAPHIC, "primary sobre inverseSurface") { it.scheme.primary to it.scheme.inverseSurface }
