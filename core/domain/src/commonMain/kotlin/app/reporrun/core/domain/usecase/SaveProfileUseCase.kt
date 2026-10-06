@@ -42,6 +42,18 @@ class SaveProfileUseCase(private val repository: ProfileRepository, private val 
     }
 }
 
+/**
+ * Los errores de un perfil a medio rellenar, sin guardar nada. Aplica las mismas reglas que
+ * [SaveProfileUseCase]: un formulario en varios pasos pregunta aquí si puede avanzar, en vez de
+ * comparar él los números.
+ *
+ * Devuelve los errores de **todos** los campos, también los de pasos que la persona aún no ha
+ * visto; quien llama se queda con los del paso en el que está.
+ */
+class ValidateProfileUseCase {
+    operator fun invoke(input: ProfileInput): List<FieldError<ProfileField>> = input.normalized().errors()
+}
+
 /** El perfil guardado, o `null` antes de completar el onboarding. */
 class ObserveProfileUseCase(private val repository: ProfileRepository) {
     operator fun invoke(): Flow<UserProfile?> = repository.observeProfile()

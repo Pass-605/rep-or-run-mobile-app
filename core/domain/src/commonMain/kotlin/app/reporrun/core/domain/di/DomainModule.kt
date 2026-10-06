@@ -12,6 +12,7 @@ import app.reporrun.core.domain.usecase.SaveProfileUseCase
 import app.reporrun.core.domain.usecase.SetActiveGymUseCase
 import app.reporrun.core.domain.usecase.ToggleEquipmentUseCase
 import app.reporrun.core.domain.usecase.UuidIdGenerator
+import app.reporrun.core.domain.usecase.ValidateProfileUseCase
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -28,6 +29,7 @@ val domainModule: Module = module {
     single<IdGenerator> { UuidIdGenerator }
 
     factoryOf(::SaveProfileUseCase)
+    factoryOf(::ValidateProfileUseCase)
     factoryOf(::ObserveProfileUseCase)
     factoryOf(::CreateGymUseCase)
     factoryOf(::SetActiveGymUseCase)
