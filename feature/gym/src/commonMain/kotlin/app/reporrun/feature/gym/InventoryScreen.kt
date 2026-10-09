@@ -42,7 +42,7 @@ import app.reporrun.feature.gym.resources.Res
 import app.reporrun.feature.gym.resources.gym_back
 import app.reporrun.feature.gym.resources.inventory_add_custom
 import app.reporrun.feature.gym.resources.inventory_all
-import app.reporrun.feature.gym.resources.inventory_done
+import app.reporrun.feature.gym.resources.inventory_continue
 import app.reporrun.feature.gym.resources.inventory_edit_custom
 import app.reporrun.feature.gym.resources.inventory_edit_range
 import app.reporrun.feature.gym.resources.inventory_full
@@ -75,13 +75,19 @@ internal fun InventoryEffects(viewModel: InventoryViewModel, onOpenEditor: () ->
  * formulario; [gymId] viene de la ruta y se le dice al abrirse.
  */
 @Composable
-internal fun InventoryRoute(viewModel: InventoryViewModel, gymId: GymId, onOpenEditor: () -> Unit, onBack: () -> Unit) {
+internal fun InventoryRoute(
+    viewModel: InventoryViewModel,
+    gymId: GymId,
+    onOpenEditor: () -> Unit,
+    onBack: () -> Unit,
+    onContinue: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(gymId) { viewModel.onEvent(InventoryEvent.Opened(gymId)) }
     InventoryEffects(viewModel, onOpenEditor = onOpenEditor, onCloseEditor = onBack)
 
-    InventoryScreen(state = state, onEvent = viewModel::onEvent, onBack = onBack)
+    InventoryScreen(state = state, onEvent = viewModel::onEvent, onBack = onBack, onContinue = onContinue)
 }
 
 /**
@@ -89,14 +95,15 @@ internal fun InventoryRoute(viewModel: InventoryViewModel, gymId: GymId, onOpenE
  * buscador se quedan arriba; los filtros, el contador y la lista hacen scroll juntos en una
  * `LazyColumn` con claves estables, que es lo que la mantiene fluida con más de cien filas.
  *
- * La acción del pie cierra el inventario. En Figma es «Continuar»: lo será cuando exista el paso
- * siguiente (C-09).
+ * La acción del pie es el «Continuar» de Figma: lleva al paso siguiente, las preferencias del
+ * bloque. Volver a los gimnasios es cosa de la barra de arriba.
  */
 @Composable
 internal fun InventoryScreen(
     state: InventoryUiState,
     onEvent: (InventoryEvent) -> Unit,
     onBack: () -> Unit,
+    onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -128,12 +135,12 @@ internal fun InventoryScreen(
             if (!state.isLoading) inventoryItems(state, onEvent)
         }
         RepOrRunButton(
-            text = stringResource(Res.string.inventory_done),
-            onClick = onBack,
+            text = stringResource(Res.string.inventory_continue),
+            onClick = onContinue,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = RepOrRunDimens.SectionSpacing),
-            icon = RepOrRunIcons.Check,
+            icon = RepOrRunIcons.ArrowForward,
         )
     }
 }

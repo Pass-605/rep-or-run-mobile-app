@@ -11,6 +11,7 @@ import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.di.domainModule
 import app.reporrun.feature.gym.gymModule
 import app.reporrun.feature.onboarding.onboardingModule
+import app.reporrun.feature.plansetup.planSetupModule
 import app.reporrun.feature.profile.profileModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +65,7 @@ internal fun appModules(platformModule: Module): List<Module> = listOf(
     onboardingModule,
     profileModule,
     gymModule,
+    planSetupModule,
 )
 
 /** Arranca Koin. Se llama una vez por proceso, desde el punto de entrada de cada plataforma. */
