@@ -13,8 +13,9 @@ import kotlinx.datetime.LocalDate
 /**
  * El formulario de las preferencias del bloque.
  *
- * - [sessionMinutes] va como **texto**, tal como está en el campo. Convertirlo y decidir si vale
- *   es cosa del ViewModel y del caso de uso, no del estado.
+ * - [sessionMinutes] es `null` mientras la persona no elija: no hay valor por defecto.
+ *   [sessionMinutesOptions] son los minutos entre los que se elige; si valen es cosa del caso
+ *   de uso, no del estado.
  * - [blockDays] no se edita: v1 solo admite [BlockPreferences.BLOCK_DAYS_V1] (plan §4). Está en
  *   el estado para que la pantalla lo enseñe sin escribir el número.
  * - [startDate] es `null` mientras la persona no elija una: la fecha de inicio es opcional.
@@ -28,7 +29,8 @@ import kotlinx.datetime.LocalDate
 data class PreferencesUiState(
     val isLoading: Boolean = true,
     val availableDays: Set<DayOfWeek> = emptySet(),
-    val sessionMinutes: String = "",
+    val sessionMinutes: Int? = null,
+    val sessionMinutesOptions: List<Int> = emptyList(),
     val blockDays: Int = BlockPreferences.BLOCK_DAYS_V1,
     val startDate: LocalDate? = null,
     val startDateOptions: List<LocalDate> = emptyList(),
@@ -42,7 +44,7 @@ data class PreferencesUiState(
 sealed interface PreferencesEvent {
     data class DayToggled(val day: DayOfWeek) : PreferencesEvent
 
-    data class SessionMinutesChanged(val value: String) : PreferencesEvent
+    data class SessionMinutesSelected(val minutes: Int) : PreferencesEvent
 
     /** [date] es `null` para «sin fecha». */
     data class StartDateSelected(val date: LocalDate?) : PreferencesEvent

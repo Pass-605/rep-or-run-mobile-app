@@ -119,14 +119,17 @@ internal fun inventoryWithCardio() = listOf(
     equipment("eq_pec_deck", "Pec Deck", EquipmentCategory.MACHINE),
 )
 
-internal fun savedPreferences(startDate: LocalDate? = null, cardioModes: List<String> = listOf("Treadmill")) =
-    BlockPreferences(
-        id = BlockPreferencesId("prefs_previas"),
-        availableDays = setOf(DayOfWeek.MONDAY, DayOfWeek.THURSDAY),
-        sessionMinutes = 75,
-        blockDays = BlockPreferences.BLOCK_DAYS_V1,
-        startDate = startDate,
-        cardioModes = cardioModes,
-        avoidExercises = "Sentadilla búlgara",
-        unit = LoadUnit.KG,
-    )
+internal fun savedPreferences(
+    startDate: LocalDate? = null,
+    cardioModes: List<String> = listOf("Treadmill"),
+    sessionMinutes: Int = 75,
+) = BlockPreferences(
+    id = BlockPreferencesId("prefs_previas"),
+    availableDays = setOf(DayOfWeek.MONDAY, DayOfWeek.THURSDAY),
+    sessionMinutes = sessionMinutes,
+    blockDays = BlockPreferences.BLOCK_DAYS_V1,
+    startDate = startDate,
+    cardioModes = cardioModes,
+    avoidExercises = "Sentadilla búlgara",
+    unit = LoadUnit.KG,
+)

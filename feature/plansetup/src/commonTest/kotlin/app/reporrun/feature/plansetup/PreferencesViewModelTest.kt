@@ -50,7 +50,7 @@ class PreferencesViewModelTest {
     private fun PreferencesViewModel.fillValid() {
         onEvent(PreferencesEvent.DayToggled(DayOfWeek.MONDAY))
         onEvent(PreferencesEvent.DayToggled(DayOfWeek.WEDNESDAY))
-        onEvent(PreferencesEvent.SessionMinutesChanged("60"))
+        onEvent(PreferencesEvent.SessionMinutesSelected(60))
     }
 
     @Test
@@ -69,7 +69,7 @@ class PreferencesViewModelTest {
         val state = viewModel().state.value
 
         assertEquals(emptySet(), state.availableDays)
-        assertEquals("", state.sessionMinutes)
+        assertNull(state.sessionMinutes)
         assertNull(state.startDate)
         assertEquals(BlockPreferences.BLOCK_DAYS_V1, state.blockDays)
     }
@@ -89,7 +89,7 @@ class PreferencesViewModelTest {
         val state = viewModel().state.value
 
         assertEquals(setOf(DayOfWeek.MONDAY, DayOfWeek.THURSDAY), state.availableDays)
-        assertEquals("75", state.sessionMinutes)
+        assertEquals(75, state.sessionMinutes)
         assertEquals(LocalDate(2026, 10, 12), state.startDate)
         assertEquals(setOf("Treadmill"), state.cardioModes)
         assertEquals("Sentadilla búlgara", state.avoidExercises)
@@ -147,12 +147,28 @@ class PreferencesViewModelTest {
     }
 
     @Test
-    fun keepsOnlyDigitsInTheSessionMinutes() = runTest {
+    fun offersTheSessionMinutesOfTheDesign() = runTest {
+        assertEquals(listOf(45, 60, 75, 90), viewModel().state.value.sessionMinutesOptions)
+    }
+
+    @Test
+    fun alsoOffersSavedSessionMinutesThatAreNotAmongTheOptions() = runTest {
+        preferences = FakePreferencesRepository(savedPreferences(sessionMinutes = 50))
+
+        val state = viewModel().state.value
+
+        assertEquals(listOf(45, 50, 60, 75, 90), state.sessionMinutesOptions)
+        assertEquals(50, state.sessionMinutes)
+    }
+
+    @Test
+    fun choosingOtherSessionMinutesReplacesTheChosenOnes() = runTest {
         val viewModel = viewModel()
+        viewModel.onEvent(PreferencesEvent.SessionMinutesSelected(60))
 
-        viewModel.onEvent(PreferencesEvent.SessionMinutesChanged("7a5,0 9"))
+        viewModel.onEvent(PreferencesEvent.SessionMinutesSelected(90))
 
-        assertEquals("750", viewModel.state.value.sessionMinutes)
+        assertEquals(90, viewModel.state.value.sessionMinutes)
     }
 
     @Test
@@ -192,7 +208,7 @@ class PreferencesViewModelTest {
     fun savingReplacesThePreviousPreferencesKeepingTheirId() = runTest {
         preferences = FakePreferencesRepository(savedPreferences())
         val viewModel = viewModel()
-        viewModel.onEvent(PreferencesEvent.SessionMinutesChanged("45"))
+        viewModel.onEvent(PreferencesEvent.SessionMinutesSelected(45))
 
         viewModel.onEvent(PreferencesEvent.SaveClicked)
 
@@ -203,7 +219,7 @@ class PreferencesViewModelTest {
     @Test
     fun withoutAnAvailableDayShowsTheErrorOfTheUseCaseAndSavesNothing() = runTest {
         val viewModel = viewModel()
-        viewModel.onEvent(PreferencesEvent.SessionMinutesChanged("60"))
+        viewModel.onEvent(PreferencesEvent.SessionMinutesSelected(60))
 
         viewModel.effects.test {
             viewModel.onEvent(PreferencesEvent.SaveClicked)
@@ -219,7 +235,7 @@ class PreferencesViewModelTest {
     fun showsTheRangeOfTheUseCaseWhenTheMinutesAreOutOfIt() = runTest {
         val viewModel = viewModel()
         viewModel.fillValid()
-        viewModel.onEvent(PreferencesEvent.SessionMinutesChanged("5"))
+        viewModel.onEvent(PreferencesEvent.SessionMinutesSelected(5))
 
         viewModel.onEvent(PreferencesEvent.SaveClicked)
 
@@ -232,7 +248,7 @@ class PreferencesViewModelTest {
     }
 
     @Test
-    fun asksForTheMinutesWhenTheFieldIsEmpty() = runTest {
+    fun asksForTheMinutesWhenNoneAreChosen() = runTest {
         val viewModel = viewModel()
         viewModel.onEvent(PreferencesEvent.DayToggled(DayOfWeek.MONDAY))
 

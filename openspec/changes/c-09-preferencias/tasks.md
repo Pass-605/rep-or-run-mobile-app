@@ -9,7 +9,7 @@
 - [x] 2.2 `PreferencesUiState`, eventos y efecto; `PreferencesViewModel`
 - [x] 2.3 `PreferencesScreen` y textos en `strings.xml`
 - [x] 2.4 `planSetupGraph()`, `navigateToPlanSetup()` y `planSetupModule`
-- [x] 2.5 Tests del ViewModel con Turbine: 19 (carga, precarga, cardio desde el inventario, guardar, errores del caso de uso)
+- [x] 2.5 Tests del ViewModel con Turbine: 21 (carga, precarga, opciones de minutos, cardio desde el inventario, guardar, errores del caso de uso)
 
 ## 3. Inventario y raíz
 
@@ -19,7 +19,7 @@
 ## 4. Documentación del repo
 
 - [x] 4.1 README (estructura, «Una pantalla nueva», flujo) y CHANGELOG
-- [ ] 4.2 Skill `reporrun-pantalla-figma`: **sin revisar**. No se puede decir si hay séptima corrección sin leer la pantalla 04
+- [x] 4.2 Skill `reporrun-pantalla-figma`: revisada el 08/10 con la 04 leída. **No hay séptima corrección**; la skill no se toca
 
 ## 5. Verificación
 
@@ -28,5 +28,5 @@
 - [x] 5.3 `gradlew.bat :androidApp:installDebug`: instalada en el teléfono conectado, que estaba bloqueado; el recorrido se hizo en el emulador `Medium_Phone` (API 28) con el mismo APK: inventario → «Continuar» → preferencias vacías con «14 días» y sin fecha; guardar vacío da «Marca al menos un día» y «Falta este dato» y no guarda; sin máquinas de cardio la pantalla lo dice; tras marcar tres en el inventario salen como chips; 5 minutos da «Entre 20 y 180»; con 60 guarda y vuelve al inventario; tras forzar el cierre, las preferencias se abren precargadas. Sin `FATAL EXCEPTION` en logcat
 - [x] 5.4 Lo mismo en oscuro: inventario y preferencias
 - [x] 5.5 Capturas en `captures/C-09/` (ignorada por git): seis en claro y tres en oscuro. Contraste: la pantalla solo usa pares que ya mide `ContrastTest` en los dos temas (`onBackground`/`background`, `onSurfaceVariant`/`background`, `onSurface`/`surface`, `onSurfaceVariant`/`surface`, `accentText`/`surface`, `inverseOnSurface`/`inverseSurface`)
-- [ ] 5.6 **Leer la pantalla 04 de Figma en claro y en oscuro y ajustar la composición**: sin hacer, el MCP de Figma estaba sin sesión. La tarea no se cierra sin esto
+- [x] 5.6 **Leer la pantalla 04 de Figma en claro y en oscuro y ajustar la composición**: hecho el 08/10 sobre los nodos v2 (`106:870` y `115:1281`); el detalle está en `design.md`, «Lectura de Figma»
 - [ ] 5.7 iOS: todo es `commonMain`; sin compilar ni ejecutar (`needs:macos`)

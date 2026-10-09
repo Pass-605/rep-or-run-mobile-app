@@ -2,7 +2,7 @@
 
 B-05 dejó `SavePreferencesUseCase`, que normaliza, valida contra los límites del contrato y devuelve todos los errores juntos; sin un día disponible no guarda. C-08 dejó una herencia: el pie del inventario dice «Listo» y vuelve a los gimnasios, a la espera de este paso.
 
-Diseño: pantalla **04 · Preferencias del bloque** del archivo `oxGySsrSlyarW78NSmC3aH`. **No se ha podido leer**: el MCP de Figma estaba sin sesión durante la implementación. La pantalla está compuesta con las piezas de `:core:designsystem` y hay que contrastarla con la 04 antes de cerrar la tarea (ver tareas).
+Diseño: pantalla **04 · Preferencias** del archivo `oxGySsrSlyarW78NSmC3aH`, nodos `106:870` (página *Pantallas · v2 · Claro*) y `115:1281` (*Pantallas · v2 · Oscuro*). **Leída el 08/10/2026**, después del merge, y la composición se ajustó a ella (ver «Lectura de Figma»). El nodo `30:1044` es la 04 de la página *Pantallas · Claro*, sin `v2`: el diseño viejo, del que no se implementa.
 
 ## Goals / Non-Goals
 
@@ -34,7 +34,7 @@ Consecuencias: se guarda el **nombre** de la máquina, que para las del catálog
 
 **Fecha de inicio: chips, no calendario.** «Sin fecha» y los catorce días de hoy en adelante, en una fila que se desliza, como los filtros del inventario. Un calendario sería un componente nuevo del design system o el `DatePicker` de Material, que trae elevación y otro lenguaje. Hoy sale de `Clock` y `TimeZone`, inyectados. Una fecha guardada que ya pasó no se precarga.
 
-**Minutos: campo numérico**, solo dígitos y sin valor por defecto: qué número proponer es una decisión de producto que debería venir de Figma.
+**Minutos: chips, no campo.** Figma los dibuja como cuatro opciones (45, 60, 75 y 90) y así van; el primer corte fue un campo numérico porque no se había leído el diseño. Las opciones son de la pantalla, no un límite del contrato, que sigue admitiendo de 20 a 180. Ninguna viene elegida: Figma enseña 75 marcado, pero es un dato de ejemplo, y qué número proponer sigue siendo una decisión de producto. Unos minutos ya guardados que no estén entre las cuatro se añaden a las opciones, para que reabrir no los pierda.
 
 **Validación.** Solo al guardar, con `SavePreferencesUseCase`; el error de un campo se va al tocarlo. No hace falta un `ValidatePreferencesUseCase`: no hay pasos intermedios ni un tope que impedir mientras se marca (hay como mucho tantas opciones de cardio como máquinas, y el tope de 6 lo dice el caso de uso al guardar).
 
@@ -48,8 +48,18 @@ Consecuencias: se guarda el **nombre** de la máquina, que para las del catálog
 
 **Tokens.** Todos los colores salen de componentes ya existentes: `background`, `surface` (tarjetas, campos, chip sin elegir), `inverseSurface`/`inverseOnSurface` (chip elegido y acción), `onBackground`/`onSurface`, `onSurfaceVariant` (apoyo, etiquetas, chip sin elegir) y `accentText` para los errores, siempre dentro de una tarjeta.
 
+## Lectura de Figma (08/10/2026)
+
+**Contraste.** Los pares de texto de la 04 cumplen el Anexo A en los dos temas: `text/secondary` sobre `bg/canvas` (5,04 y 7,39), `text/primary` sobre `bg/canvas` (13,26 y 15,00), `text/secondary` sobre `bg/surface` (5,70 y 5,08), `text/primary` sobre `bg/surface` (15,00 y 10,30) y `text/on-inverse` sobre `bg/inverse` (15,00). No usa `text/muted` ni `text/accent`. **No hay séptima corrección** y la skill `reporrun-pantalla-figma` no se toca.
+
+**Lo que se ajustó a Figma:** el título («Tu semana»); los días con una letra, los siete en una línea, con «N elegidos» junto al título de la sección; los minutos como chips; la tarjeta del bloque con «14 días», la fecha de inicio debajo y «Fijo en esta versión»; y los títulos «Cardio que puedes hacer» y «Qué prefieres evitar».
+
+**Lo que la app tiene y Figma no dibuja**, y se queda: cómo se elige la fecha de inicio (Figma solo la enseña en la tarjeta del bloque), el aviso de privacidad del texto libre, la nota de dónde salen las opciones de cardio, el caso del gimnasio sin cardio y los errores. Para C-01.
+
+**Lo que Figma dibuja y no se copia:** el overline «Paso 3 de 4» (ninguna pantalla lo lleva: la barra es `RepOrRunTopBar`, con el título centrado, y el recorrido real ya no tiene cuatro pasos); el título de «Qué prefieres evitar» fuera de la tarjeta (el campo es `RepOrRunField`, con la etiqueta dentro); los chips de día de 40 de alto (el Anexo A fija 34); y «Continuar» con flecha, que llega con C-10.
+
 ## Risks / Trade-offs
 
-- **Sin leer Figma**, la composición puede no coincidir con la 04 (orden, selector de semana en una línea, forma de elegir minutos y fecha).
+- Los minutos ya no admiten cualquier valor del rango del contrato desde la pantalla: solo los cuatro de Figma.
 - Los nombres de cardio en inglés llegan al prompt tal cual.
 - El armazón de pantalla y los grupos de chips están ya copiados en tres features (`profile`, `gym`, `plansetup`): candidatos a `:core:designsystem`.
