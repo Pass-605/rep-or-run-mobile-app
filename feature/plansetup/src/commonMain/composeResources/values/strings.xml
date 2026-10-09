@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Preferencias del bloque (pantalla 04 de Figma). -->
+    <string name="prefs_title">Preferencias</string>
+    <string name="prefs_back">Volver</string>
+    <string name="prefs_save">Guardar preferencias</string>
+
+    <!-- Días disponibles -->
+    <string name="prefs_days">Días disponibles</string>
+    <string name="prefs_days_hint">El plan solo pone sesiones en los días que marques.</string>
+    <string name="prefs_day_monday">Lun</string>
+    <string name="prefs_day_tuesday">Mar</string>
+    <string name="prefs_day_wednesday">Mié</string>
+    <string name="prefs_day_thursday">Jue</string>
+    <string name="prefs_day_friday">Vie</string>
+    <string name="prefs_day_saturday">Sáb</string>
+    <string name="prefs_day_sunday">Dom</string>
+
+    <!-- Sesión y bloque -->
+    <string name="prefs_session_minutes">Minutos por sesión</string>
+    <string name="prefs_minutes_unit">min</string>
+    <string name="prefs_block_days">Duración del bloque</string>
+    <string name="prefs_block_days_hint">En esta versión todos los bloques duran lo mismo.</string>
+    <plurals name="prefs_block_days_value">
+        <item quantity="one">%1$d día</item>
+        <item quantity="other">%1$d días</item>
+    </plurals>
+
+    <!-- Fecha de inicio -->
+    <string name="prefs_start_date">Fecha de inicio (opcional)</string>
+    <string name="prefs_no_start_date">Sin fecha</string>
+    <!-- Día de la semana, día del mes y mes: «Jue 8/10». -->
+    <string name="prefs_start_date_option">%1$s %2$d/%3$d</string>
+
+    <!-- Cardio. Las opciones no son textos: son las máquinas de cardio del gimnasio activo. -->
+    <string name="prefs_cardio">Cardio preferido</string>
+    <string name="prefs_cardio_hint">Son las máquinas de cardio de tu gimnasio. Puedes no marcar ninguna.</string>
+    <string name="prefs_cardio_empty">Tu gimnasio no tiene máquinas de cardio. Si quieres cardio en el plan, vuelve atrás y añade alguna.</string>
+
+    <!-- Ejercicios a evitar -->
+    <string name="prefs_avoid">Ejercicios a evitar</string>
+    <string name="prefs_avoid_placeholder">Por ejemplo, sentadilla búlgara</string>
+    <string name="prefs_avoid_privacy">Lo que escribas aquí se envía a OpenAI al generar el plan. No pongas tu nombre ni datos que te identifiquen.</string>
+
+    <!-- Errores. El límite lo trae el caso de uso; aquí solo está la frase. -->
+    <string name="prefs_error_days_required">Marca al menos un día</string>
+    <string name="prefs_error_required">Falta este dato</string>
+    <string name="prefs_error_out_of_range">Entre %1$d y %2$d</string>
+    <string name="prefs_error_too_short">Mínimo %1$d caracteres</string>
+    <string name="prefs_error_too_long">Máximo %1$d caracteres</string>
+    <string name="prefs_error_too_many">Elige %1$d como máximo</string>
+</resources>
