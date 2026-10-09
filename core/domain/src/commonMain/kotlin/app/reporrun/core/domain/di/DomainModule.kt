@@ -6,9 +6,11 @@ import app.reporrun.core.domain.usecase.BuildGenerationSummaryUseCase
 import app.reporrun.core.domain.usecase.CreateGymUseCase
 import app.reporrun.core.domain.usecase.IdGenerator
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
+import app.reporrun.core.domain.usecase.ObserveCardioOptionsUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveGymInventoryUseCase
 import app.reporrun.core.domain.usecase.ObserveGymsUseCase
+import app.reporrun.core.domain.usecase.ObservePreferencesUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
 import app.reporrun.core.domain.usecase.RemoveEquipmentUseCase
 import app.reporrun.core.domain.usecase.RenameGymUseCase
@@ -48,6 +50,8 @@ val domainModule: Module = module {
     factoryOf(::ObserveGymInventoryUseCase)
     factoryOf(::LoadCatalogSeedUseCase)
     factoryOf(::SavePreferencesUseCase)
+    factoryOf(::ObservePreferencesUseCase)
+    factoryOf(::ObserveCardioOptionsUseCase)
     factoryOf(::BuildGenerationSummaryUseCase)
     factoryOf(::ObserveConsentUseCase)
     factoryOf(::AcceptConsentUseCase)

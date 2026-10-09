@@ -3,6 +3,7 @@ package app.reporrun.core.domain.usecase
 import app.reporrun.core.domain.repository.PreferencesRepository
 import app.reporrun.core.model.BlockPreferences
 import app.reporrun.core.model.BlockPreferencesId
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 /** Resultado de [SavePreferencesUseCase]. */
@@ -37,4 +38,9 @@ class SavePreferencesUseCase(private val repository: PreferencesRepository) {
     private companion object {
         val SINGLE_PREFERENCES_ID = BlockPreferencesId("preferences")
     }
+}
+
+/** Las preferencias guardadas, o `null` si todavía no se han configurado. */
+class ObservePreferencesUseCase(private val repository: PreferencesRepository) {
+    operator fun invoke(): Flow<BlockPreferences?> = repository.observePreferences()
 }
