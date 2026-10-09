@@ -2,7 +2,7 @@
 
 ### Requirement: Días disponibles
 
-La app SHALL permitir marcar en qué días de la semana puede entrenar la persona, y SHALL NOT guardar las preferencias sin al menos un día marcado, diciendo el motivo junto al selector.
+La app SHALL permitir marcar en qué días de la semana puede entrenar la persona, con los siete días en una línea y cuántos hay marcados a la vista, y SHALL NOT guardar las preferencias sin al menos un día marcado, diciendo el motivo junto al selector. Cada día se lee con su letra y SHALL anunciarse con su nombre entero.
 
 #### Scenario: Sin días
 
@@ -11,16 +11,21 @@ La app SHALL permitir marcar en qué días de la semana puede entrenar la person
 
 ### Requirement: Minutos por sesión
 
-La app SHALL pedir los minutos por sesión con teclado numérico y SHALL rechazar, mostrando el rango admitido junto al campo, un valor vacío o fuera de los límites del contrato.
+La app SHALL ofrecer los minutos por sesión como opciones entre las que se elige una (45, 60, 75 y 90), sin ninguna elegida de antemano, y SHALL NOT guardar las preferencias sin haber elegido, diciéndolo junto a las opciones. Unos minutos ya guardados que no estén entre las opciones SHALL ofrecerse también y aparecer elegidos.
 
-#### Scenario: Fuera de rango
+#### Scenario: Sin elegir
 
-- **WHEN** la persona guarda con unos minutos por debajo del mínimo
-- **THEN** ve entre qué valores tiene que estar y no se guarda nada
+- **WHEN** la persona guarda sin haber elegido los minutos
+- **THEN** ve que falta ese dato y no se guarda nada
+
+#### Scenario: Cambiar de opción
+
+- **WHEN** la persona elige 60 minutos y después 90
+- **THEN** quedan elegidos solo los 90
 
 ### Requirement: Duración del bloque
 
-La app SHALL mostrar la duración del bloque, que es de 14 días, y SHALL NOT permitir cambiarla.
+La app SHALL mostrar la duración del bloque, que es de 14 días, y SHALL NOT permitir cambiarla. Junto a la duración SHALL decir qué día empieza el bloque, o que no tiene fecha de inicio.
 
 #### Scenario: Primer uso
 

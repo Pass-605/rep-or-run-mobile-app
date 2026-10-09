@@ -32,6 +32,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado
 - El pie del inventario pasa de «Listo» a «Continuar» y lleva a las preferencias del bloque; volver a los gimnasios queda en la barra de arriba (C-09).
 - `AppViewModel` carga el catálogo semilla en cada arranque, fuera del hilo principal. Hasta ahora nadie llamaba a `loadSeed()` y el catálogo estaba vacío en una instalación real (C-08).
 - Skill `reporrun-pantalla-figma`: sexta corrección medida, el círculo de selección sin marcar de la pantalla 03.
+- Las preferencias del bloque se ajustan a la pantalla 04 de Figma, leída después de implementarlas (C-09): los días van con una letra, los siete en una línea y con el número de elegidos; **los minutos por sesión se eligen entre 45, 60, 75 y 90**, en vez de escribirse; la tarjeta del bloque dice cuándo empieza; y cambian el título («Tu semana») y los de cardio y ejercicios a evitar. La lectura no encontró ningún par de color que incumpla el Anexo A.
 - `CLAUDE.md` §3: `core:domain` puede usar `koin-core` únicamente en su archivo `di/`; ningún otro archivo del módulo importa Koin. Resuelve la contradicción que dejó S-09 entre «solo `core:model`» y «cada módulo expone su `val xxxModule`».
 
 ### Eliminado
