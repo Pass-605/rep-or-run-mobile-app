@@ -5,14 +5,18 @@ import app.reporrun.core.domain.usecase.AddEquipmentUseCase
 import app.reporrun.core.domain.usecase.BuildGenerationSummaryUseCase
 import app.reporrun.core.domain.usecase.CreateGymUseCase
 import app.reporrun.core.domain.usecase.IdGenerator
+import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
+import app.reporrun.core.domain.usecase.ObserveGymInventoryUseCase
 import app.reporrun.core.domain.usecase.ObserveGymsUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.domain.usecase.RemoveEquipmentUseCase
 import app.reporrun.core.domain.usecase.RenameGymUseCase
 import app.reporrun.core.domain.usecase.SavePreferencesUseCase
 import app.reporrun.core.domain.usecase.SaveProfileUseCase
 import app.reporrun.core.domain.usecase.SetActiveGymUseCase
 import app.reporrun.core.domain.usecase.ToggleEquipmentUseCase
+import app.reporrun.core.domain.usecase.UpdateEquipmentUseCase
 import app.reporrun.core.domain.usecase.UuidIdGenerator
 import app.reporrun.core.domain.usecase.ValidateProfileUseCase
 import org.koin.core.module.Module
@@ -39,6 +43,10 @@ val domainModule: Module = module {
     factoryOf(::ObserveGymsUseCase)
     factoryOf(::AddEquipmentUseCase)
     factoryOf(::ToggleEquipmentUseCase)
+    factoryOf(::UpdateEquipmentUseCase)
+    factoryOf(::RemoveEquipmentUseCase)
+    factoryOf(::ObserveGymInventoryUseCase)
+    factoryOf(::LoadCatalogSeedUseCase)
     factoryOf(::SavePreferencesUseCase)
     factoryOf(::BuildGenerationSummaryUseCase)
     factoryOf(::ObserveConsentUseCase)

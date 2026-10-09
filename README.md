@@ -41,7 +41,7 @@ core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento
 feature/profile/     perfil en dos pasos
-feature/gym/         gimnasios: lista, crear, renombrar y activar
+feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
 iosApp/              proyecto Xcode que consume el framework
 ```
 
@@ -65,7 +65,9 @@ La bienvenida es además el ejemplo de **superficie constante**: se ve igual en 
 
 `feature/gym/` (C-07) es el ejemplo de **lista que se observa**: el ViewModel recoge `ObserveGymsUseCase` y pinta lo guardado, sin tocar la lista a mano al crear, renombrar o activar. El formulario del nombre es otro destino del mismo grafo y comparte ViewModel, como en el perfil. Borrar un gimnasio no está: no tiene caso de uso y arrastra en cascada inventario y planes.
 
-El flujo hoy es bienvenida → perfil → gimnasios, y `AppViewModel` abre la app por el primer paso que falte. Tras crear el gimnasio todavía no hay a dónde seguir: lo trae el inventario (C-08).
+El inventario (C-08), en el mismo módulo, es el ejemplo de **lista larga con búsqueda**: `LazyColumn` con claves estables y `contentType`, las filas ya filtradas y agrupadas en el estado (`InventoryRow`), y la regla de búsqueda en `:core:domain` (`CatalogSearch`). Su ViewModel comparte dueño con el de gimnasios y recibe el gimnasio con un evento `Opened(gymId)` que manda el destino, no por constructor. Marca por la clave del catálogo, nunca por el nombre.
+
+El flujo hoy es bienvenida → perfil → gimnasios → máquinas, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. Tras el inventario todavía no hay a dónde seguir: su pie dice «Listo» y vuelve a los gimnasios hasta que lleguen las preferencias (C-09).
 
 ## Comandos
 

@@ -21,9 +21,12 @@ import app.reporrun.core.domain.usecase.FieldIssue
 import app.reporrun.core.ui.CollectEffects
 import app.reporrun.feature.gym.resources.Res
 import app.reporrun.feature.gym.resources.gym_back
+import app.reporrun.feature.gym.resources.gym_error_above_zero
 import app.reporrun.feature.gym.resources.gym_error_invalid
+import app.reporrun.feature.gym.resources.gym_error_out_of_range
 import app.reporrun.feature.gym.resources.gym_error_required
 import app.reporrun.feature.gym.resources.gym_error_too_long
+import app.reporrun.feature.gym.resources.gym_error_too_short
 import org.jetbrains.compose.resources.stringResource
 
 /* Lo que comparten la lista y el formulario. Todo se compone con piezas de `:core:designsystem`. */
@@ -100,9 +103,8 @@ internal fun SupportingText(text: String) {
 }
 
 /**
- * La frase de un error del nombre. El límite viene del caso de uso; aquí no hay ningún número.
- * Los casos de uso de gimnasios solo devuelven `Required` y `TooLong`; el resto de motivos
- * comparte una frase para que el `when` siga siendo exhaustivo sin `else`.
+ * La frase de un error de un campo. Los límites vienen del caso de uso; aquí no hay ningún
+ * número. El nombre de un gimnasio solo da `Required` y `TooLong`; el resto son de una máquina.
  */
 @Composable
 internal fun FieldIssue.message(): String = when (this) {
@@ -110,6 +112,13 @@ internal fun FieldIssue.message(): String = when (this) {
 
     is FieldIssue.TooLong -> stringResource(Res.string.gym_error_too_long, maxLength)
 
-    is FieldIssue.OutOfRange, is FieldIssue.TooShort, is FieldIssue.TooMany ->
-        stringResource(Res.string.gym_error_invalid)
+    is FieldIssue.TooShort -> stringResource(Res.string.gym_error_too_short, minLength)
+
+    is FieldIssue.OutOfRange -> if (minExclusive) {
+        stringResource(Res.string.gym_error_above_zero, max.toKgText())
+    } else {
+        stringResource(Res.string.gym_error_out_of_range, min.toKgText(), max.toKgText())
+    }
+
+    is FieldIssue.TooMany -> stringResource(Res.string.gym_error_invalid)
 }

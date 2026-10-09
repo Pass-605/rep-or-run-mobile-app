@@ -10,4 +10,5 @@ import org.koin.dsl.module
  */
 val gymModule: Module = module {
     viewModelOf(::GymViewModel)
+    viewModelOf(::InventoryViewModel)
 }

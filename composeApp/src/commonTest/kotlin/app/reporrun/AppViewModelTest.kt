@@ -1,9 +1,13 @@
 package app.reporrun
 
+import app.reporrun.core.domain.AppDispatchers
+import app.reporrun.core.domain.repository.EquipmentCatalogRepository
 import app.reporrun.core.domain.repository.ProfileRepository
 import app.reporrun.core.domain.repository.SettingsRepository
+import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.model.EquipmentCatalogItem
 import app.reporrun.core.model.Experience
 import app.reporrun.core.model.Goal
 import app.reporrun.core.model.ProfileId
@@ -32,10 +36,17 @@ class AppViewModelTest {
     @AfterTest
     fun resetMainDispatcher() = Dispatchers.resetMain()
 
+    private val catalog = FakeCatalogRepository()
+
     private fun viewModel(
         settings: SettingsRepository,
         profiles: ProfileRepository = FakeProfileRepository(Stored(null)),
-    ) = AppViewModel(ObserveConsentUseCase(settings), ObserveProfileUseCase(profiles))
+    ) = AppViewModel(
+        observeConsent = ObserveConsentUseCase(settings),
+        observeProfile = ObserveProfileUseCase(profiles),
+        loadCatalogSeed = LoadCatalogSeedUseCase(catalog),
+        dispatchers = AppDispatchers(UnconfinedTestDispatcher()),
+    )
 
     @Test
     fun startsInOnboardingWithoutConsent() = runTest {
@@ -115,6 +126,22 @@ class AppViewModelTest {
         assertEquals(StartDestination.Profile, viewModel.state.value.start)
     }
 
+    @Test
+    fun loadsTheCatalogSeedOnEveryStart() = runTest {
+        viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
+        viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
+
+        assertEquals(2, catalog.loadCalls)
+    }
+
+    @Test
+    fun loadsTheCatalogSeedWithoutWaitingForTheStartDestination() = runTest {
+        val viewModel = viewModel(FakeSettingsRepository(stored = null))
+
+        assertEquals(StartDestination.Loading, viewModel.state.value.start)
+        assertEquals(1, catalog.loadCalls)
+    }
+
     private companion object {
         val NOW: Instant = Instant.parse("2026-10-05T10:00:00Z")
     }
@@ -138,6 +165,19 @@ private class FakeSettingsRepository(stored: Loaded?) : SettingsRepository {
     }
 
     override suspend fun installId(): String = "install-test"
+}
+
+/** Cuenta las cargas de la semilla; el catálogo en sí no le importa a la raíz. */
+private class FakeCatalogRepository : EquipmentCatalogRepository {
+    var loadCalls = 0
+        private set
+
+    override fun observeCatalog(): Flow<List<EquipmentCatalogItem>> = MutableStateFlow(emptyList())
+
+    override suspend fun loadSeed(): Int {
+        loadCalls++
+        return 0
+    }
 }
 
 /** El perfil guardado, una vez leído. Distingue «sin perfil» de «aún no se ha leído». */

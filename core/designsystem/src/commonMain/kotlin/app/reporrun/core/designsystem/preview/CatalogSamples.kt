@@ -32,6 +32,7 @@ import app.reporrun.core.designsystem.component.RepOrRunField
 import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunListRow
 import app.reporrun.core.designsystem.component.RepOrRunNavItem
+import app.reporrun.core.designsystem.component.RepOrRunSearchField
 import app.reporrun.core.designsystem.component.RepOrRunStatusChip
 import app.reporrun.core.designsystem.component.RepOrRunStep
 import app.reporrun.core.designsystem.component.RepOrRunStepper
@@ -79,6 +80,14 @@ internal fun FieldSample() {
             placeholder = "0",
             errorText = "Entre 40 y 200",
         )
+    }
+    var query by remember { mutableStateOf("") }
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.SearchFieldSpacing),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RepOrRunSearchField(query, { query = it }, placeholder = "Buscar máquina", modifier = Modifier.weight(1f))
+        RepOrRunIconButton(RepOrRunIcons.Add, contentDescription = "Añadir máquina", onClick = {}, emphasis = true)
     }
 }
 
