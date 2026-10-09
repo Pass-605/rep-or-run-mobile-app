@@ -12,9 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunDimens
 import app.reporrun.core.designsystem.component.RepOrRunCard
@@ -30,15 +30,15 @@ import app.reporrun.feature.plansetup.resources.prefs_avoid
 import app.reporrun.feature.plansetup.resources.prefs_avoid_placeholder
 import app.reporrun.feature.plansetup.resources.prefs_avoid_privacy
 import app.reporrun.feature.plansetup.resources.prefs_block_days
-import app.reporrun.feature.plansetup.resources.prefs_block_days_hint
+import app.reporrun.feature.plansetup.resources.prefs_block_days_fixed
 import app.reporrun.feature.plansetup.resources.prefs_block_days_value
 import app.reporrun.feature.plansetup.resources.prefs_cardio
 import app.reporrun.feature.plansetup.resources.prefs_cardio_empty
 import app.reporrun.feature.plansetup.resources.prefs_cardio_hint
 import app.reporrun.feature.plansetup.resources.prefs_days
-import app.reporrun.feature.plansetup.resources.prefs_days_hint
+import app.reporrun.feature.plansetup.resources.prefs_days_selected
 import app.reporrun.feature.plansetup.resources.prefs_error_days_required
-import app.reporrun.feature.plansetup.resources.prefs_minutes_unit
+import app.reporrun.feature.plansetup.resources.prefs_minutes_option
 import app.reporrun.feature.plansetup.resources.prefs_no_start_date
 import app.reporrun.feature.plansetup.resources.prefs_save
 import app.reporrun.feature.plansetup.resources.prefs_session_minutes
@@ -66,7 +66,8 @@ internal fun PreferencesRoute(viewModel: PreferencesViewModel, onBack: () -> Uni
  * el límite que da el caso de uso; la pantalla no compara ningún número.
  *
  * La duración del bloque se enseña y no se edita: v1 solo admite una (plan §4), y el número
- * viene del estado, que lo toma del modelo.
+ * viene del estado, que lo toma del modelo. Figma no dibuja cómo se elige la fecha de inicio,
+ * solo la enseña en la tarjeta del bloque: los chips de fecha son de esta pantalla.
  */
 @Composable
 internal fun PreferencesScreen(
@@ -88,24 +89,38 @@ internal fun PreferencesScreen(
 
         AvailableDays(state, onEvent)
         SessionMinutes(state, onEvent)
-        BlockDays(state.blockDays)
+        BlockDays(state)
         StartDate(state, onEvent)
         CardioModes(state, onEvent)
         AvoidExercises(state, onEvent)
     }
 }
 
-/** El selector de semana: un chip por día, de lunes a domingo. */
+/**
+ * El selector de semana: los siete días en una línea, de lunes a domingo, cada uno con su letra.
+ * Una letra sola no dice qué día es («M» es martes, «X» miércoles): el chip anuncia el nombre.
+ */
 @Composable
 private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.prefs_days))
-    SupportingText(stringResource(Res.string.prefs_days_hint))
-    ChipGroup(
-        options = DayOfWeek.entries,
-        selected = { it in state.availableDays },
-        label = { stringResource(it.shortLabel) },
-        onClick = { onEvent(PreferencesEvent.DayToggled(it)) },
+    val selectedCount = state.availableDays.size
+    SectionTitle(
+        text = stringResource(Res.string.prefs_days),
+        trailing = pluralStringResource(Res.plurals.prefs_days_selected, selectedCount, selectedCount),
     )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ChipSpacing),
+    ) {
+        DayOfWeek.entries.forEach { day ->
+            val name = stringResource(day.fullName)
+            RepOrRunChip(
+                label = stringResource(day.initial),
+                selected = day in state.availableDays,
+                onClick = { onEvent(PreferencesEvent.DayToggled(day)) },
+                modifier = Modifier.weight(1f).semantics { contentDescription = name },
+            )
+        }
+    }
     SectionError(
         when (val issue = state.errors[PreferencesField.AVAILABLE_DAYS]) {
             null -> null
@@ -118,32 +133,35 @@ private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent)
     )
 }
 
+/** Los minutos se eligen entre los que trae el estado; ninguno viene marcado. */
 @Composable
 private fun SessionMinutes(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
-    RepOrRunField(
-        value = state.sessionMinutes,
-        onValueChange = { onEvent(PreferencesEvent.SessionMinutesChanged(it)) },
-        label = stringResource(Res.string.prefs_session_minutes),
-        modifier = Modifier.fillMaxWidth(),
-        unit = stringResource(Res.string.prefs_minutes_unit),
-        errorText = state.errors[PreferencesField.SESSION_MINUTES]?.message(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+    SectionTitle(stringResource(Res.string.prefs_session_minutes))
+    ChipGroup(
+        options = state.sessionMinutesOptions,
+        selected = { it == state.sessionMinutes },
+        label = { stringResource(Res.string.prefs_minutes_option, it) },
+        onClick = { onEvent(PreferencesEvent.SessionMinutesSelected(it)) },
     )
+    SectionError(state.errors[PreferencesField.SESSION_MINUTES]?.message())
 }
 
+/** La tarjeta del bloque: cuánto dura, cuándo empieza y que la duración no se elige. */
 @Composable
-private fun BlockDays(blockDays: Int) {
+private fun BlockDays(state: PreferencesUiState) {
+    SectionTitle(stringResource(Res.string.prefs_block_days))
     RepOrRunCard(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = RepOrRunDimens.CardHorizontalPadding),
     ) {
         RepOrRunListRow(
-            title = stringResource(Res.string.prefs_block_days),
-            subtitle = stringResource(Res.string.prefs_block_days_hint),
+            title = pluralStringResource(Res.plurals.prefs_block_days_value, state.blockDays, state.blockDays),
+            subtitle = state.startDate.startLabel(),
             trailing = {
                 Text(
-                    pluralStringResource(Res.plurals.prefs_block_days_value, blockDays, blockDays),
-                    style = MaterialTheme.typography.labelMedium,
+                    stringResource(Res.string.prefs_block_days_fixed),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             },
         )

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -74,9 +76,27 @@ internal fun PlanSetupScaffold(
     }
 }
 
+/** El título de una sección. [trailing] es el apunte corto que va a su derecha, si lo hay. */
 @Composable
-internal fun SectionTitle(text: String) {
-    Text(text, modifier = Modifier.semantics { heading() }, style = MaterialTheme.typography.titleMedium)
+internal fun SectionTitle(text: String, trailing: String? = null) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ListRowSpacing),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text,
+            modifier = Modifier.weight(1f).semantics { heading() },
+            style = MaterialTheme.typography.titleMedium,
+        )
+        if (trailing != null) {
+            Text(
+                trailing,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
 }
 
 /** Texto de apoyo sobre el fondo de la pantalla. */

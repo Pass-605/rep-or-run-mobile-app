@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Preferencias del bloque (pantalla 04 de Figma). -->
-    <string name="prefs_title">Preferencias</string>
+    <string name="prefs_title">Tu semana</string>
     <string name="prefs_back">Volver</string>
     <string name="prefs_save">Guardar preferencias</string>
 
     <!-- Días disponibles -->
     <string name="prefs_days">Días disponibles</string>
-    <string name="prefs_days_hint">El plan solo pone sesiones en los días que marques.</string>
+    <plurals name="prefs_days_selected">
+        <item quantity="one">%1$d elegido</item>
+        <item quantity="other">%1$d elegidos</item>
+    </plurals>
+    <!-- Lo que se lee en el chip de cada día: una letra, como en Figma. -->
+    <string name="prefs_day_monday_initial">L</string>
+    <string name="prefs_day_tuesday_initial">M</string>
+    <string name="prefs_day_wednesday_initial">X</string>
+    <string name="prefs_day_thursday_initial">J</string>
+    <string name="prefs_day_friday_initial">V</string>
+    <string name="prefs_day_saturday_initial">S</string>
+    <string name="prefs_day_sunday_initial">D</string>
+    <!-- Lo que anuncia ese chip, y el día de «Empieza el lunes 21/09». -->
+    <string name="prefs_day_monday_name">lunes</string>
+    <string name="prefs_day_tuesday_name">martes</string>
+    <string name="prefs_day_wednesday_name">miércoles</string>
+    <string name="prefs_day_thursday_name">jueves</string>
+    <string name="prefs_day_friday_name">viernes</string>
+    <string name="prefs_day_saturday_name">sábado</string>
+    <string name="prefs_day_sunday_name">domingo</string>
+    <!-- El día abreviado, para los chips de la fecha de inicio. -->
     <string name="prefs_day_monday">Lun</string>
     <string name="prefs_day_tuesday">Mar</string>
     <string name="prefs_day_wednesday">Mié</string>
@@ -18,9 +38,12 @@
 
     <!-- Sesión y bloque -->
     <string name="prefs_session_minutes">Minutos por sesión</string>
-    <string name="prefs_minutes_unit">min</string>
+    <string name="prefs_minutes_option">%1$d min</string>
     <string name="prefs_block_days">Duración del bloque</string>
-    <string name="prefs_block_days_hint">En esta versión todos los bloques duran lo mismo.</string>
+    <string name="prefs_block_days_fixed">Fijo en esta versión</string>
+    <!-- Día de la semana y fecha: «Empieza el lunes 21/09». -->
+    <string name="prefs_block_starts">Empieza el %1$s %2$s</string>
+    <string name="prefs_block_no_start">Sin fecha de inicio</string>
     <plurals name="prefs_block_days_value">
         <item quantity="one">%1$d día</item>
         <item quantity="other">%1$d días</item>
@@ -33,12 +56,12 @@
     <string name="prefs_start_date_option">%1$s %2$d/%3$d</string>
 
     <!-- Cardio. Las opciones no son textos: son las máquinas de cardio del gimnasio activo. -->
-    <string name="prefs_cardio">Cardio preferido</string>
+    <string name="prefs_cardio">Cardio que puedes hacer</string>
     <string name="prefs_cardio_hint">Son las máquinas de cardio de tu gimnasio. Puedes no marcar ninguna.</string>
     <string name="prefs_cardio_empty">Tu gimnasio no tiene máquinas de cardio. Si quieres cardio en el plan, vuelve atrás y añade alguna.</string>
 
     <!-- Ejercicios a evitar -->
-    <string name="prefs_avoid">Ejercicios a evitar</string>
+    <string name="prefs_avoid">Qué prefieres evitar</string>
     <string name="prefs_avoid_placeholder">Por ejemplo, sentadilla búlgara</string>
     <string name="prefs_avoid_privacy">Lo que escribas aquí se envía a OpenAI al generar el plan. No pongas tu nombre ni datos que te identifiquen.</string>
 

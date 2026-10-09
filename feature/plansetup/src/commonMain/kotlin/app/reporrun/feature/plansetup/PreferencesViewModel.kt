@@ -58,7 +58,12 @@ class PreferencesViewModel(
             // Una vez y sin observar: si se siguiera recogiendo, guardar pisaría lo que la
             // persona tuviera a medio escribir.
             val saved = observePreferences().first()
-            _state.update { (saved?.toUiState(today) ?: it).copy(startDateOptions = startDateOptions(today)) }
+            _state.update {
+                (saved?.toUiState(today) ?: it).copy(
+                    sessionMinutesOptions = sessionMinutesOptions(saved?.sessionMinutes),
+                    startDateOptions = startDateOptions(today),
+                )
+            }
 
             observeCardioOptions().collect { options ->
                 _state.update {
@@ -83,11 +88,8 @@ class PreferencesViewModel(
                 )
             }
 
-            is PreferencesEvent.SessionMinutesChanged -> _state.update {
-                it.copy(
-                    sessionMinutes = event.value.asMinutesInput(),
-                    errors = it.errors - PreferencesField.SESSION_MINUTES,
-                )
+            is PreferencesEvent.SessionMinutesSelected -> _state.update {
+                it.copy(sessionMinutes = event.minutes, errors = it.errors - PreferencesField.SESSION_MINUTES)
             }
 
             is PreferencesEvent.StartDateSelected -> _state.update { it.copy(startDate = event.date) }
@@ -128,13 +130,15 @@ class PreferencesViewModel(
 /** Cuántas fechas de inicio se ofrecen, contando hoy. No es un límite del contrato. */
 private const val START_DATE_OPTIONS = 14
 
-private const val MAX_MINUTES_DIGITS = 3
+/** Los minutos por sesión que ofrece la pantalla 04 de Figma. No son un límite del contrato. */
+private val SESSION_MINUTES_OPTIONS = listOf(45, 60, 75, 90)
+
+/** Unos minutos guardados que no están entre las opciones se ofrecen también, para no perderlos. */
+private fun sessionMinutesOptions(saved: Int?): List<Int> =
+    (SESSION_MINUTES_OPTIONS + listOfNotNull(saved)).distinct().sorted()
 
 private fun startDateOptions(today: LocalDate): List<LocalDate> =
     List(START_DATE_OPTIONS) { today.plus(it, DateTimeUnit.DAY) }
-
-/** Deja solo dígitos. No valida: el rango es del caso de uso. */
-private fun String.asMinutesInput(): String = filter(Char::isDigit).take(MAX_MINUTES_DIGITS)
 
 private fun <T> Set<T>.toggle(item: T): Set<T> = if (item in this) this - item else this + item
 
@@ -144,17 +148,17 @@ private fun <T> Set<T>.toggle(item: T): Set<T> = if (item in this) this - item e
  */
 private fun BlockPreferences.toUiState(today: LocalDate) = PreferencesUiState(
     availableDays = availableDays,
-    sessionMinutes = sessionMinutes.toString(),
+    sessionMinutes = sessionMinutes,
     blockDays = blockDays,
     startDate = startDate?.takeIf { it >= today },
     cardioModes = cardioModes.toSet(),
     avoidExercises = avoidExercises,
 )
 
-/** Lo que hay en el formulario, como lo pide el caso de uso. Un campo vacío es «sin dato». */
+/** Lo que hay en el formulario, como lo pide el caso de uso. Sin minutos elegidos es «sin dato». */
 private fun PreferencesUiState.toInput() = PreferencesInput(
     availableDays = availableDays,
-    sessionMinutes = sessionMinutes.toIntOrNull(),
+    sessionMinutes = sessionMinutes,
     startDate = startDate,
     // En el orden en que se ofrecen, no en el que se tocaron.
     cardioModes = cardioOptions.filter { it in cardioModes },
