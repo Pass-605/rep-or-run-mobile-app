@@ -42,6 +42,7 @@ core/ui/             utilidades de UI que comparten los features (CollectEffects
 feature/onboarding/  bienvenida, aviso y consentimiento
 feature/profile/     perfil en dos pasos
 feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
+feature/plansetup/   preferencias del bloque
 iosApp/              proyecto Xcode que consume el framework
 ```
 
@@ -67,7 +68,9 @@ La bienvenida es además el ejemplo de **superficie constante**: se ve igual en 
 
 El inventario (C-08), en el mismo módulo, es el ejemplo de **lista larga con búsqueda**: `LazyColumn` con claves estables y `contentType`, las filas ya filtradas y agrupadas en el estado (`InventoryRow`), y la regla de búsqueda en `:core:domain` (`CatalogSearch`). Su ViewModel comparte dueño con el de gimnasios y recibe el gimnasio con un evento `Opened(gymId)` que manda el destino, no por constructor. Marca por la clave del catálogo, nunca por el nombre.
 
-El flujo hoy es bienvenida → perfil → gimnasios → máquinas, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. Tras el inventario todavía no hay a dónde seguir: su pie dice «Listo» y vuelve a los gimnasios hasta que lleguen las preferencias (C-09).
+`feature/plansetup/` (C-09) es el ejemplo de **formulario de una sola pantalla**: las preferencias guardadas se leen una vez, como el perfil, y las opciones de cardio se observan, porque salen del inventario del gimnasio activo (`ObserveCardioOptionsUseCase`) y no de una lista escrita. Recibe `Clock` y `TimeZone` por constructor para ofrecer las fechas de inicio.
+
+El flujo hoy es bienvenida → perfil → gimnasios → máquinas → preferencias, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. Tras las preferencias todavía no hay a dónde seguir: al guardar se vuelve al inventario hasta que llegue el resumen (C-10).
 
 ## Comandos
 

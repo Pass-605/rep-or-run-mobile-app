@@ -46,7 +46,7 @@
         <item quantity="other">%1$d marcadas</item>
     </plurals>
     <string name="inventory_min_hint">Marca al menos %1$d para poder generar un plan.</string>
-    <string name="inventory_done">Listo</string>
+    <string name="inventory_continue">Continuar</string>
     <string name="inventory_no_results">Ninguna máquina coincide con la búsqueda. Si tu gimnasio la tiene, añádela con el botón +.</string>
     <string name="inventory_edit_range">Rango de carga</string>
     <string name="inventory_edit_custom">Editar</string>

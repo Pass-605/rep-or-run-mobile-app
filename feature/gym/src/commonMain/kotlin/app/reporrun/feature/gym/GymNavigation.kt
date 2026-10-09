@@ -55,6 +55,8 @@ fun NavController.navigateToEquipmentEditor() {
  * @param onOpenEquipmentEditor el formulario de una máquina está listo para mostrarse.
  * @param onBack volver al destino anterior: de un formulario a su lista, al guardar o con el
  *   botón de volver, y del inventario a los gimnasios.
+ * @param onInventoryContinue el inventario está como la persona quiere: se sigue con el paso
+ *   siguiente.
  */
 fun NavGraphBuilder.gymGraph(
     graphOwner: () -> ViewModelStoreOwner,
@@ -62,6 +64,7 @@ fun NavGraphBuilder.gymGraph(
     onOpenInventory: (GymId) -> Unit,
     onOpenEquipmentEditor: () -> Unit,
     onBack: () -> Unit,
+    onInventoryContinue: () -> Unit,
 ) {
     navigation<GymGraphRoute>(startDestination = GymListRoute) {
         composable<GymListRoute> { entry ->
@@ -89,6 +92,7 @@ fun NavGraphBuilder.gymGraph(
                 gymId = gymId,
                 onOpenEditor = onOpenEquipmentEditor,
                 onBack = onBack,
+                onContinue = onInventoryContinue,
             )
         }
         composable<EquipmentEditorRoute> { entry ->

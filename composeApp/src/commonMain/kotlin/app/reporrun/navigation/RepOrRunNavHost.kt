@@ -13,6 +13,8 @@ import app.reporrun.feature.gym.navigateToInventory
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
 import app.reporrun.feature.onboarding.navigateToNotice
 import app.reporrun.feature.onboarding.onboardingGraph
+import app.reporrun.feature.plansetup.navigateToPlanSetup
+import app.reporrun.feature.plansetup.planSetupGraph
 import app.reporrun.feature.profile.ProfileGraphRoute
 import app.reporrun.feature.profile.navigateToProfileGoal
 import app.reporrun.feature.profile.profileGraph
@@ -61,6 +63,12 @@ internal fun RepOrRunNavHost(
             onOpenInventory = navController::navigateToInventory,
             onOpenEquipmentEditor = navController::navigateToEquipmentEditor,
             onBack = { navController.popBackStack() },
+            onInventoryContinue = navController::navigateToPlanSetup,
+        )
+        planSetupGraph(
+            onBack = { navController.popBackStack() },
+            // Todavía no hay resumen (C-10): con las preferencias guardadas se vuelve al inventario.
+            onPreferencesSaved = { navController.popBackStack() },
         )
     }
 }

@@ -46,6 +46,7 @@ kotlin {
             implementation(project(":feature:onboarding"))
             implementation(project(":feature:profile"))
             implementation(project(":feature:gym"))
+            implementation(project(":feature:plansetup"))
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)
