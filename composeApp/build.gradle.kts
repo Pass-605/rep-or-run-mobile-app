@@ -34,8 +34,9 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core:model"))
             implementation(project(":core:domain"))
-            // Solo para armar el grafo: de estos tres no se usa nada más que su módulo de Koin
+            // Solo para armar el grafo: de estos cuatro no se usa nada más que su módulo de Koin
             // y los builders de plataforma.
+            implementation(project(":core:ai"))
             implementation(project(":core:data"))
             implementation(project(":core:database"))
             implementation(project(":core:datastore"))

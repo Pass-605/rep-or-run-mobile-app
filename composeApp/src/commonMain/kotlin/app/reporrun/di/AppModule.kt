@@ -2,6 +2,7 @@ package app.reporrun.di
 
 import androidx.room.RoomDatabase
 import app.reporrun.AppViewModel
+import app.reporrun.core.ai.di.aiModule
 import app.reporrun.core.data.di.dataModule
 import app.reporrun.core.database.RepOrRunDatabase
 import app.reporrun.core.database.buildRepOrRunDatabase
@@ -61,6 +62,7 @@ internal fun appModules(platformModule: Module): List<Module> = listOf(
     databaseModule,
     datastoreModule,
     dataModule,
+    aiModule,
     domainModule,
     onboardingModule,
     profileModule,
