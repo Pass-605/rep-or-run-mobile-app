@@ -6,6 +6,9 @@ import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -17,16 +20,46 @@ import kotlin.test.assertTrue
  * Los ejemplos de `contract/v1/examples/invalid/`. Cada uno tiene que fallar donde y por lo
  * que dice `expected.json`, no por cualquier otra cosa.
  *
- * Lo que es **forma** (un campo de más, uno de menos, un valor fuera de un enum) lo rechazan
- * los DTOs al leer. Lo que es un **límite** (`minItems`) no: los DTOs no validan, así que esos
- * ejemplos se leen sin error y aquí solo se comprueba que el motivo sigue donde se espera.
+ * Lo que es **forma** (un campo de menos, un valor fuera de un enum) lo rechazan los DTOs al
+ * leer. Un campo de más solo lo rechaza la lectura estricta de los tests ([StrictContractJson]):
+ * la app lo ignora y quien rechaza esa petición es la Lambda.
+ *
+ * Lo que es un **límite** (`minItems`) no lo rechaza nadie aquí: los DTOs no validan, así que
+ * esos ejemplos se leen sin error y solo se comprueba que el motivo sigue donde se espera.
  * Rechazarlos es cosa de la Lambda (`400 INVALID_INPUT`) y de los casos de uso que montan la
  * petición.
  */
 class ContractInvalidExamplesTest {
     @Test
-    fun rejectsExtraFieldInProfile() = assertRejected("generate-request.campo-extra.json") { failure ->
-        assertContains(failure.message.orEmpty(), "unknown key 'fullName'")
+    fun strictReadingRejectsExtraFieldInProfile() =
+        assertRejected("generate-request.campo-extra.json", StrictContractJson) { failure ->
+            assertContains(failure.message.orEmpty(), "unknown key 'fullName'")
+        }
+
+    @Test
+    fun appIgnoresExtraFieldInProfile() {
+        val request = ContractJson.decodeFromString(
+            GeneratePlanRequest.serializer(),
+            ContractExamples.invalid("generate-request.campo-extra.json"),
+        )
+
+        assertEquals(CONTRACT_SCHEMA_VERSION, request.schemaVersion)
+    }
+
+    // README del contrato, «Versionado»: un campo opcional nuevo en una respuesta es un cambio
+    // compatible y no sube `schemaVersion`. Una app ya publicada tiene que seguir leyéndola.
+    @Test
+    fun readsResponseWithFieldsTheContractDoesNotDefineYet() {
+        val original = ContractExamples.valid("generate-response.small-gym.json")
+        val extended = JsonObject(
+            Json.parseToJsonElement(original).jsonObject.mapValues { (key, value) ->
+                if (key == "plan") JsonObject(value.jsonObject + ("blockLabel" to JsonPrimitive("Bloque 1"))) else value
+            } + ("cached" to JsonPrimitive(true)),
+        )
+
+        val decoded = ContractJson.decodeFromString(GeneratePlanResponse.serializer(), extended.toString())
+
+        assertEquals(ContractJson.decodeFromString(GeneratePlanResponse.serializer(), original), decoded)
     }
 
     @Test
@@ -64,12 +97,16 @@ class ContractInvalidExamplesTest {
     }
 
     /** El ejemplo no se puede leer, y falla en la ruta de `expected.json`. */
-    private fun assertRejected(example: String, assertCause: (SerializationException) -> Unit) {
+    private fun assertRejected(
+        example: String,
+        json: Json = ContractJson,
+        assertCause: (SerializationException) -> Unit,
+    ) {
         val expected = ContractExamples.expectedFailures.getValue(example)
         assertTrue(expected.keyword in SHAPE_KEYWORDS, "$example falla por ${expected.keyword}, que no es de forma")
 
         val failure = assertFailsWith<SerializationException> {
-            ContractJson.decodeFromString(serializerOf(expected.schema), ContractExamples.invalid(example))
+            json.decodeFromString(serializerOf(expected.schema), ContractExamples.invalid(example))
         }
 
         assertContains(failure.message.orEmpty(), jsonPathOf(expected.path))

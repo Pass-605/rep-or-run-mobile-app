@@ -43,6 +43,12 @@ internal object ContractExamples {
 }
 
 /**
+ * [ContractJson] con la estrictez de los schemas (`additionalProperties: false`). Solo existe
+ * en los tests: en la app la aplica la Lambda sobre las entradas, no la app al leer.
+ */
+internal val StrictContractJson: Json = Json(from = ContractJson) { ignoreUnknownKeys = false }
+
+/**
  * El mismo JSON listo para comparar por valor y no por texto:
  * - los números como `Double`: `170` y `170.0` son el mismo número en el contrato;
  * - sin las claves que valen `null`: en un campo opcional, omitirlo y mandarlo a `null` es lo
