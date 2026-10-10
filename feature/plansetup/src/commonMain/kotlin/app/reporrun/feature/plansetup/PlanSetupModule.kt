@@ -10,4 +10,5 @@ import org.koin.dsl.module
  */
 val planSetupModule: Module = module {
     viewModelOf(::PreferencesViewModel)
+    viewModelOf(::SummaryViewModel)
 }

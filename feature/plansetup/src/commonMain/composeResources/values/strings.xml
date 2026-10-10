@@ -3,7 +3,7 @@
     <!-- Preferencias del bloque (pantalla 04 de Figma). -->
     <string name="prefs_title">Tu semana</string>
     <string name="prefs_back">Volver</string>
-    <string name="prefs_save">Guardar preferencias</string>
+    <string name="prefs_continue">Continuar</string>
 
     <!-- Días disponibles -->
     <string name="prefs_days">Días disponibles</string>
@@ -72,4 +72,77 @@
     <string name="prefs_error_too_short">Mínimo %1$d caracteres</string>
     <string name="prefs_error_too_long">Máximo %1$d caracteres</string>
     <string name="prefs_error_too_many">Elige %1$d como máximo</string>
+
+    <!-- Resumen previo a generar (pantalla 05 de Figma). -->
+    <string name="summary_title">Revisa y genera</string>
+    <string name="summary_back">Volver</string>
+    <string name="summary_generate">Generar plan</string>
+    <plurals name="summary_headline_ready">
+        <item quantity="one">Todo listo para tu bloque de %1$d día</item>
+        <item quantity="other">Todo listo para tu bloque de %1$d días</item>
+    </plurals>
+    <string name="summary_headline_blocked">Falta algo antes de generar</string>
+
+    <!-- Las tres cifras. La etiqueta va sin número: el número es la cifra de encima. -->
+    <string name="summary_stat_empty">–</string>
+    <plurals name="summary_stat_days">
+        <item quantity="one">día/semana</item>
+        <item quantity="other">días/semana</item>
+    </plurals>
+    <plurals name="summary_stat_machines">
+        <item quantity="one">máquina</item>
+        <item quantity="other">máquinas</item>
+    </plurals>
+    <string name="summary_stat_minutes_unit">min</string>
+    <string name="summary_stat_minutes">por sesión</string>
+
+    <!-- Las tres filas: cada una abre su formulario. -->
+    <string name="summary_profile">Perfil</string>
+    <!-- Edad, experiencia y objetivo: «30 años · intermedio · recomposición». -->
+    <string name="summary_profile_value">%1$s · %2$s · %3$s</string>
+    <plurals name="summary_profile_age">
+        <item quantity="one">%1$d año</item>
+        <item quantity="other">%1$d años</item>
+    </plurals>
+    <string name="summary_profile_missing">Sin completar</string>
+    <string name="summary_experience_beginner">principiante</string>
+    <string name="summary_experience_intermediate">intermedio</string>
+    <string name="summary_experience_advanced">avanzado</string>
+    <string name="summary_goal_recomposition">recomposición</string>
+    <string name="summary_goal_hypertrophy">hipertrofia</string>
+    <string name="summary_goal_strength">fuerza</string>
+    <string name="summary_goal_general_fitness">salud general</string>
+    <string name="summary_gym">Gimnasio</string>
+    <!-- Máquinas y categorías: «18 máquinas · 4 categorías». -->
+    <string name="summary_gym_value">%1$s · %2$s</string>
+    <plurals name="summary_gym_machines">
+        <item quantity="one">%1$d máquina</item>
+        <item quantity="other">%1$d máquinas</item>
+    </plurals>
+    <plurals name="summary_gym_categories">
+        <item quantity="one">%1$d categoría</item>
+        <item quantity="other">%1$d categorías</item>
+    </plurals>
+    <string name="summary_gym_empty">Sin máquinas</string>
+    <string name="summary_gym_missing">Sin gimnasio activo</string>
+    <string name="summary_week">Semana</string>
+    <!-- Días y fecha: «L · M · J · S desde el 21/09». -->
+    <string name="summary_week_from">%1$s desde el %2$s</string>
+    <string name="summary_week_no_start">%1$s, sin fecha de inicio</string>
+    <string name="summary_week_separator"> · </string>
+    <string name="summary_week_missing">Sin guardar</string>
+
+    <!-- Por qué no se puede generar. Una línea por cosa que falta, todas a la vez. -->
+    <string name="summary_blockers_title">Para generar el plan falta:</string>
+    <string name="summary_blocker_line">· %1$s</string>
+    <string name="summary_blocker_profile">Completar tu perfil</string>
+    <string name="summary_blocker_gym">Elegir un gimnasio activo</string>
+    <!-- Cuántas tiene y cuántas hacen falta: los dos números vienen del caso de uso. -->
+    <string name="summary_blocker_equipment">Añadir máquinas: tu gimnasio tiene %1$d y hacen falta %2$d</string>
+    <string name="summary_blocker_preferences">Guardar tu semana, con al menos un día</string>
+    <string name="summary_blocker_consent">Aceptar el aviso de privacidad</string>
+
+    <!-- Qué se envía. La app no pide el nombre; el alias, si se puso, sí viaja con el perfil. -->
+    <string name="summary_sent_title">Qué se envía</string>
+    <string name="summary_sent_body">Tu perfil, las máquinas de tu gimnasio y tus preferencias; la app no pide tu nombre real. El plan vuelve validado contra tus máquinas antes de guardarse.</string>
 </resources>
