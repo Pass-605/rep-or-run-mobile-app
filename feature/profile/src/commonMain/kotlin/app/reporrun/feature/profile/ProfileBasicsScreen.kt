@@ -15,7 +15,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunDimens
 import app.reporrun.core.designsystem.RepOrRunIcons
+import app.reporrun.core.designsystem.component.RepOrRunChipGroup
 import app.reporrun.core.designsystem.component.RepOrRunField
+import app.reporrun.core.designsystem.component.RepOrRunSectionError
+import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.domain.usecase.ProfileField
 import app.reporrun.core.model.Experience
 import app.reporrun.core.ui.CollectEffects
@@ -93,7 +97,7 @@ internal fun ProfileBasicsScreen(
         // Hasta saber si hay un perfil guardado no se pinta el formulario.
         if (state.isLoading) return@ProfileStepScaffold
 
-        SupportingText(stringResource(Res.string.profile_subtitle))
+        RepOrRunSupportingText(stringResource(Res.string.profile_subtitle))
         ProfileTextInput(
             state = state,
             field = ProfileTextField.ALIAS,
@@ -119,14 +123,14 @@ internal fun ProfileBasicsScreen(
             // La otra mitad queda libre: la cadera mide lo mismo que los demás campos.
             Spacer(Modifier.weight(1f))
         }
-        SectionTitle(stringResource(Res.string.profile_experience))
-        ChipGroup(
+        RepOrRunSectionTitle(stringResource(Res.string.profile_experience))
+        RepOrRunChipGroup(
             options = Experience.entries,
             selected = { it == state.experience },
             label = { stringResource(it.label) },
             onClick = { onEvent(ProfileEvent.ExperienceSelected(it)) },
         )
-        SectionError(state.errors[ProfileField.EXPERIENCE])
+        RepOrRunSectionError(state.errors[ProfileField.EXPERIENCE]?.message())
     }
 }
 

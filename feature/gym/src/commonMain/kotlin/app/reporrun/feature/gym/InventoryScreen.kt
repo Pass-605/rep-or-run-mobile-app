@@ -35,6 +35,7 @@ import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunListRow
 import app.reporrun.core.designsystem.component.RepOrRunSearchField
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.designsystem.component.RepOrRunTopBar
 import app.reporrun.core.model.GymId
 import app.reporrun.core.ui.CollectEffects
@@ -219,7 +220,7 @@ private fun Summary(state: InventoryUiState) {
             )
         }
         if (state.selectedCount < state.minToGenerate) {
-            SupportingText(stringResource(Res.string.inventory_min_hint, state.minToGenerate))
+            RepOrRunSupportingText(stringResource(Res.string.inventory_min_hint, state.minToGenerate))
         }
     }
 }

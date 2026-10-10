@@ -19,8 +19,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunDimens
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunChip
+import app.reporrun.core.designsystem.component.RepOrRunChipGroup
 import app.reporrun.core.designsystem.component.RepOrRunField
 import app.reporrun.core.designsystem.component.RepOrRunListRow
+import app.reporrun.core.designsystem.component.RepOrRunScreenScaffold
+import app.reporrun.core.designsystem.component.RepOrRunSectionError
+import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.domain.usecase.FieldIssue
 import app.reporrun.core.domain.usecase.PreferencesField
 import app.reporrun.core.model.DayOfWeek
@@ -29,6 +34,7 @@ import app.reporrun.feature.plansetup.resources.Res
 import app.reporrun.feature.plansetup.resources.prefs_avoid
 import app.reporrun.feature.plansetup.resources.prefs_avoid_placeholder
 import app.reporrun.feature.plansetup.resources.prefs_avoid_privacy
+import app.reporrun.feature.plansetup.resources.prefs_back
 import app.reporrun.feature.plansetup.resources.prefs_block_days
 import app.reporrun.feature.plansetup.resources.prefs_block_days_fixed
 import app.reporrun.feature.plansetup.resources.prefs_block_days_value
@@ -76,16 +82,17 @@ internal fun PreferencesScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    PlanSetupScaffold(
+    RepOrRunScreenScaffold(
         title = stringResource(Res.string.prefs_title),
+        backContentDescription = stringResource(Res.string.prefs_back),
         actionText = stringResource(Res.string.prefs_save),
         actionEnabled = !state.isLoading && !state.isSaving,
         onAction = { onEvent(PreferencesEvent.SaveClicked) },
-        onBack = onBack,
         modifier = modifier,
+        onBack = onBack,
     ) {
         // Hasta saber si hay preferencias guardadas no se pinta el formulario.
-        if (state.isLoading) return@PlanSetupScaffold
+        if (state.isLoading) return@RepOrRunScreenScaffold
 
         AvailableDays(state, onEvent)
         SessionMinutes(state, onEvent)
@@ -103,7 +110,7 @@ internal fun PreferencesScreen(
 @Composable
 private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
     val selectedCount = state.availableDays.size
-    SectionTitle(
+    RepOrRunSectionTitle(
         text = stringResource(Res.string.prefs_days),
         trailing = pluralStringResource(Res.plurals.prefs_days_selected, selectedCount, selectedCount),
     )
@@ -121,7 +128,7 @@ private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent)
             )
         }
     }
-    SectionError(
+    RepOrRunSectionError(
         when (val issue = state.errors[PreferencesField.AVAILABLE_DAYS]) {
             null -> null
 
@@ -136,20 +143,20 @@ private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent)
 /** Los minutos se eligen entre los que trae el estado; ninguno viene marcado. */
 @Composable
 private fun SessionMinutes(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.prefs_session_minutes))
-    ChipGroup(
+    RepOrRunSectionTitle(stringResource(Res.string.prefs_session_minutes))
+    RepOrRunChipGroup(
         options = state.sessionMinutesOptions,
         selected = { it == state.sessionMinutes },
         label = { stringResource(Res.string.prefs_minutes_option, it) },
         onClick = { onEvent(PreferencesEvent.SessionMinutesSelected(it)) },
     )
-    SectionError(state.errors[PreferencesField.SESSION_MINUTES]?.message())
+    RepOrRunSectionError(state.errors[PreferencesField.SESSION_MINUTES]?.message())
 }
 
 /** La tarjeta del bloque: cuánto dura, cuándo empieza y que la duración no se elige. */
 @Composable
 private fun BlockDays(state: PreferencesUiState) {
-    SectionTitle(stringResource(Res.string.prefs_block_days))
+    RepOrRunSectionTitle(stringResource(Res.string.prefs_block_days))
     RepOrRunCard(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = RepOrRunDimens.CardHorizontalPadding),
@@ -171,7 +178,7 @@ private fun BlockDays(state: PreferencesUiState) {
 /** «Sin fecha» y las fechas de hoy en adelante. No caben en una línea: se deslizan. */
 @Composable
 private fun StartDate(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.prefs_start_date))
+    RepOrRunSectionTitle(stringResource(Res.string.prefs_start_date))
     Row(
         modifier = Modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ChipSpacing),
@@ -197,7 +204,7 @@ private fun StartDate(state: PreferencesUiState, onEvent: (PreferencesEvent) -> 
  */
 @Composable
 private fun CardioModes(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.prefs_cardio))
+    RepOrRunSectionTitle(stringResource(Res.string.prefs_cardio))
     if (state.cardioOptions.isEmpty()) {
         RepOrRunCard(modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -208,14 +215,14 @@ private fun CardioModes(state: PreferencesUiState, onEvent: (PreferencesEvent) -
         }
         return
     }
-    SupportingText(stringResource(Res.string.prefs_cardio_hint))
-    ChipGroup(
+    RepOrRunSupportingText(stringResource(Res.string.prefs_cardio_hint))
+    RepOrRunChipGroup(
         options = state.cardioOptions,
         selected = { it in state.cardioModes },
         label = { it },
         onClick = { onEvent(PreferencesEvent.CardioModeToggled(it)) },
     )
-    SectionError(state.errors[PreferencesField.CARDIO_MODES]?.message())
+    RepOrRunSectionError(state.errors[PreferencesField.CARDIO_MODES]?.message())
 }
 
 @Composable
@@ -230,5 +237,5 @@ private fun AvoidExercises(state: PreferencesUiState, onEvent: (PreferencesEvent
         singleLine = false,
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
     )
-    SupportingText(stringResource(Res.string.prefs_avoid_privacy))
+    RepOrRunSupportingText(stringResource(Res.string.prefs_avoid_privacy))
 }

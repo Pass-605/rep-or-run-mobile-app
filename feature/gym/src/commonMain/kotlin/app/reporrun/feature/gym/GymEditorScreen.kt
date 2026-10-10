@@ -9,7 +9,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.component.RepOrRunField
+import app.reporrun.core.designsystem.component.RepOrRunScreenScaffold
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.feature.gym.resources.Res
+import app.reporrun.feature.gym.resources.gym_back
 import app.reporrun.feature.gym.resources.gym_editor_create
 import app.reporrun.feature.gym.resources.gym_editor_new_title
 import app.reporrun.feature.gym.resources.gym_editor_rename_title
@@ -41,15 +44,16 @@ internal fun GymEditorScreen(
     modifier: Modifier = Modifier,
 ) {
     val isNew = state.gymId == null
-    GymScaffold(
+    RepOrRunScreenScaffold(
         title = stringResource(if (isNew) Res.string.gym_editor_new_title else Res.string.gym_editor_rename_title),
+        backContentDescription = stringResource(Res.string.gym_back),
         actionText = stringResource(if (isNew) Res.string.gym_editor_create else Res.string.gym_editor_save),
         actionEnabled = !state.isSaving,
         onAction = { onEvent(GymEvent.SaveClicked) },
         modifier = modifier,
         onBack = onBack,
     ) {
-        SupportingText(stringResource(Res.string.gym_editor_subtitle))
+        RepOrRunSupportingText(stringResource(Res.string.gym_editor_subtitle))
         RepOrRunField(
             value = state.name,
             onValueChange = { onEvent(GymEvent.NameChanged(it)) },
