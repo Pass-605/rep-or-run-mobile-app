@@ -1,5 +1,8 @@
-## ADDED Requirements
+# ia-sin-red Specification
 
+## Purpose
+Que la app funcione de punta a punta sin red ni cuentas: un plan y una revisión que salen de los ejemplos sintéticos del contrato, coherentes con el inventario de la persona, con espera y fallo simulables.
+## Requirements
 ### Requirement: Generar un plan sin red
 
 La app SHALL poder obtener un plan sin red ni cuentas, a partir de los ejemplos sintéticos del contrato (`contract/v1/examples/`). El plan SHALL usar solo máquinas del inventario que se envía, tanto en los ejercicios como en las alternativas, y solo días que la persona marcó como disponibles. Los códigos de ejercicio SHALL ser únicos y corresponder a su día. El cardio SHALL usar un modo de los que la persona eligió, o no aparecer si no eligió ninguno. La carga de un ejercicio SHALL ser un texto de ensayo acorde con la forma de carga de su máquina, sin kilos calculados a partir de la persona.
@@ -31,7 +34,7 @@ La app SHALL poder obtener un plan sin red ni cuentas, a partir de los ejemplos 
 
 ### Requirement: Revisar un plan sin red
 
-La app SHALL poder obtener una revisión sin red a partir de los ejemplos sintéticos del contrato. Una revisión SHALL contener solo propuestas, nunca cambios aplicados. Cada propuesta SHALL referirse a ejercicios y días que existen en el plan revisado. Sin ningún ejercicio con datos comparables, la revisión SHALL decir que los datos son insuficientes y no proponer nada; con datos, SHALL proponer subir carga solo en ejercicios con datos comparables.
+La app SHALL poder obtener una revisión sin red a partir de los ejemplos sintéticos del contrato. Una revisión SHALL contener solo propuestas, nunca cambios aplicados. Cada propuesta SHALL referirse a ejercicios y días que existen en el plan revisado. Sin ningún ejercicio con datos comparables, la revisión SHALL decir que los datos son insuficientes y no proponer nada; con datos, SHALL proponer subir carga solo en ejercicios con datos comparables que llegaron al tope de su rango en todas las series.
 
 #### Scenario: Datos insuficientes
 
@@ -41,7 +44,7 @@ La app SHALL poder obtener una revisión sin red a partir de los ejemplos sinté
 #### Scenario: Datos suficientes
 
 - **WHEN** se revisa con ejercicios que tienen datos comparables
-- **THEN** las propuestas apuntan solo a ejercicios y días del plan, y las de subir carga solo a ejercicios con datos comparables
+- **THEN** las propuestas apuntan solo a ejercicios y días del plan, y las de subir carga solo a ejercicios con datos comparables que llegaron al tope de su rango
 
 ### Requirement: Espera y fallo simulables
 
@@ -70,3 +73,4 @@ El resultado de generar o revisar SHALL distinguir, como valor y sin excepciones
 
 - **WHEN** un plan recibido tiene un rango invertido en un ejercicio y un RIR fuera de 0-5 en otro
 - **THEN** el resultado es «respuesta que no cumple el contrato» y nombra los dos problemas con su lugar
+

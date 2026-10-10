@@ -54,7 +54,7 @@ Dominio → `GeneratePlanRequest` para el `inputSnapshotJson`. Los enums se cruz
 
 Sobre el `PlanDto` del ejemplo, antes de mapear:
 
-1. **Máquinas.** Para cada máquina que el ejemplo usa se busca una del inventario, en este orden: la misma entrada del catálogo (tabla fija de `catalogKey`), la misma categoría y forma de carga, la misma forma de carga, cualquiera que no sea de cardio. Las coincidencias exactas se reparten primero.
+1. **Máquinas.** Para cada máquina que el ejemplo usa se busca una del inventario, sin repetir, en tres vueltas: la misma máquina (mismo `id`, o una entrada del catálogo de una tabla fija de `catalogKey`), una con la misma forma de carga, cualquiera que no sea de cardio. Cada vuelta termina antes de empezar la siguiente, para que una sustituta no se quede con la máquina que otro ejercicio necesitaba tal cual.
 2. **Ejercicios.** Coincidencia exacta: el ejercicio va tal cual. Sustituta: toma el nombre de la máquina y una carga de ensayo sin cifras, según su `LoadType` (regla de dominio 4). Sustituta con otra forma de carga: solo si el ejercicio es de repeticiones (una plancha no pasa a una barra). Sin máquina: el ejercicio desaparece. Una alternativa solo sobrevive con coincidencia exacta.
 3. **Días.** Los del ejemplo que estén disponibles, completados con otros disponibles; las sesiones se reparten en orden. Un día sin ejercicios desaparece. Los códigos se regeneran con la letra del día (L M X J V S D) y el orden.
 4. **Cardio.** El primer modo que eligió la persona; sin modos, sin cardio. Velocidad e inclinación solo si el modo es el del ejemplo.
@@ -77,6 +77,6 @@ Sin ningún ejercicio con `ExerciseFeedback.isComparable`, devuelve el ejemplo `
 ## Risks / Trade-offs
 
 - **`PlanValidator` no existe**: «el fake produce un plan válido» se comprueba contra las reglas de B-06 que se pueden escribir hoy (inventario, días, códigos únicos, series). La heurística de volumen frente a minutos es de B-06: el ejemplo está pensado para 75 min y con sesiones cortas podría chocar → se ajusta el fake en B-06.
-- **Un gimnasio sin nada del ejemplo** recibe un plan de sustitutas: correcto para el validador, pobre como entrenamiento. Es un fake.
+- **Un gimnasio sin nada del ejemplo** recibe un plan de sustitutas: correcto para el validador, pobre como entrenamiento. Como una máquina del inventario no se reparte dos veces, con pocas máquinas el plan puede quedarse en un solo día. Es un fake.
 - **`session`, `priority` y `target`** del ejemplo se conservan aunque la máquina sea sustituta; pueden no cuadrar con ella.
 - **iOS** no se compila en Windows (`needs:macos`).
