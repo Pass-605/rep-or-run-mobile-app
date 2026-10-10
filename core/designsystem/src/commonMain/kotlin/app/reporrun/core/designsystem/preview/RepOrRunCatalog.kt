@@ -28,6 +28,7 @@ fun RepOrRunCatalog(modifier: Modifier = Modifier) {
         ChipSample()
         SectionSample()
         StepperSample()
+        StatCardSample()
         ListRowSample()
         ButtonSample()
         StateSample()

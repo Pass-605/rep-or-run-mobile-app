@@ -59,7 +59,7 @@ class PreferencesViewModel(
             // persona tuviera a medio escribir.
             val saved = observePreferences().first()
             _state.update {
-                (saved?.toUiState(today) ?: it).copy(
+                (saved?.toUiState(today) ?: it.copy(sessionMinutes = DEFAULT_SESSION_MINUTES)).copy(
                     sessionMinutesOptions = sessionMinutesOptions(saved?.sessionMinutes),
                     startDateOptions = startDateOptions(today),
                 )
@@ -130,6 +130,13 @@ class PreferencesViewModel(
 /** Cuántas fechas de inicio se ofrecen, contando hoy. No es un límite del contrato. */
 private const val START_DATE_OPTIONS = 14
 
+/**
+ * Los minutos que vienen marcados la primera vez. Es una decisión de producto (08/10/2026), no
+ * un límite del contrato: se puede proponer un valor porque el resumen previo a generar lo
+ * enseña y deja corregirlo antes de gastar una generación.
+ */
+private const val DEFAULT_SESSION_MINUTES = 60
+
 /** Los minutos por sesión que ofrece la pantalla 04 de Figma. No son un límite del contrato. */
 private val SESSION_MINUTES_OPTIONS = listOf(45, 60, 75, 90)
 
@@ -155,7 +162,7 @@ private fun BlockPreferences.toUiState(today: LocalDate) = PreferencesUiState(
     avoidExercises = avoidExercises,
 )
 
-/** Lo que hay en el formulario, como lo pide el caso de uso. Sin minutos elegidos es «sin dato». */
+/** Lo que hay en el formulario, como lo pide el caso de uso. */
 private fun PreferencesUiState.toInput() = PreferencesInput(
     availableDays = availableDays,
     sessionMinutes = sessionMinutes,

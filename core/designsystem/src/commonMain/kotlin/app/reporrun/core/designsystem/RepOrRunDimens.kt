@@ -33,6 +33,10 @@ object RepOrRunDimens {
     val CardVerticalPadding = 16.dp
     val EmphasisCardPadding = 20.dp
 
+    /** Tarjeta de cifra (pantalla 05): de la cifra a su etiqueta, y de la cifra a su unidad. */
+    val StatCardSpacing = 6.dp
+    val StatCardUnitSpacing = 4.dp
+
     val FieldVerticalPadding = 14.dp
     val FieldLabelSpacing = 6.dp
 

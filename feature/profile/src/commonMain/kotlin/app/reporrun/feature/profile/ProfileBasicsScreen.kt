@@ -43,6 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun ProfileBasicsRoute(
     viewModel: ProfileViewModel,
+    canLeave: Boolean,
     onContinue: () -> Unit,
     onBack: () -> Unit,
     onProfileSaved: () -> Unit,
@@ -51,7 +52,7 @@ internal fun ProfileBasicsRoute(
 
     ProfileEffects(viewModel, onContinue = onContinue, onBack = onBack, onProfileSaved = onProfileSaved)
 
-    ProfileBasicsScreen(state = state, onEvent = viewModel::onEvent)
+    ProfileBasicsScreen(state = state, onEvent = viewModel::onEvent, onBack = onBack.takeIf { canLeave })
 }
 
 /**
@@ -84,6 +85,7 @@ internal fun ProfileEffects(
 internal fun ProfileBasicsScreen(
     state: ProfileUiState,
     onEvent: (ProfileEvent) -> Unit,
+    onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     ProfileStepScaffold(
@@ -93,6 +95,7 @@ internal fun ProfileBasicsScreen(
         onAction = { onEvent(ProfileEvent.ContinueClicked) },
         modifier = modifier,
         actionIcon = RepOrRunIcons.ArrowForward,
+        onBack = onBack,
     ) {
         // Hasta saber si hay un perfil guardado no se pinta el formulario.
         if (state.isLoading) return@ProfileStepScaffold
