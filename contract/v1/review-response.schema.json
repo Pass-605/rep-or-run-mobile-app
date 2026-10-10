@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/review-response.schema.json",
+  "title": "Gymdi · POST /v1/plans:review (respuesta 200)",
+  "description": "Sobre de transporte. El modelo solo produce 'review' (review-result.schema.json).",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "promptVersion": { "$ref": "common.schema.json#/$defs/PromptVersion" },
+    "model": { "type": "string" },
+    "generatedAt": { "$ref": "common.schema.json#/$defs/IsoDateTime" },
+    "usage": { "$ref": "common.schema.json#/$defs/Usage" },
+    "review": { "$ref": "review-result.schema.json" }
+  },
+  "required": ["schemaVersion","promptVersion","model","generatedAt","usage","review"],
+  "additionalProperties": false
+}

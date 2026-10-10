@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/error.schema.json",
+  "title": "Gymdi · error tipado",
+  "description": "Cuerpo de toda respuesta distinta de 200 en las dos rutas. Los mensajes van en el locale de la peticion y nunca incluyen el payload.",
+  "type": "object",
+  "properties": {
+    "code": {
+      "description": "INVALID_INPUT 400 · PLAN_INVALID 422 (el modelo devolvio algo que no pasa el validador, ya reintentado) · RATE_LIMITED 429 · UPSTREAM_ERROR 502 · TIMEOUT 504.",
+      "enum": ["INVALID_INPUT","PLAN_INVALID","RATE_LIMITED","UPSTREAM_ERROR","TIMEOUT"]
+    },
+    "message": { "type": "string", "maxLength": 300, "description": "Texto mostrable a la persona." },
+    "details": {
+      "type": ["array","null"],
+      "description": "Errores de validacion, sin datos personales: puntero JSON y motivo.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string", "description": "JSON Pointer, p. ej. '/gym/equipment/3/loadType'." },
+          "reason": { "type": "string" }
+        },
+        "required": ["path","reason"],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    },
+    "requestId": { "type": ["string","null"], "description": "Para cruzar con los logs de la Lambda." },
+    "retryAfterSeconds": { "type": ["integer","null"], "minimum": 0, "description": "Solo en RATE_LIMITED." }
+  },
+  "required": ["code","message"],
+  "additionalProperties": false
+}

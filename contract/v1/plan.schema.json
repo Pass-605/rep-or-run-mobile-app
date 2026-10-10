@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/plan.schema.json",
+  "title": "Gymdi · Plan v1 (salida del modelo)",
+  "description": "Estructura exacta que el modelo debe devolver en /v1/plans:generate. Autocontenido y estricto (todas las propiedades required, additionalProperties false, sin restricciones numericas ni patrones) para poder usarse tal cual como json_schema de Structured Outputs. Las reglas que el schema no puede expresar (low <= high, RIR 0-5, equipmentId del inventario, codigos unicos, volumen compatible con los minutos) las aplica PlanValidator en la app y en la Lambda.",
+  "type": "object",
+  "properties": {
+    "blockDays": { "enum": [14], "description": "Duracion del bloque en dias. v1 siempre 14." },
+    "focus": {
+      "type": "array",
+      "description": "Enfoque del bloque en palabras de la persona (p. ej. 'Pecho', 'Biceps'). Entre 1 y 6 entradas.",
+      "items": { "type": "string" }
+    },
+    "notes": {
+      "type": "array",
+      "description": "Avisos del bloque. Debe incluir que las cargas son de ensayo y que las alternativas no suman series. Nunca consejo nutricional ni diagnostico.",
+      "items": { "type": "string" }
+    },
+    "days": {
+      "type": "array",
+      "description": "Un elemento por dia con sesion. Solo dias incluidos en preferences.availableDays.",
+      "items": { "$ref": "#/$defs/PlanDay" }
+    }
+  },
+  "required": ["blockDays","focus","notes","days"],
+  "additionalProperties": false,
+  "$defs": {
+    "PlanDay": {
+      "type": "object",
+      "properties": {
+        "dayOfWeek": { "enum": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"] },
+        "dayIndex": { "type": "integer", "description": "Posicion del dia dentro de la semana del bloque, empezando en 0." },
+        "session": { "type": "string", "description": "Nombre de la sesion, p. ej. 'Upper A + core'." },
+        "priority": { "type": "string", "description": "Que se prioriza ese dia, p. ej. 'Pecho + espalda'." },
+        "cardioMin": { "type": ["integer","null"], "description": "Minutos minimos de cardio; null si ese dia no lleva cardio." },
+        "cardioMax": { "type": ["integer","null"] },
+        "cardioMode": { "type": ["string","null"], "description": "Modo de cardio elegido entre los que la persona indico." },
+        "rpe": { "type": ["string","null"], "description": "Rango de RPE del cardio como texto, p. ej. '5-6'." },
+        "speed": { "type": ["string","null"], "description": "Solo si el modo lo admite, p. ej. '4,8-5,5 km/h'." },
+        "incline": { "type": ["string","null"] },
+        "warmup": { "type": "string", "description": "Calentamiento. No cuenta como series efectivas." },
+        "mobility": { "type": "string" },
+        "cooldown": { "type": "string" },
+        "exercises": { "type": "array", "items": { "$ref": "#/$defs/PlanExercise" } }
+      },
+      "required": ["dayOfWeek","dayIndex","session","priority","cardioMin","cardioMax","cardioMode","rpe","speed","incline","warmup","mobility","cooldown","exercises"],
+      "additionalProperties": false
+    },
+    "PlanExercise": {
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "Letra del dia + orden con dos digitos: L01, M02, X04." },
+        "order": { "type": "integer", "description": "Orden dentro del dia, empezando en 1." },
+        "name": { "type": "string" },
+        "equipmentId": { "type": "string", "description": "Debe ser el id de una maquina enviada en gym.equipment. No se inventan aparatos." },
+        "sets": { "type": "integer", "description": "Series efectivas. En unilateral se cuentan por lado." },
+        "low": { "type": "integer", "description": "Extremo bajo del rango de la metrica (reps, metros o segundos)." },
+        "high": { "type": "integer", "description": "Extremo alto del rango. Nunca menor que low." },
+        "rirLow": { "type": ["integer","null"], "description": "RIR 0-5. null cuando no aplica (carries, cardio)." },
+        "rirHigh": { "type": ["integer","null"] },
+        "rest": { "type": "string", "description": "Descanso como texto, p. ej. '2,5-3 min'." },
+        "trial": { "type": "string", "description": "Carga de ensayo condicionada a tecnica, reps y RIR, con la unidad del loadType del aparato. Nunca deducida de edad, talla o peso." },
+        "target": { "type": "string", "description": "Musculo o funcion principal." },
+        "unilateral": { "type": "boolean" },
+        "metric": { "enum": ["REPS","METERS","SECONDS"] },
+        "alternatives": {
+          "type": "array",
+          "description": "Opciones equivalentes: se elige una, no suman series (plan §4.2). Lista vacia si no hay.",
+          "items": { "$ref": "#/$defs/Alternative" }
+        }
+      },
+      "required": ["code","order","name","equipmentId","sets","low","high","rirLow","rirHigh","rest","trial","target","unilateral","metric","alternatives"],
+      "additionalProperties": false
+    },
+    "Alternative": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "equipmentId": { "type": "string", "description": "Tambien del inventario enviado." },
+        "note": { "type": ["string","null"], "description": "Cuando conviene elegirla." }
+      },
+      "required": ["name","equipmentId","note"],
+      "additionalProperties": false
+    }
+  }
+}

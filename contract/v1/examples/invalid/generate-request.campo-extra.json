@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1",
+  "promptVersion": "plan-gen-v1",
+  "locale": "es-PE",
+  "profile": {
+    "alias": "Sol",
+    "age": 30,
+    "heightCm": 170,
+    "weightKg": 72.5,
+    "waistCm": 84,
+    "experience": "INTERMEDIATE",
+    "goal": "RECOMPOSITION",
+    "priorityMuscles": [
+      "CHEST",
+      "BACK",
+      "QUADS"
+    ],
+    "limitations": "Molestia ocasional en el hombro derecho al press por encima de la cabeza.",
+    "preferences": "Prefiere máquinas a peso libre; el sábado puede entrenar más tiempo.",
+    "fullName": "Nombre Apellido"
+  },
+  "gym": {
+    "name": "Gimnasio Central",
+    "equipment": [
+      {
+        "id": "eq_chest_press",
+        "name": "Chest Press convergente",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 80,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_row_chest_sup",
+        "name": "Remo con apoyo pectoral",
+        "category": "MACHINE",
+        "loadType": "PLATES_TOTAL",
+        "minKg": 0,
+        "maxKg": 120,
+        "incrementKg": 2.5
+      },
+      {
+        "id": "eq_lat_pulldown",
+        "name": "Jalón al pecho neutro",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 90,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_shoulder_press",
+        "name": "Press de hombro sentado",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 60,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_pendulum_squat",
+        "name": "Pendulum Squat",
+        "category": "MACHINE",
+        "loadType": "SLED",
+        "minKg": 0,
+        "maxKg": 200,
+        "incrementKg": 5,
+        "notes": "El carro vacío ya pesa; los discos se cuentan aparte."
+      },
+      {
+        "id": "eq_leg_curl",
+        "name": "Curl femoral tumbado",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 70,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_leg_extension",
+        "name": "Extensión de rodilla",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 70,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_cable_tower",
+        "name": "Torre de poleas alta y baja",
+        "category": "CABLE",
+        "loadType": "SELECTOR",
+        "minKg": 2.5,
+        "maxKg": 75,
+        "incrementKg": 2.5
+      },
+      {
+        "id": "eq_dumbbells",
+        "name": "Mancuernas 2-30 kg",
+        "category": "FREE_WEIGHT",
+        "loadType": "DUMBBELL",
+        "minKg": 2,
+        "maxKg": 30,
+        "incrementKg": 2
+      },
+      {
+        "id": "eq_mat",
+        "name": "Colchoneta",
+        "category": "BODYWEIGHT",
+        "loadType": "BODYWEIGHT"
+      },
+      {
+        "id": "eq_treadmill",
+        "name": "Caminadora",
+        "category": "CARDIO",
+        "loadType": "CARDIO"
+      }
+    ]
+  },
+  "preferences": {
+    "availableDays": [
+      "MONDAY",
+      "WEDNESDAY",
+      "SATURDAY"
+    ],
+    "sessionMinutes": 75,
+    "blockDays": 14,
+    "startDate": "2026-09-21",
+    "cardioModes": [
+      "Caminadora"
+    ],
+    "avoidExercises": "Press militar de pie.",
+    "unit": "KG"
+  }
+}

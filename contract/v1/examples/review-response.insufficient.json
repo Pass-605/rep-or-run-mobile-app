@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1",
+  "promptVersion": "plan-review-v1",
+  "model": "gpt-modelo-ejemplo",
+  "generatedAt": "2026-09-28T09:11:02Z",
+  "usage": {
+    "promptTokens": 3600,
+    "completionTokens": 260,
+    "totalTokens": 3860
+  },
+  "review": {
+    "dataQuality": "INSUFFICIENT",
+    "summary": "Con 2 de 6 sesiones hechas y una sola sesión registrada por ejercicio no hay con qué comparar. No propongo cambios todavía.",
+    "observations": [
+      "Solo L01 tiene datos, y de una sola sesión: hacen falta al menos 2 para comparar cargas.",
+      "L02 figura como no realizado.",
+      "No hay medidas de esta semana (peso, cintura)."
+    ],
+    "proposals": [],
+    "questions": [
+      "¿Pudiste registrar las cargas de las sesiones que sí hiciste?",
+      "¿Quieres que la próxima revisión se corra al final de la semana que viene?",
+      "¿Anotamos peso y cintura del lunes para tener una referencia?"
+    ]
+  }
+}

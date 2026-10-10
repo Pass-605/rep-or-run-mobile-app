@@ -1,0 +1,37 @@
+{
+  "generate-request.sin-inventario.json": {
+    "schema": "generate-request.schema.json",
+    "path": "/gym/equipment",
+    "keyword": "minItems"
+  },
+  "generate-request.loadtype-desconocido.json": {
+    "schema": "generate-request.schema.json",
+    "path": "/gym/equipment/0/loadType",
+    "keyword": "enum"
+  },
+  "generate-request.campo-extra.json": {
+    "schema": "generate-request.schema.json",
+    "path": "/profile",
+    "keyword": "additionalProperties"
+  },
+  "generate-request.sin-dias.json": {
+    "schema": "generate-request.schema.json",
+    "path": "/preferences/availableDays",
+    "keyword": "minItems"
+  },
+  "generate-response.falta-rir.json": {
+    "schema": "generate-response.schema.json",
+    "path": "/plan/days/0/exercises/0",
+    "keyword": "required"
+  },
+  "generate-response.metric-minuscula.json": {
+    "schema": "generate-response.schema.json",
+    "path": "/plan/days/0/exercises/0/metric",
+    "keyword": "enum"
+  },
+  "review-response.confianza-invalida.json": {
+    "schema": "review-response.schema.json",
+    "path": "/review/proposals/0/confidence",
+    "keyword": "enum"
+  }
+}

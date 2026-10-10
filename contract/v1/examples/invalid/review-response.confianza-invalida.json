@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1",
+  "promptVersion": "plan-review-v1",
+  "model": "gpt-modelo-ejemplo",
+  "generatedAt": "2026-10-05T12:20:40Z",
+  "usage": {
+    "promptTokens": 3910,
+    "completionTokens": 740,
+    "totalTokens": 4650
+  },
+  "review": {
+    "dataQuality": "SUFFICIENT",
+    "summary": "Completaste las 6 sesiones previstas del bloque. Pecho y cuádriceps llegaron al tope del rango con el RIR previsto en las tres sesiones; el resto todavía está dentro del rango.",
+    "observations": [
+      "L01 Chest Press: 10/10/10 reps con RIR 2 en 3 sesiones, tope del rango 6-10.",
+      "X01 Pendulum Squat: 12/12/12 reps con RIR 2 en 3 sesiones, tope del rango 8-12.",
+      "L02, L03, X02 y S03 siguen dentro del rango; todavía no toca subir.",
+      "El miércoles se reportó falta de tiempo en 2 de 3 sesiones.",
+      "Se registró una molestia de hombro el 30/09 en L04, sin repetirse."
+    ],
+    "proposals": [
+      {
+        "type": "INCREASE_LOAD",
+        "targetExerciseCode": "L01",
+        "targetDayOfWeek": null,
+        "replacementEquipmentId": null,
+        "description": "Subir el Chest Press de 32,5 a 37,5 kg en el selector (el menor incremento disponible es 5 kg) y volver a la parte baja del rango, 6-8 reps.",
+        "rationale": "Doble progresión: las 3 series llegaron a 10 reps con RIR 2 en las 3 sesiones registradas.",
+        "confidence": "MEDIA"
+      },
+      {
+        "type": "INCREASE_LOAD",
+        "targetExerciseCode": "X01",
+        "targetDayOfWeek": null,
+        "replacementEquipmentId": null,
+        "description": "Añadir 5 kg totales al carro del Pendulum Squat (de 10 a 15 kg en discos) y apuntar a 8-10 reps.",
+        "rationale": "3 sesiones con 12/12/12 y RIR 2, tope del rango. El carro vacío ya pesa, así que el salto real es menor que en una máquina de selector.",
+        "confidence": "HIGH"
+      },
+      {
+        "type": "ADJUST_CARDIO",
+        "targetExerciseCode": null,
+        "targetDayOfWeek": "WEDNESDAY",
+        "replacementEquipmentId": null,
+        "description": "Bajar el cardio del miércoles de 10-15 a 8-10 min para que la sesión entre en los 75 minutos.",
+        "rationale": "Reportaste falta de tiempo en 2 de 3 miércoles; recortar cardio antes que series mantiene el volumen de fuerza.",
+        "confidence": "MEDIUM"
+      },
+      {
+        "type": "KEEP",
+        "targetExerciseCode": "L04",
+        "targetDayOfWeek": null,
+        "replacementEquipmentId": null,
+        "description": "Mantener el press de hombro como está, con el mismo tope de carga.",
+        "rationale": "Hubo una molestia el 30/09 que no se repitió. Con una sola lectura no se cambia el ejercicio; se vuelve a mirar en la próxima revisión.",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "questions": [
+      "¿Cuánto duró de verdad la sesión del sábado? No hay tiempos registrados.",
+      "En S01, S02, S04 y S05 no hay feedback: ¿los hiciste y no los registraste, o los saltaste?"
+    ]
+  }
+}

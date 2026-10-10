@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/review-result.schema.json",
+  "title": "Gymdi · resultado de revision v1 (salida del modelo)",
+  "description": "Lo que el modelo debe devolver en /v1/plans:review. Autocontenido y estricto para usarse como json_schema de Structured Outputs. Son PROPUESTAS: nada cambia el plan sin aprobacion explicita (plan §4.12). ProposalValidator comprueba despues que cada propuesta apunte a un ejercicio del plan, use maquinas del inventario y no rompa los minutos de sesion.",
+  "type": "object",
+  "properties": {
+    "dataQuality": {
+      "description": "SUFFICIENT: hay datos para comparar. LIMITED: se puede decir algo pero con cautela. INSUFFICIENT: menos de 2 sesiones por ejercicio o faltan medidas clave; entonces proposals va vacio y se piden datos en questions (plan §4.13).",
+      "enum": ["SUFFICIENT","LIMITED","INSUFFICIENT"]
+    },
+    "summary": { "type": "string", "description": "Dos o tres frases sobre como fue el bloque, sin promesas de resultado." },
+    "observations": {
+      "type": "array",
+      "description": "Hechos observados con su evidencia (ejercicio, sesiones, reps o RIR). Sin diagnosticos ni consejo nutricional.",
+      "items": { "type": "string" }
+    },
+    "proposals": {
+      "type": "array",
+      "description": "Vacio si dataQuality es INSUFFICIENT. Una propuesta por cambio; KEEP cuando lo correcto es no tocar nada.",
+      "items": { "$ref": "#/$defs/Proposal" }
+    },
+    "questions": {
+      "type": "array",
+      "description": "Datos que faltan para poder proponer con confianza, en forma de pregunta corta.",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["dataQuality","summary","observations","proposals","questions"],
+  "additionalProperties": false,
+  "$defs": {
+    "Proposal": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["KEEP","INCREASE_LOAD","ADJUST_REPS","ADJUST_SETS","SWAP_EXERCISE","MOVE_DAY","ADJUST_CARDIO","OTHER"] },
+        "targetExerciseCode": { "type": ["string","null"], "description": "Codigo del ejercicio del plan vigente (L01, X04). null solo cuando la propuesta es de dia o de cardio." },
+        "targetDayOfWeek": { "enum": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY",null], "description": "Dia afectado en MOVE_DAY o ADJUST_CARDIO; null en el resto." },
+        "replacementEquipmentId": { "type": ["string","null"], "description": "Solo en SWAP_EXERCISE: id del inventario enviado. Nunca un aparato que no este en la lista." },
+        "description": { "type": "string", "description": "Que cambiar, en concreto y accionable ('subir de 30 a 32,5 kg en el selector')." },
+        "rationale": { "type": "string", "description": "Por que, citando la evidencia del check-in. Si la evidencia es debil, decirlo." },
+        "confidence": { "enum": ["LOW","MEDIUM","HIGH"] }
+      },
+      "required": ["type","targetExerciseCode","targetDayOfWeek","replacementEquipmentId","description","rationale","confidence"],
+      "additionalProperties": false
+    }
+  }
+}
