@@ -26,6 +26,7 @@ import app.reporrun.core.designsystem.component.RepOrRunButtonStyle
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunCheckMark
 import app.reporrun.core.designsystem.component.RepOrRunChip
+import app.reporrun.core.designsystem.component.RepOrRunChipGroup
 import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunEmphasisCard
 import app.reporrun.core.designsystem.component.RepOrRunField
@@ -33,9 +34,12 @@ import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunListRow
 import app.reporrun.core.designsystem.component.RepOrRunNavItem
 import app.reporrun.core.designsystem.component.RepOrRunSearchField
+import app.reporrun.core.designsystem.component.RepOrRunSectionError
+import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
 import app.reporrun.core.designsystem.component.RepOrRunStatusChip
 import app.reporrun.core.designsystem.component.RepOrRunStep
 import app.reporrun.core.designsystem.component.RepOrRunStepper
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.designsystem.component.RepOrRunSwitch
 
 @Composable
@@ -109,6 +113,20 @@ internal fun ChipSample() {
             RepOrRunStatusChip("Pendiente")
         }
     }
+}
+
+@Composable
+internal fun SectionSample() {
+    var selected by remember { mutableStateOf(setOf("Cinta")) }
+    RepOrRunSectionTitle("Días disponibles", trailing = "3 elegidos")
+    RepOrRunSupportingText("Puedes cambiarlos antes de cada bloque.")
+    RepOrRunChipGroup(
+        options = listOf("Elíptica", "Cinta", "Bicicleta estática", "Remo", "Escaladora"),
+        selected = { it in selected },
+        label = { it },
+        onClick = { selected = if (it in selected) selected - it else selected + it },
+    )
+    RepOrRunSectionError("Elige al menos un día.")
 }
 
 @Composable
