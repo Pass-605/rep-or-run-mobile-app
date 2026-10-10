@@ -64,6 +64,15 @@ class ModuleDependencyRulesTest {
     }
 
     @Test
+    fun rejectsDesignSystemDependingOnAnything() {
+        // Un componente que importa dominio deja de servir a todos los features.
+        assertEquals(
+            listOf(":core:domain", ":core:model"),
+            ModuleDependencyRules.violations(":core:designsystem", setOf(":core:domain", ":core:model")),
+        )
+    }
+
+    @Test
     fun acceptsAiWithItsAllowedDependencies() {
         val dependencies = setOf(":core:network", ":core:domain", ":core:model")
 

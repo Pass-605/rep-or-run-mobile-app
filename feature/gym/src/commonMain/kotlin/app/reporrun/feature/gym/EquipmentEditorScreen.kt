@@ -21,7 +21,11 @@ import app.reporrun.core.designsystem.component.RepOrRunButton
 import app.reporrun.core.designsystem.component.RepOrRunButtonStyle
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunChip
+import app.reporrun.core.designsystem.component.RepOrRunChipGroup
 import app.reporrun.core.designsystem.component.RepOrRunField
+import app.reporrun.core.designsystem.component.RepOrRunScreenScaffold
+import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.domain.usecase.EquipmentError
 import app.reporrun.core.domain.usecase.EquipmentField
 import app.reporrun.core.model.EquipmentCategory
@@ -46,6 +50,7 @@ import app.reporrun.feature.gym.resources.equipment_range
 import app.reporrun.feature.gym.resources.equipment_range_hint
 import app.reporrun.feature.gym.resources.equipment_remove
 import app.reporrun.feature.gym.resources.equipment_save
+import app.reporrun.feature.gym.resources.gym_back
 import app.reporrun.feature.gym.resources.inventory_full
 import app.reporrun.feature.gym.resources.inventory_in_use
 import org.jetbrains.compose.resources.StringResource
@@ -77,15 +82,16 @@ internal fun EquipmentEditorScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    GymScaffold(
+    RepOrRunScreenScaffold(
         title = stringResource(if (state.isNew) Res.string.equipment_new_title else Res.string.equipment_edit_title),
+        backContentDescription = stringResource(Res.string.gym_back),
         actionText = stringResource(if (state.isNew) Res.string.equipment_add else Res.string.equipment_save),
         actionEnabled = !state.isSaving,
         onAction = { onEvent(EquipmentEditorEvent.SaveClicked) },
         modifier = modifier,
         onBack = onBack,
     ) {
-        if (state.isNew) SupportingText(stringResource(Res.string.equipment_new_subtitle))
+        if (state.isNew) RepOrRunSupportingText(stringResource(Res.string.equipment_new_subtitle))
         RepOrRunField(
             value = state.name,
             onValueChange = { onEvent(EquipmentEditorEvent.NameChanged(it)) },
@@ -102,7 +108,7 @@ internal fun EquipmentEditorScreen(
         if (state.isNew) {
             TypeChoice(state, onEvent)
         } else {
-            SupportingText(
+            RepOrRunSupportingText(
                 stringResource(Res.string.equipment_fixed_type, state.category.label(), state.loadType.label()),
             )
         }
@@ -123,15 +129,15 @@ internal fun EquipmentEditorScreen(
 /** La categoría y cómo se carga. Solo al añadir: después ya no se cambian. */
 @Composable
 private fun TypeChoice(state: EquipmentEditorState, onEvent: (InventoryEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.equipment_category))
-    ChipGroup(
+    RepOrRunSectionTitle(stringResource(Res.string.equipment_category))
+    RepOrRunChipGroup(
         options = EquipmentCategory.entries,
         selected = { it == state.category },
         label = { it.label() },
         onClick = { onEvent(EquipmentEditorEvent.CategoryChanged(it)) },
     )
-    SectionTitle(stringResource(Res.string.equipment_load_type))
-    ChipGroup(
+    RepOrRunSectionTitle(stringResource(Res.string.equipment_load_type))
+    RepOrRunChipGroup(
         options = LoadType.entries,
         selected = { it == state.loadType },
         label = { it.chipLabel() },
@@ -142,8 +148,8 @@ private fun TypeChoice(state: EquipmentEditorState, onEvent: (InventoryEvent) ->
 /** Mínimo, máximo y salto, los tres opcionales. Son datos de la máquina, no una prescripción. */
 @Composable
 private fun LoadRange(state: EquipmentEditorState, onEvent: (InventoryEvent) -> Unit) {
-    SectionTitle(stringResource(Res.string.equipment_range))
-    SupportingText(stringResource(Res.string.equipment_range_hint))
+    RepOrRunSectionTitle(stringResource(Res.string.equipment_range))
+    RepOrRunSupportingText(stringResource(Res.string.equipment_range_hint))
     Row(horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ListRowSpacing)) {
         KgField(
             state.minKg,
@@ -208,30 +214,6 @@ private fun EditorProblemCard(problem: EditorProblem?) {
             style = MaterialTheme.typography.bodySmall,
             color = RepOrRunTheme.extendedColors.accentText,
         )
-    }
-}
-
-@Composable
-private fun SectionTitle(text: String) {
-    Text(text, style = MaterialTheme.typography.titleMedium)
-}
-
-/** Chips que saltan de línea cuando no caben. */
-@Composable
-private fun <T> ChipGroup(
-    options: List<T>,
-    selected: (T) -> Boolean,
-    label: @Composable (T) -> String,
-    onClick: (T) -> Unit,
-) {
-    FlowRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ChipSpacing),
-        verticalArrangement = Arrangement.spacedBy(RepOrRunDimens.ChipSpacing),
-    ) {
-        options.forEach { option ->
-            RepOrRunChip(label = label(option), selected = selected(option), onClick = { onClick(option) })
-        }
     }
 }
 

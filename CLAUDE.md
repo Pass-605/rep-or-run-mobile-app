@@ -83,6 +83,7 @@ En Windows usa `gradlew.bat`.
   - `core:ai` → `core:network`, `core:domain`, `core:model`.
   - `core:domain` → solo `core:model` (+ coroutines/datetime). Puede usar `koin-core` **únicamente** en su archivo `di/` (`di/DomainModule.kt`, el `val domainModule`); ningún otro archivo del módulo importa Koin: los casos de uso son clases normales con inyección por constructor.
   - `core:model` → nada.
+  - `core:designsystem` → nada: ningún módulo del proyecto. Lo que un componente tenga que decir (un error, la descripción de un botón) le llega como `String` desde el feature.
 - **DI:** Koin; cada módulo expone `val xxxModule = module { }` y el grafo se arma en `composeApp`.
 - **Navegación:** Navigation Compose multiplataforma con rutas `@Serializable`; cada feature expone `NavGraphBuilder.xxxGraph()`.
 - **UDF:** `XxxUiState` (data class inmutable) + `XxxEvent` (sealed interface) + `XxxEffect` (one-shot). El ViewModel expone `StateFlow<UiState>` y `Flow<Effect>`; la UI solo llama `onEvent(...)`.

@@ -31,6 +31,8 @@ internal object ModuleDependencyRules {
         ":core:ai" to setOf(":core:network", ":core:domain", ":core:model"),
         ":core:domain" to setOf(":core:model"),
         ":core:model" to emptySet(),
+        // Lo visual no sabe de dominio: lo que un componente necesite decir le llega ya como texto.
+        ":core:designsystem" to emptySet(),
     )
 
     /**

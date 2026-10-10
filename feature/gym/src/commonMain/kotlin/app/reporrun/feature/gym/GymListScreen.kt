@@ -18,11 +18,14 @@ import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunCheckMark
 import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunListRow
+import app.reporrun.core.designsystem.component.RepOrRunScreenScaffold
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.model.Gym
 import app.reporrun.core.model.GymId
 import app.reporrun.feature.gym.resources.Res
 import app.reporrun.feature.gym.resources.gym_active
 import app.reporrun.feature.gym.resources.gym_add
+import app.reporrun.feature.gym.resources.gym_back
 import app.reporrun.feature.gym.resources.gym_continue
 import app.reporrun.feature.gym.resources.gym_create_first
 import app.reporrun.feature.gym.resources.gym_empty_body
@@ -68,8 +71,9 @@ internal fun GymListScreen(
 ) {
     val isEmpty = state.gyms.isEmpty()
     val active = state.gyms.firstOrNull { it.isActive }
-    GymScaffold(
+    RepOrRunScreenScaffold(
         title = stringResource(Res.string.gym_list_title),
+        backContentDescription = stringResource(Res.string.gym_back),
         actionText = stringResource(if (isEmpty) Res.string.gym_create_first else Res.string.gym_continue),
         // Con gimnasios pero ninguno activo no hay inventario al que seguir: primero se elige uno.
         actionEnabled = !state.isLoading && (isEmpty || active != null),
@@ -84,7 +88,7 @@ internal fun GymListScreen(
             isEmpty -> EmptyGyms()
 
             else -> {
-                SupportingText(stringResource(Res.string.gym_list_subtitle))
+                RepOrRunSupportingText(stringResource(Res.string.gym_list_subtitle))
                 state.gyms.forEach { gym -> GymCard(gym, onEvent, onOpenInventory) }
                 AddGymCard(onEvent)
             }

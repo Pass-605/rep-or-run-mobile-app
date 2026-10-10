@@ -21,7 +21,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunDimens
 import app.reporrun.core.designsystem.RepOrRunTheme
 import app.reporrun.core.designsystem.component.RepOrRunCard
+import app.reporrun.core.designsystem.component.RepOrRunChipGroup
 import app.reporrun.core.designsystem.component.RepOrRunDivider
+import app.reporrun.core.designsystem.component.RepOrRunSectionError
+import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
+import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.domain.usecase.ProfileField
 import app.reporrun.core.model.Goal
 import app.reporrun.core.model.MuscleGroup
@@ -82,25 +86,25 @@ internal fun ProfileGoalScreen(
         modifier = modifier,
         onBack = onBack,
     ) {
-        SectionTitle(stringResource(Res.string.profile_goal))
-        ChipGroup(
+        RepOrRunSectionTitle(stringResource(Res.string.profile_goal))
+        RepOrRunChipGroup(
             options = Goal.entries,
             selected = { it == state.goal },
             label = { stringResource(it.label) },
             onClick = { onEvent(ProfileEvent.GoalSelected(it)) },
         )
-        SectionError(state.errors[ProfileField.GOAL])
+        RepOrRunSectionError(state.errors[ProfileField.GOAL]?.message())
         state.goal?.let { GoalCard(it) }
 
         // El tope sale del modelo, que es el del contrato: el título no puede decir otro número.
-        SectionTitle(stringResource(Res.string.profile_priority_muscles, UserProfile.MAX_PRIORITY_MUSCLES))
-        ChipGroup(
+        RepOrRunSectionTitle(stringResource(Res.string.profile_priority_muscles, UserProfile.MAX_PRIORITY_MUSCLES))
+        RepOrRunChipGroup(
             options = MuscleGroup.entries,
             selected = { it in state.priorityMuscles },
             label = { stringResource(it.label) },
             onClick = { onEvent(ProfileEvent.MuscleToggled(it)) },
         )
-        SectionError(state.errors[ProfileField.PRIORITY_MUSCLES])
+        RepOrRunSectionError(state.errors[ProfileField.PRIORITY_MUSCLES]?.message())
 
         FreeTextInput(
             state = state,
@@ -118,7 +122,7 @@ internal fun ProfileGoalScreen(
             placeholder = Res.string.profile_preferences_placeholder,
             onEvent = onEvent,
         )
-        SupportingText(stringResource(Res.string.profile_free_text_privacy))
+        RepOrRunSupportingText(stringResource(Res.string.profile_free_text_privacy))
     }
 }
 
