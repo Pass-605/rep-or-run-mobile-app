@@ -45,8 +45,9 @@ en la primera llamada real a OpenAI. Por eso `validate.py` lo comprueba.
 3. `python3 ../docs/contract/validate.py` en verde. No sigas si no lo está. Valida los
    ejemplos, comprueba que los inválidos fallan donde se espera, y pasa el lint de modo
    estricto sobre los dos schemas del LLM.
-4. `scripts/sync-contract.sh` en **los dos repos**. Ojo: ese script todavía no existe;
-   mientras no exista, copia a mano y dilo en el PR.
+4. `scripts/sync-contract.sh` en **los dos repos**, y `scripts/sync-contract.sh --check`
+   para confirmar que la copia quedó idéntica. El de la Lambda todavía no existe (S-06):
+   mientras no exista, allí copia a mano y dilo en el PR.
 5. Adapta los DTOs de `:core:ai` (paquete `contract`) y sus tests de ida y vuelta contra
    `contract/v1/examples/`. En la Lambda, lo equivalente.
 6. Un PR por repo, con referencia cruzada al otro.
