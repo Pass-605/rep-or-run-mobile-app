@@ -24,5 +24,5 @@
 - [x] 5.1 `gradlew.bat :core:ai:allTests`: BUILD SUCCESSFUL, 20 tests en `jvmTest` (12 de ida y vuelta, 8 de inválidos), 0 fallos
 - [x] 5.2 `gradlew.bat check` (detekt, Spotless, `checkModuleDependencies`, lint y tests): BUILD SUCCESSFUL. Los de iOS no corren en Windows
 - [x] 5.3 `scripts/sync-contract.sh --check`: «contract/v1/ está al día», salida 0. Con un schema alterado a mano: muestra el diff y sale con 1. Con `CONTRACT_SOURCE` apuntando a una ruta que no existe: nombra las dos carpetas que faltan y sale con 1
-- [ ] 5.4 Sin comprobar: el repo clonado solo, sin `../docs/` al lado. Los tests no leen nada fuera del repo (la ruta es `contract/v1` de la raíz), pero no se ha ejecutado en un clon aislado
+- [x] 5.4 Clon aislado de la rama, sin `../docs/` al lado: `gradlew.bat :core:ai:allTests` pasa los 20 tests; `sync-contract.sh --check` falla nombrando las carpetas que faltan y, con `CONTRACT_SOURCE` apuntando a la fuente, dice que la copia del clon está al día (los finales de línea sobreviven al checkout)
 - [ ] 5.5 iOS: los DTOs son `commonMain`; sin compilar para iOS (`needs:macos`)
