@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/review-request.schema.json",
+  "title": "Gymdi · POST /v1/plans:review (peticion)",
+  "description": "Revision periodica. La app solo llama aqui cuando EvaluateDataQualityUseCase no dio INSUFFICIENT, o cuando la persona lo pide de todas formas. Incluye el inventario porque una propuesta de cambio de ejercicio tambien tiene que usar maquinas que existan (plan §4.1).",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "promptVersion": { "$ref": "common.schema.json#/$defs/PromptVersion" },
+    "locale": { "$ref": "common.schema.json#/$defs/Locale" },
+    "daysElapsed": { "type": "integer", "minimum": 1, "maximum": 120, "description": "Dias desde el inicio del plan vigente." },
+    "plan": { "$ref": "plan.schema.json", "description": "Plan vigente tal cual se guardo." },
+    "gym": { "$ref": "common.schema.json#/$defs/Gym" },
+    "profileSummary": { "$ref": "#/$defs/ProfileSummary" },
+    "checkIn": { "$ref": "#/$defs/CheckIn" },
+    "exerciseFeedback": { "type": "array", "items": { "$ref": "#/$defs/ExerciseFeedback" }, "maxItems": 60 },
+    "previousReviews": { "type": "array", "items": { "$ref": "#/$defs/PreviousReview" }, "maxItems": 10, "description": "Resumen de revisiones anteriores, de la mas reciente a la mas antigua." }
+  },
+  "required": ["schemaVersion","promptVersion","locale","daysElapsed","plan","gym","profileSummary","checkIn","exerciseFeedback","previousReviews"],
+  "additionalProperties": false,
+  "$defs": {
+    "ProfileSummary": {
+      "type": "object",
+      "description": "Subconjunto del perfil suficiente para revisar; no se reenvia todo.",
+      "properties": {
+        "age": { "type": "integer", "minimum": 16, "maximum": 100 },
+        "experience": { "$ref": "common.schema.json#/$defs/Experience" },
+        "goal": { "$ref": "common.schema.json#/$defs/Goal" },
+        "priorityMuscles": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/MuscleGroup" }, "maxItems": 4, "uniqueItems": true },
+        "limitations": { "type": "string", "maxLength": 600 },
+        "sessionMinutes": { "type": "integer", "minimum": 20, "maximum": 180 },
+        "availableDays": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/DayOfWeek" }, "minItems": 1, "maxItems": 7, "uniqueItems": true }
+      },
+      "required": ["age","experience","goal","priorityMuscles","limitations","sessionMinutes","availableDays"],
+      "additionalProperties": false
+    },
+    "CheckIn": {
+      "type": "object",
+      "properties": {
+        "weightKg": { "type": ["number","null"], "minimum": 30, "maximum": 300 },
+        "waistCm": { "type": ["number","null"], "minimum": 40, "maximum": 200 },
+        "hipCm": { "type": ["number","null"], "minimum": 40, "maximum": 200 },
+        "sessionsPlanned": { "type": "integer", "minimum": 0, "maximum": 60 },
+        "sessionsDone": { "type": "integer", "minimum": 0, "maximum": 60 },
+        "avgSleepH": { "type": ["number","null"], "minimum": 0, "maximum": 16 },
+        "avgSteps": { "type": ["integer","null"], "minimum": 0, "maximum": 60000 },
+        "energy": { "type": ["integer","null"], "minimum": 1, "maximum": 5 },
+        "fatigue": { "type": ["integer","null"], "minimum": 1, "maximum": 5 },
+        "painNotes": { "type": "string", "maxLength": 400, "description": "Molestias en palabras de la persona. Se registran con fecha antes de proponer nada (plan §4.14); no se interpretan clinicamente." },
+        "painDate": { "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }] },
+        "notes": { "type": "string", "maxLength": 600 }
+      },
+      "required": ["sessionsPlanned","sessionsDone","painNotes","notes"],
+      "additionalProperties": false
+    },
+    "ExerciseFeedback": {
+      "type": "object",
+      "properties": {
+        "exerciseCode": { "$ref": "common.schema.json#/$defs/ExerciseCode" },
+        "usualLoad": { "type": ["number","null"], "minimum": 0, "maximum": 1000, "description": "Carga habitual en la unidad que marca el loadType del aparato." },
+        "loadUnitNote": { "type": "string", "maxLength": 120, "description": "Como se leyo la carga: 'numero del selector', 'discos totales', 'por mancuerna'..." },
+        "repsReached": { "type": ["array","null"], "items": { "type": "integer", "minimum": 0, "maximum": 100 }, "maxItems": 10, "description": "Una entrada por serie efectiva, en orden." },
+        "rirPerceived": { "type": ["integer","null"], "minimum": 0, "maximum": 5 },
+        "rating": { "$ref": "common.schema.json#/$defs/FeedbackRating" },
+        "techniqueOk": { "type": ["boolean","null"] },
+        "equipmentChanged": { "type": "boolean", "description": "true si uso otro aparato; entonces las cargas no son comparables (plan §4.13)." },
+        "sessionsWithData": { "type": "integer", "minimum": 0, "maximum": 20, "description": "Sesiones registradas de este ejercicio en el bloque. Con menos de 2 no se propone subir carga." },
+        "notes": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["exerciseCode","loadUnitNote","rating","equipmentChanged","sessionsWithData","notes"],
+      "additionalProperties": false
+    },
+    "PreviousReview": {
+      "type": "object",
+      "properties": {
+        "date": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "summary": { "type": "string", "maxLength": 400 },
+        "appliedChanges": { "type": "array", "items": { "type": "string", "maxLength": 200 }, "maxItems": 12 }
+      },
+      "required": ["date","summary","appliedChanges"],
+      "additionalProperties": false
+    }
+  }
+}

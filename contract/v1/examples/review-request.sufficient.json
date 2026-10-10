@@ -1,0 +1,627 @@
+{
+  "schemaVersion": "1",
+  "promptVersion": "plan-review-v1",
+  "locale": "es-PE",
+  "daysElapsed": 14,
+  "plan": {
+    "blockDays": 14,
+    "focus": [
+      "Pecho",
+      "Espalda",
+      "Cuádriceps"
+    ],
+    "notes": [
+      "Las cargas son de ensayo: ajústalas según la técnica, las repeticiones y el RIR.",
+      "Las alternativas son «elige una»: no suman series.",
+      "En los ejercicios unilaterales las series se cuentan por lado.",
+      "El calentamiento y las aproximaciones no cuentan como series efectivas.",
+      "Sube al menor incremento disponible solo cuando todas las series lleguen al tope del rango con el RIR previsto.",
+      "Este bloque sirve para calibrar cargas; no promete cambios medibles en 14 días."
+    ],
+    "days": [
+      {
+        "dayOfWeek": "MONDAY",
+        "dayIndex": 0,
+        "session": "Upper A + core",
+        "priority": "Pecho + espalda",
+        "cardioMin": 15,
+        "cardioMax": 20,
+        "cardioMode": "Caminadora",
+        "rpe": "5-6",
+        "speed": "4,8-5,5 km/h",
+        "incline": "5-7%",
+        "warmup": "Caminadora 5-7 min a RPE 3-4 y 2-3 aproximaciones al Chest Press. Las aproximaciones no cuentan como series efectivas.",
+        "mobility": "Círculos de brazos 10 adelante y 10 atrás; retracción escapular 10-12.",
+        "cooldown": "Pecho, dorsal, deltoide posterior y tríceps: 30 s por lado, sin dolor.",
+        "exercises": [
+          {
+            "code": "L01",
+            "order": 1,
+            "name": "Chest Press convergente",
+            "equipmentId": "eq_chest_press",
+            "sets": 3,
+            "low": 6,
+            "high": 10,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2,5-3 min",
+            "trial": "20-35 kg en el selector, solo si ya controla el aparato",
+            "target": "Pecho",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": [
+              {
+                "name": "Press con mancuernas en banco",
+                "equipmentId": "eq_dumbbells",
+                "note": "Si la máquina está ocupada; 10-16 kg por mancuerna."
+              }
+            ]
+          },
+          {
+            "code": "L02",
+            "order": 2,
+            "name": "Remo con apoyo pectoral",
+            "equipmentId": "eq_row_chest_sup",
+            "sets": 3,
+            "low": 8,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2-2,5 min",
+            "trial": "20-30 kg en discos totales",
+            "target": "Espalda media",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": [
+              {
+                "name": "Jalón al pecho neutro",
+                "equipmentId": "eq_lat_pulldown",
+                "note": "Mismo patrón de tirón si el remo está ocupado."
+              }
+            ]
+          },
+          {
+            "code": "L03",
+            "order": 3,
+            "name": "Jalón al pecho neutro",
+            "equipmentId": "eq_lat_pulldown",
+            "sets": 3,
+            "low": 8,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2 min",
+            "trial": "30-40 kg en el selector",
+            "target": "Dorsal",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "L04",
+            "order": 4,
+            "name": "Press de hombro sentado",
+            "equipmentId": "eq_shoulder_press",
+            "sets": 2,
+            "low": 8,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 3,
+            "rest": "1,5-2 min",
+            "trial": "15-25 kg en el selector; parar si aparece la molestia del hombro derecho",
+            "target": "Deltoide anterior",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "L05",
+            "order": 5,
+            "name": "Plancha frontal",
+            "equipmentId": "eq_mat",
+            "sets": 3,
+            "low": 30,
+            "high": 45,
+            "rirLow": null,
+            "rirHigh": null,
+            "rest": "60-90 s",
+            "trial": "Peso corporal, 0 kg",
+            "target": "Core",
+            "unilateral": false,
+            "metric": "SECONDS",
+            "alternatives": []
+          }
+        ]
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "dayIndex": 2,
+        "session": "Lower A",
+        "priority": "Cuádriceps + isquios",
+        "cardioMin": 10,
+        "cardioMax": 15,
+        "cardioMode": "Caminadora",
+        "rpe": "5",
+        "speed": null,
+        "incline": null,
+        "warmup": "Caminadora 5-7 min a RPE 3-4; 2-3 aproximaciones al Pendulum Squat.",
+        "mobility": "Círculos de cadera 8-10 por lado; balanceos 10 frontales y 10 laterales por lado.",
+        "cooldown": "Cuádriceps, isquios, glúteos y pantorrillas: 30 s por lado.",
+        "exercises": [
+          {
+            "code": "X01",
+            "order": 1,
+            "name": "Pendulum Squat",
+            "equipmentId": "eq_pendulum_squat",
+            "sets": 3,
+            "low": 8,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2,5-3 min",
+            "trial": "El carro vacío ya pesa: empezar sin discos o con 10 kg totales",
+            "target": "Cuádriceps",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": [
+              {
+                "name": "Extensión de rodilla",
+                "equipmentId": "eq_leg_extension",
+                "note": "Solo si el péndulo está ocupado; no es equivalente, baja la carga."
+              }
+            ]
+          },
+          {
+            "code": "X02",
+            "order": 2,
+            "name": "Curl femoral tumbado",
+            "equipmentId": "eq_leg_curl",
+            "sets": 3,
+            "low": 10,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2 min",
+            "trial": "20-30 kg en el selector",
+            "target": "Isquios",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "X03",
+            "order": 3,
+            "name": "Extensión de rodilla",
+            "equipmentId": "eq_leg_extension",
+            "sets": 2,
+            "low": 12,
+            "high": 15,
+            "rirLow": 2,
+            "rirHigh": 3,
+            "rest": "90 s",
+            "trial": "25-35 kg en el selector",
+            "target": "Cuádriceps",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "X04",
+            "order": 4,
+            "name": "Suitcase Carry",
+            "equipmentId": "eq_dumbbells",
+            "sets": 2,
+            "low": 30,
+            "high": 40,
+            "rirLow": null,
+            "rirHigh": null,
+            "rest": "60-90 s",
+            "trial": "8-12 kg en una mano",
+            "target": "Tronco: estabilidad lateral",
+            "unilateral": true,
+            "metric": "METERS",
+            "alternatives": []
+          }
+        ]
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "dayIndex": 5,
+        "session": "Upper B + cardio",
+        "priority": "Hombro + brazos",
+        "cardioMin": 20,
+        "cardioMax": 25,
+        "cardioMode": "Caminadora",
+        "rpe": "5-6",
+        "speed": "5,0-5,5 km/h",
+        "incline": "6-8%",
+        "warmup": "Caminadora 5-7 min a RPE 3-4; 2 aproximaciones al press con mancuernas.",
+        "mobility": "Rotación torácica 8-10 por lado; círculos de hombro 10 por lado.",
+        "cooldown": "Pecho, deltoides y brazos: 30 s por lado.",
+        "exercises": [
+          {
+            "code": "S01",
+            "order": 1,
+            "name": "Press con mancuernas en banco",
+            "equipmentId": "eq_dumbbells",
+            "sets": 3,
+            "low": 8,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2-2,5 min",
+            "trial": "10-16 kg por mancuerna",
+            "target": "Pecho",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": [
+              {
+                "name": "Chest Press convergente",
+                "equipmentId": "eq_chest_press",
+                "note": "Si prefiere máquina ese día."
+              }
+            ]
+          },
+          {
+            "code": "S02",
+            "order": 2,
+            "name": "Remo en polea baja",
+            "equipmentId": "eq_cable_tower",
+            "sets": 3,
+            "low": 10,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "2 min",
+            "trial": "25-35 kg en el selector",
+            "target": "Espalda media",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "S03",
+            "order": 3,
+            "name": "Elevaciones laterales",
+            "equipmentId": "eq_dumbbells",
+            "sets": 3,
+            "low": 12,
+            "high": 15,
+            "rirLow": 2,
+            "rirHigh": 3,
+            "rest": "60-90 s",
+            "trial": "4-8 kg por mancuerna",
+            "target": "Deltoide lateral",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "S04",
+            "order": 4,
+            "name": "Curl de bíceps en polea",
+            "equipmentId": "eq_cable_tower",
+            "sets": 2,
+            "low": 10,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "90 s",
+            "trial": "15-20 kg en el selector",
+            "target": "Bíceps",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          },
+          {
+            "code": "S05",
+            "order": 5,
+            "name": "Extensión de tríceps en polea",
+            "equipmentId": "eq_cable_tower",
+            "sets": 2,
+            "low": 10,
+            "high": 12,
+            "rirLow": 2,
+            "rirHigh": 2,
+            "rest": "90 s",
+            "trial": "15-20 kg en el selector",
+            "target": "Tríceps",
+            "unilateral": false,
+            "metric": "REPS",
+            "alternatives": []
+          }
+        ]
+      }
+    ]
+  },
+  "gym": {
+    "name": "Gimnasio Central",
+    "equipment": [
+      {
+        "id": "eq_chest_press",
+        "name": "Chest Press convergente",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 80,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_row_chest_sup",
+        "name": "Remo con apoyo pectoral",
+        "category": "MACHINE",
+        "loadType": "PLATES_TOTAL",
+        "minKg": 0,
+        "maxKg": 120,
+        "incrementKg": 2.5
+      },
+      {
+        "id": "eq_lat_pulldown",
+        "name": "Jalón al pecho neutro",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 90,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_shoulder_press",
+        "name": "Press de hombro sentado",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 60,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_pendulum_squat",
+        "name": "Pendulum Squat",
+        "category": "MACHINE",
+        "loadType": "SLED",
+        "minKg": 0,
+        "maxKg": 200,
+        "incrementKg": 5,
+        "notes": "El carro vacío ya pesa; los discos se cuentan aparte."
+      },
+      {
+        "id": "eq_leg_curl",
+        "name": "Curl femoral tumbado",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 70,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_leg_extension",
+        "name": "Extensión de rodilla",
+        "category": "MACHINE",
+        "loadType": "SELECTOR",
+        "minKg": 5,
+        "maxKg": 70,
+        "incrementKg": 5
+      },
+      {
+        "id": "eq_cable_tower",
+        "name": "Torre de poleas alta y baja",
+        "category": "CABLE",
+        "loadType": "SELECTOR",
+        "minKg": 2.5,
+        "maxKg": 75,
+        "incrementKg": 2.5
+      },
+      {
+        "id": "eq_dumbbells",
+        "name": "Mancuernas 2-30 kg",
+        "category": "FREE_WEIGHT",
+        "loadType": "DUMBBELL",
+        "minKg": 2,
+        "maxKg": 30,
+        "incrementKg": 2
+      },
+      {
+        "id": "eq_mat",
+        "name": "Colchoneta",
+        "category": "BODYWEIGHT",
+        "loadType": "BODYWEIGHT"
+      },
+      {
+        "id": "eq_treadmill",
+        "name": "Caminadora",
+        "category": "CARDIO",
+        "loadType": "CARDIO"
+      }
+    ]
+  },
+  "profileSummary": {
+    "age": 30,
+    "experience": "INTERMEDIATE",
+    "goal": "RECOMPOSITION",
+    "priorityMuscles": [
+      "CHEST",
+      "BACK",
+      "QUADS"
+    ],
+    "limitations": "Molestia ocasional en el hombro derecho al press por encima de la cabeza.",
+    "sessionMinutes": 75,
+    "availableDays": [
+      "MONDAY",
+      "WEDNESDAY",
+      "SATURDAY"
+    ]
+  },
+  "checkIn": {
+    "weightKg": 72.0,
+    "waistCm": 83,
+    "sessionsPlanned": 6,
+    "sessionsDone": 6,
+    "avgSleepH": 7.0,
+    "avgSteps": 8200,
+    "energy": 4,
+    "fatigue": 2,
+    "painNotes": "El hombro derecho molestó en el press del 30/09; no volvió a aparecer.",
+    "painDate": "2026-09-30",
+    "notes": "El miércoles se quedó corto de tiempo dos veces."
+  },
+  "exerciseFeedback": [
+    {
+      "exerciseCode": "L01",
+      "usualLoad": 32.5,
+      "loadUnitNote": "número del selector",
+      "repsReached": [
+        10,
+        10,
+        10
+      ],
+      "rirPerceived": 2,
+      "rating": "TOO_EASY",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": "Las tres series llegaron a 10 con RIR 2."
+    },
+    {
+      "exerciseCode": "L02",
+      "usualLoad": 25,
+      "loadUnitNote": "discos totales",
+      "repsReached": [
+        12,
+        11,
+        10
+      ],
+      "rirPerceived": 2,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "L03",
+      "usualLoad": 35,
+      "loadUnitNote": "número del selector",
+      "repsReached": [
+        12,
+        12,
+        11
+      ],
+      "rirPerceived": 2,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "L04",
+      "usualLoad": 20,
+      "loadUnitNote": "número del selector",
+      "repsReached": [
+        9,
+        8,
+        8
+      ],
+      "rirPerceived": 3,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 2,
+      "notes": "Sin molestia esta vez."
+    },
+    {
+      "exerciseCode": "L05",
+      "usualLoad": null,
+      "loadUnitNote": "peso corporal",
+      "repsReached": [
+        45,
+        40,
+        38
+      ],
+      "rirPerceived": null,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "X01",
+      "usualLoad": 10,
+      "loadUnitNote": "discos totales sobre el carro",
+      "repsReached": [
+        12,
+        12,
+        12
+      ],
+      "rirPerceived": 2,
+      "rating": "TOO_EASY",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": "Podría subir el próximo bloque."
+    },
+    {
+      "exerciseCode": "X02",
+      "usualLoad": 25,
+      "loadUnitNote": "número del selector",
+      "repsReached": [
+        12,
+        11,
+        10
+      ],
+      "rirPerceived": 2,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "X03",
+      "usualLoad": 30,
+      "loadUnitNote": "número del selector",
+      "repsReached": [
+        15,
+        14
+      ],
+      "rirPerceived": 3,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 2,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "X04",
+      "usualLoad": 10,
+      "loadUnitNote": "kg en una mano",
+      "repsReached": [
+        40,
+        35
+      ],
+      "rirPerceived": null,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 2,
+      "notes": ""
+    },
+    {
+      "exerciseCode": "S03",
+      "usualLoad": 6,
+      "loadUnitNote": "por mancuerna",
+      "repsReached": [
+        15,
+        13,
+        12
+      ],
+      "rirPerceived": 2,
+      "rating": "OK",
+      "techniqueOk": true,
+      "equipmentChanged": false,
+      "sessionsWithData": 3,
+      "notes": ""
+    }
+  ],
+  "previousReviews": []
+}

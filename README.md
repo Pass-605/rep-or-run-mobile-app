@@ -27,6 +27,17 @@ Versiones de Kotlin, AGP y Compose Multiplatform: `gradle/libs.versions.toml`, v
 - **Tema de ventana en claro y oscuro** (`values/` y `values-night/`). Es solo el color del arranque, pero sin él abrir la app en oscuro da un destello blanco.
 - **Sin accesores tipados de proyecto**: `project(":core:model")` funciona en cualquier versión de Gradle.
 
+## Contrato con la Lambda
+
+`contract/v1/` es una **copia** de `../docs/contract/`, que es la fuente de verdad y vive fuera de git. No se edita aquí: se cambia en `docs/` y se vuelve a copiar.
+
+```bash
+scripts/sync-contract.sh           # copia ../docs/contract → contract/v1/
+scripts/sync-contract.sh --check   # compara sin escribir; sale con 1 si difieren
+```
+
+En Windows, desde Git Bash. Los tests de contrato (`gradlew.bat :core:ai:allTests`) leen la copia del repo, así que no necesitan `../docs/`.
+
 ## Estructura
 
 ```text
@@ -37,6 +48,7 @@ core/domain/         interfaces de repositorio y casos de uso de captura (más a
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
+core/ai/             DTOs del contrato con la Lambda (paquete contract) y sus tests de ida y vuelta
 core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento
@@ -44,9 +56,11 @@ feature/profile/     perfil en dos pasos
 feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
 feature/plansetup/   preferencias del bloque y resumen previo a generar
 iosApp/              proyecto Xcode que consume el framework
+contract/v1/         copia versionada del contrato: schemas y ejemplos (no se edita a mano)
+scripts/             sync-contract.sh
 ```
 
-Los demás módulos del plan (`core:network`, `core:ai`, `core:pdf`, `core:notifications` y el resto de `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
+Los demás módulos del plan (`core:network`, `core:pdf`, `core:notifications` y el resto de `feature:*`) se añaden cuando la tarea que los necesita entra en juego, no antes.
 
 ## Una pantalla nueva
 

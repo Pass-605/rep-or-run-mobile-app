@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gymdi.app/contract/v1/generate-response.schema.json",
+  "title": "Gymdi · POST /v1/plans:generate (respuesta 200)",
+  "description": "Sobre de transporte. El modelo solo produce 'plan' (plan.schema.json); el resto lo anade la Lambda. Los errores usan error.schema.json.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "promptVersion": { "$ref": "common.schema.json#/$defs/PromptVersion", "description": "Version de prompt usada; siempre igual a la del request." },
+    "model": { "type": "string", "description": "Identificador del modelo que genero el plan. Se guarda en Plan.model." },
+    "generatedAt": { "$ref": "common.schema.json#/$defs/IsoDateTime" },
+    "usage": { "$ref": "common.schema.json#/$defs/Usage" },
+    "plan": { "$ref": "plan.schema.json" }
+  },
+  "required": ["schemaVersion","promptVersion","model","generatedAt","usage","plan"],
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1",
+  "promptVersion": "plan-gen-v1",
+  "locale": "es-PE",
+  "profile": {
+    "alias": "Sol",
+    "age": 30,
+    "heightCm": 170,
+    "weightKg": 72.5,
+    "waistCm": 84,
+    "experience": "INTERMEDIATE",
+    "goal": "RECOMPOSITION",
+    "priorityMuscles": [
+      "CHEST",
+      "BACK",
+      "QUADS"
+    ],
+    "limitations": "Molestia ocasional en el hombro derecho al press por encima de la cabeza.",
+    "preferences": "Prefiere máquinas a peso libre; el sábado puede entrenar más tiempo."
+  },
+  "gym": {
+    "name": "Gimnasio Central",
+    "equipment": []
+  },
+  "preferences": {
+    "availableDays": [
+      "MONDAY",
+      "WEDNESDAY",
+      "SATURDAY"
+    ],
+    "sessionMinutes": 75,
+    "blockDays": 14,
+    "startDate": "2026-09-21",
+    "cardioModes": [
+      "Caminadora"
+    ],
+    "avoidExercises": "Press militar de pie.",
+    "unit": "KG"
+  }
+}
