@@ -36,6 +36,7 @@ import app.reporrun.core.designsystem.component.RepOrRunNavItem
 import app.reporrun.core.designsystem.component.RepOrRunSearchField
 import app.reporrun.core.designsystem.component.RepOrRunSectionError
 import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
+import app.reporrun.core.designsystem.component.RepOrRunStatCard
 import app.reporrun.core.designsystem.component.RepOrRunStatusChip
 import app.reporrun.core.designsystem.component.RepOrRunStep
 import app.reporrun.core.designsystem.component.RepOrRunStepper
@@ -140,6 +141,15 @@ internal fun StepperSample() {
             ),
             currentStep = 1,
         )
+    }
+}
+
+@Composable
+internal fun StatCardSample() {
+    Row(horizontalArrangement = Arrangement.spacedBy(RepOrRunDimens.ListRowSpacing)) {
+        RepOrRunStatCard("4", "días/semana", Modifier.weight(1f))
+        RepOrRunStatCard("18", "máquinas", Modifier.weight(1f))
+        RepOrRunStatCard("75", "por sesión", Modifier.weight(1f), unit = "min", highlighted = true)
     }
 }
 
