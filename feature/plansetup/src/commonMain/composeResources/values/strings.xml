@@ -142,7 +142,7 @@
     <string name="summary_blocker_preferences">Guardar tu semana, con al menos un día</string>
     <string name="summary_blocker_consent">Aceptar el aviso de privacidad</string>
 
-    <!-- Qué se envía. La app no pide el nombre; el alias, si se puso, sí viaja con el perfil. -->
+    <!-- Qué se envía. La app no pide el nombre; el alias, si se puso, sí viaja con el perfil, y el nombre del gimnasio, con sus máquinas. -->
     <string name="summary_sent_title">Qué se envía</string>
-    <string name="summary_sent_body">Tu perfil, las máquinas de tu gimnasio y tus preferencias; la app no pide tu nombre real. El plan vuelve validado contra tus máquinas antes de guardarse.</string>
+    <string name="summary_sent_body">Tu perfil, el nombre de tu gimnasio y sus máquinas, y tus preferencias; la app no pide tu nombre real. El plan vuelve validado contra tus máquinas antes de guardarse.</string>
 </resources>
