@@ -31,12 +31,15 @@ fun NavController.navigateToProfileGoal() {
  *
  * @param graphOwner el dueño del ViewModel compartido: la entrada de [ProfileGraphRoute] en la
  *   pila. La da `composeApp`, que es quien tiene el `NavController`.
+ * @param canLeave si el paso 1 tiene a dónde volver: no en el alta, donde el perfil es lo primero
+ *   de la pila, y sí cuando se abre para editarlo. Se pregunta al componer el paso.
  * @param onContinue el paso 1 está completo.
- * @param onBack volver del paso 2 al 1.
+ * @param onBack volver al destino anterior: del paso 2 al 1, y del 1 a quien abrió el perfil.
  * @param onProfileSaved el perfil ya está guardado.
  */
 fun NavGraphBuilder.profileGraph(
     graphOwner: () -> ViewModelStoreOwner,
+    canLeave: () -> Boolean,
     onContinue: () -> Unit,
     onBack: () -> Unit,
     onProfileSaved: () -> Unit,
@@ -44,8 +47,10 @@ fun NavGraphBuilder.profileGraph(
     navigation<ProfileGraphRoute>(startDestination = ProfileBasicsRoute) {
         composable<ProfileBasicsRoute> { entry ->
             val owner = remember(entry) { graphOwner() }
+            val canLeaveBasics = remember(entry) { canLeave() }
             ProfileBasicsRoute(
                 viewModel = koinViewModel(viewModelStoreOwner = owner),
+                canLeave = canLeaveBasics,
                 onContinue = onContinue,
                 onBack = onBack,
                 onProfileSaved = onProfileSaved,

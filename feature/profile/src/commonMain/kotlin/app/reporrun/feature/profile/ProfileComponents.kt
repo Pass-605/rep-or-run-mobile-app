@@ -25,7 +25,7 @@ internal const val STEP_GOAL = 1
  * El armazón de un paso: el de `:core:designsystem` con el título del perfil y, bajo la barra,
  * el stepper que dice en cuál de los dos pasos se está.
  *
- * @param onBack `null` en el paso 1: es el primer destino y no hay a dónde volver.
+ * @param onBack `null` en el paso 1 del alta: es el primer destino y no hay a dónde volver.
  */
 @Composable
 internal fun ProfileStepScaffold(
