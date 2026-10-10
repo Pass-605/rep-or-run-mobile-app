@@ -1,7 +1,8 @@
 # resumen-previo Specification
 
 ## Purpose
-TBD - created by archiving change c-10-resumen. Update Purpose after archive.
+Revisar lo que se va a enviar antes de gastar una generación, corregirlo desde ahí y pedir el plan solo cuando no falta nada.
+
 ## Requirements
 ### Requirement: Lo que se va a enviar
 
