@@ -42,7 +42,7 @@ core/ui/             utilidades de UI que comparten los features (CollectEffects
 feature/onboarding/  bienvenida, aviso y consentimiento
 feature/profile/     perfil en dos pasos
 feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
-feature/plansetup/   preferencias del bloque
+feature/plansetup/   preferencias del bloque y resumen previo a generar
 iosApp/              proyecto Xcode que consume el framework
 ```
 
@@ -70,7 +70,9 @@ El inventario (C-08), en el mismo módulo, es el ejemplo de **lista larga con b�
 
 `feature/plansetup/` (C-09) es el ejemplo de **formulario de una sola pantalla**: las preferencias guardadas se leen una vez, como el perfil, y las opciones de cardio se observan, porque salen del inventario del gimnasio activo (`ObserveCardioOptionsUseCase`) y no de una lista escrita. Recibe `Clock` y `TimeZone` por constructor para ofrecer las fechas de inicio.
 
-El flujo hoy es bienvenida → perfil → gimnasios → máquinas → preferencias, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. Tras las preferencias todavía no hay a dónde seguir: al guardar se vuelve al inventario hasta que llegue el resumen (C-10).
+El resumen (C-10), en el mismo módulo, es el ejemplo de **pantalla que solo observa**: su estado es el `GenerationSummary` de `BuildGenerationSummaryUseCase`, sin traducir, y la pantalla no decide qué falta para generar. También es el ejemplo de **salidas que dependen de por dónde se entró**: perfil, inventario y preferencias avisan de que han guardado y `RepOrRunNavHost` pregunta a la pila con `popBackToSummary()`; si el resumen está debajo se vuelve a él, y si no, se sigue el alta. Ningún formulario sabe desde dónde lo abrieron.
+
+El flujo hoy es bienvenida → perfil → gimnasios → máquinas → preferencias → resumen, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. «Generar plan» lleva a un destino provisional de `composeApp` hasta que llegue la pantalla Generando (C-11).
 
 ## Comandos
 
