@@ -23,6 +23,25 @@ manda el Anexo A. No copies aquí valores de color: se quedarían viejos.
   está en las pantallas, no en una librería publicada.
 - Los tokens viven en la colección local **Color v2**, con modos Light y Dark.
 
+### Nodos por pantalla
+
+El `nodeId` del frame de cada pantalla en las dos páginas vigentes. **La tabla crece por
+pantalla:** quien lea una que no está, añade su fila, para que nadie vuelva a medir el diseño
+viejo.
+
+| Pantalla | v2 · Claro | v2 · Oscuro |
+|---|---|---|
+| 01 · Bienvenida | `104:836` | `115:1109` |
+| 02 · Perfil | `104:870` | `115:1131` |
+| 03 · Mi gimnasio | `104:938` | `115:1216` |
+| 04 · Preferencias | `106:870` | `115:1281` |
+
+**`get_metadata` sin `nodeId` no lista todas las páginas del archivo.** El 08/10 devolvió solo
+*Pantallas · Claro* (la vieja) de un archivo que también tiene las dos `v2`: si te fías de esa
+respuesta, implementas desde el diseño que no es. Para enumerar páginas, `use_figma` sobre
+`figma.root.children`; para una pantalla concreta, la tabla de arriba o el `design.md` de su
+change.
+
 ## Procedimiento
 
 1. **Lee el diseño antes de escribir Compose.** Con el MCP de Figma, `get_design_context`
