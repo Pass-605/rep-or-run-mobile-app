@@ -52,10 +52,15 @@ class FakePlanReviewerTest {
     }
 
     @Test
-    fun proposesMoreLoadOnlyWhereThereIsComparableFeedback() = runTest {
+    fun proposesMoreLoadOnlyWhereEverySetReachedTheTopOfTheRange() = runTest {
         val plan = plan()
+        val feedback = listOf(
+            plan.feedbackFor("L01", sessionsWithData = 3).copy(repsReached = listOf(10, 10, 10), rirPerceived = 2),
+            // Comparable, pero una serie se quedó por debajo del tope (8-12).
+            plan.feedbackFor("X01", sessionsWithData = 3).copy(repsReached = listOf(12, 12, 10)),
+        )
 
-        val review = review(reviewRequest(plan, feedback = listOf(plan.feedbackFor("L01", sessionsWithData = 3))))
+        val review = review(reviewRequest(plan, feedback))
 
         assertEquals(DataQuality.SUFFICIENT, review.result.dataQuality)
         assertEquals(
@@ -77,7 +82,9 @@ class FakePlanReviewerTest {
         val codes = plan.days.flatMap { it.exercises }.map { it.code }
         val days = plan.days.map { it.dayOfWeek }
 
-        val review = review(reviewRequest(plan, feedback = listOf(plan.feedbackFor("M01", sessionsWithData = 3))))
+        val feedback = plan.feedbackFor("M01", sessionsWithData = 3).copy(repsReached = listOf(10, 10, 10))
+
+        val review = review(reviewRequest(plan, feedback = listOf(feedback)))
 
         assertEquals(DataQuality.SUFFICIENT, review.result.dataQuality)
         assertTrue(review.result.proposals.all { it.targetExerciseCode == null || it.targetExerciseCode in codes })

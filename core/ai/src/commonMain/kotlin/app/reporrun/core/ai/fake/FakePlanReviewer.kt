@@ -9,6 +9,10 @@ import app.reporrun.core.domain.port.AiError
 import app.reporrun.core.domain.port.PlanReviewRequest
 import app.reporrun.core.domain.port.PlanReviewResult
 import app.reporrun.core.domain.port.PlanReviewer
+import app.reporrun.core.model.ExerciseDose
+import app.reporrun.core.model.ExerciseFeedback
+import app.reporrun.core.model.FeedbackRating
+import app.reporrun.core.model.PlanExercise
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.time.Clock
@@ -21,7 +25,8 @@ import kotlin.time.Clock
  *   insuficientes, que no propone nada (plan §4.13).
  * - Con alguno, la de datos suficientes, sin las propuestas que no encajan en el plan que se
  *   revisa: las que apuntan a un ejercicio o a un día que no tiene, las que proponen un aparato
- *   fuera del inventario y las de subir carga sobre un ejercicio sin datos comparables.
+ *   fuera del inventario y las de subir carga sobre un ejercicio que no ha llegado al tope de
+ *   su rango en todas las series con datos comparables (doble progresión, plan §4.6).
  *
  * Solo devuelve propuestas; nada de aquí cambia el plan (plan §4.12). El resumen y las
  * observaciones son los del ejemplo, texto de demostración: **no describen el check-in real**.
@@ -67,15 +72,36 @@ private class ReviewTarget(request: PlanReviewRequest) {
     private val days = request.plan.days.map { it.dayOfWeek.name }.toSet()
     private val equipmentIds = request.equipment.map { it.id.value }.toSet()
 
-    /** Códigos de los ejercicios del plan con datos suficientes para comparar su carga. */
-    val comparableCodes: Set<String> = request.checkIn.feedback
+    private val comparable: List<Pair<PlanExercise, ExerciseFeedback>> = request.checkIn.feedback
         .filter { it.isComparable }
-        .mapNotNull { feedback -> exercises.firstOrNull { it.id == feedback.planExerciseId }?.code?.value }
+        .mapNotNull { feedback -> exercises.firstOrNull { it.id == feedback.planExerciseId }?.let { it to feedback } }
+
+    /** Códigos de los ejercicios del plan con datos suficientes para comparar su carga. */
+    val comparableCodes: Set<String> = comparable.map { (exercise, _) -> exercise.code.value }.toSet()
+
+    /** Los que además llegaron al tope del rango en todas las series: solo ahí se sube carga. */
+    private val readyForMoreLoad: Set<String> = comparable
+        .filter { (exercise, feedback) -> feedback.reachedTopOf(exercise) }
+        .map { (exercise, _) -> exercise.code.value }
         .toSet()
 
     fun admits(proposal: ProposalDto): Boolean =
         (proposal.targetExerciseCode == null || proposal.targetExerciseCode in codes) &&
             (proposal.targetDayOfWeek == null || proposal.targetDayOfWeek.name in days) &&
             (proposal.replacementEquipmentId == null || proposal.replacementEquipmentId in equipmentIds) &&
-            (proposal.type != ProposalTypeDto.INCREASE_LOAD || proposal.targetExerciseCode in comparableCodes)
+            (proposal.type != ProposalTypeDto.INCREASE_LOAD || proposal.targetExerciseCode in readyForMoreLoad)
+}
+
+/**
+ * Doble progresión (plan §4.6): todas las series registradas al tope del rango de repeticiones,
+ * sin que la persona lo valorara como demasiado duro y, si anotó el RIR, con el previsto o más.
+ */
+private fun ExerciseFeedback.reachedTopOf(exercise: PlanExercise): Boolean {
+    val dose = exercise.dose as? ExerciseDose.Reps
+    val reps = repsReached.orEmpty()
+    val perceived = rirPerceived
+    val planned = dose?.rir
+    val rirAsPlanned = perceived == null || planned == null || perceived >= planned.low
+    return dose != null && reps.isNotEmpty() && reps.all { it >= dose.range.high } &&
+        rating != FeedbackRating.TOO_HARD && rating != FeedbackRating.NOT_DONE && rirAsPlanned
 }
