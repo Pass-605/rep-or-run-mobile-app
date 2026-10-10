@@ -65,11 +65,11 @@ class PreferencesViewModelTest {
     }
 
     @Test
-    fun startsWithNoDaysNoStartDateAndTheBlockLengthOfTheModel() = runTest {
+    fun startsWithNoDaysNoStartDateTheDefaultMinutesAndTheBlockLengthOfTheModel() = runTest {
         val state = viewModel().state.value
 
         assertEquals(emptySet(), state.availableDays)
-        assertNull(state.sessionMinutes)
+        assertEquals(60, state.sessionMinutes)
         assertNull(state.startDate)
         assertEquals(BlockPreferences.BLOCK_DAYS_V1, state.blockDays)
     }
@@ -248,27 +248,24 @@ class PreferencesViewModelTest {
     }
 
     @Test
-    fun asksForTheMinutesWhenNoneAreChosen() = runTest {
+    fun savesTheDefaultMinutesWhenNoneAreChosen() = runTest {
         val viewModel = viewModel()
         viewModel.onEvent(PreferencesEvent.DayToggled(DayOfWeek.MONDAY))
 
         viewModel.onEvent(PreferencesEvent.SaveClicked)
 
-        assertEquals(FieldIssue.Required, viewModel.state.value.errors[PreferencesField.SESSION_MINUTES])
+        assertEquals(60, preferences.saved?.sessionMinutes)
     }
 
     @Test
     fun clearsTheErrorOfAFieldWhenItIsTouched() = runTest {
         val viewModel = viewModel()
         viewModel.onEvent(PreferencesEvent.SaveClicked)
-        assertEquals(
-            setOf(PreferencesField.AVAILABLE_DAYS, PreferencesField.SESSION_MINUTES),
-            viewModel.state.value.errors.keys,
-        )
+        assertEquals(setOf(PreferencesField.AVAILABLE_DAYS), viewModel.state.value.errors.keys)
 
         viewModel.onEvent(PreferencesEvent.DayToggled(DayOfWeek.MONDAY))
 
-        assertEquals(setOf(PreferencesField.SESSION_MINUTES), viewModel.state.value.errors.keys)
+        assertEquals(emptySet(), viewModel.state.value.errors.keys)
     }
 
     @Test

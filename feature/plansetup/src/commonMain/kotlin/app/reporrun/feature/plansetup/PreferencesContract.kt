@@ -13,7 +13,8 @@ import kotlinx.datetime.LocalDate
 /**
  * El formulario de las preferencias del bloque.
  *
- * - [sessionMinutes] es `null` mientras la persona no elija: no hay valor por defecto.
+ * - [sessionMinutes] es `null` solo mientras se carga: sin preferencias guardadas el ViewModel
+ *   propone un valor, que el resumen previo a generar enseña antes de enviarlo.
  *   [sessionMinutesOptions] son los minutos entre los que se elige; si valen es cosa del caso
  *   de uso, no del estado.
  * - [blockDays] no se edita: v1 solo admite [BlockPreferences.BLOCK_DAYS_V1] (plan §4). Está en

@@ -17,6 +17,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunDimens
+import app.reporrun.core.designsystem.RepOrRunIcons
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunChip
 import app.reporrun.core.designsystem.component.RepOrRunChipGroup
@@ -41,12 +42,12 @@ import app.reporrun.feature.plansetup.resources.prefs_block_days_value
 import app.reporrun.feature.plansetup.resources.prefs_cardio
 import app.reporrun.feature.plansetup.resources.prefs_cardio_empty
 import app.reporrun.feature.plansetup.resources.prefs_cardio_hint
+import app.reporrun.feature.plansetup.resources.prefs_continue
 import app.reporrun.feature.plansetup.resources.prefs_days
 import app.reporrun.feature.plansetup.resources.prefs_days_selected
 import app.reporrun.feature.plansetup.resources.prefs_error_days_required
 import app.reporrun.feature.plansetup.resources.prefs_minutes_option
 import app.reporrun.feature.plansetup.resources.prefs_no_start_date
-import app.reporrun.feature.plansetup.resources.prefs_save
 import app.reporrun.feature.plansetup.resources.prefs_session_minutes
 import app.reporrun.feature.plansetup.resources.prefs_start_date
 import app.reporrun.feature.plansetup.resources.prefs_title
@@ -85,10 +86,11 @@ internal fun PreferencesScreen(
     RepOrRunScreenScaffold(
         title = stringResource(Res.string.prefs_title),
         backContentDescription = stringResource(Res.string.prefs_back),
-        actionText = stringResource(Res.string.prefs_save),
+        actionText = stringResource(Res.string.prefs_continue),
         actionEnabled = !state.isLoading && !state.isSaving,
         onAction = { onEvent(PreferencesEvent.SaveClicked) },
         modifier = modifier,
+        actionIcon = RepOrRunIcons.ArrowForward,
         onBack = onBack,
     ) {
         // Hasta saber si hay preferencias guardadas no se pinta el formulario.
@@ -140,7 +142,7 @@ private fun AvailableDays(state: PreferencesUiState, onEvent: (PreferencesEvent)
     )
 }
 
-/** Los minutos se eligen entre los que trae el estado; ninguno viene marcado. */
+/** Los minutos se eligen entre los que trae el estado, que la primera vez ya trae uno marcado. */
 @Composable
 private fun SessionMinutes(state: PreferencesUiState, onEvent: (PreferencesEvent) -> Unit) {
     RepOrRunSectionTitle(stringResource(Res.string.prefs_session_minutes))
