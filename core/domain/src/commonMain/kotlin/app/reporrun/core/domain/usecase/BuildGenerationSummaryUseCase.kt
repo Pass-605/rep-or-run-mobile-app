@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 /** Algo que falta para poder generar un plan. */
 sealed interface GenerationBlocker {
@@ -41,6 +44,8 @@ sealed interface GenerationBlocker {
 /**
  * Lo que se va a enviar para generar y lo que falta para poder hacerlo.
  *
+ * @property preferences las guardadas, con la fecha de inicio que vale hoy: una que ya pasó
+ *   llega como `null` (`BlockPreferences.effectiveStartDate`). Es lo que se envía.
  * @property equipment inventario del gimnasio activo; vacío si no hay gimnasio activo.
  * @property blockers todo lo que falta, no solo lo primero. Vacía si se puede generar.
  */
@@ -58,21 +63,26 @@ data class GenerationSummary(
 
 /**
  * Resumen previo a generar, reactivo: vuelve a emitir cuando cambia el perfil, el gimnasio
- * activo, su inventario, las preferencias o el consentimiento.
+ * activo, su inventario, las preferencias o el consentimiento. «Hoy» se lee del [clock] en
+ * cada emisión, en la zona horaria de la persona.
  */
 class BuildGenerationSummaryUseCase(
     private val profileRepository: ProfileRepository,
     private val gymRepository: GymRepository,
     private val preferencesRepository: PreferencesRepository,
     private val settingsRepository: SettingsRepository,
+    private val clock: Clock,
+    private val timeZone: TimeZone,
 ) {
     operator fun invoke(): Flow<GenerationSummary> = combine(
         profileRepository.observeProfile(),
         activeGymWithInventory(),
         preferencesRepository.observePreferences(),
         settingsRepository.observeConsentAcceptedAt(),
-    ) { profile, (gym, equipment), preferences, consentAcceptedAt ->
+    ) { profile, (gym, equipment), saved, consentAcceptedAt ->
         val consentAccepted = consentAcceptedAt != null
+        val today = clock.now().toLocalDateTime(timeZone).date
+        val preferences = saved?.let { it.copy(startDate = it.effectiveStartDate(today)) }
         GenerationSummary(
             profile = profile,
             gym = gym,

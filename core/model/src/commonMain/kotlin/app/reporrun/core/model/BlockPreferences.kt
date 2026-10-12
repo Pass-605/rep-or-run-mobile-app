@@ -32,6 +32,13 @@ data class BlockPreferences(
         require(avoidExercises.length <= MAX_AVOID_LENGTH) { "avoidExercises demasiado largo" }
     }
 
+    /**
+     * La fecha de inicio que vale el día [today]: [startDate] si es hoy o posterior; `null` si
+     * no hay o si ya pasó. Un bloque que se va a pedir no puede empezar ayer, y una fecha
+     * guardada no se corrige sola: el formulario, el resumen y la generación leen esta.
+     */
+    fun effectiveStartDate(today: LocalDate): LocalDate? = startDate?.takeIf { it >= today }
+
     /** Límites del contrato. */
     companion object {
         const val BLOCK_DAYS_V1: Int = 14
