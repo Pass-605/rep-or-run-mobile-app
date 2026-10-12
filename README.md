@@ -44,11 +44,11 @@ En Windows, desde Git Bash. Los tests de contrato (`gradlew.bat :core:ai:allTest
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
 composeApp/          UI compartida (librería KMP) y framework de iOS; grafo de Koin y navegación raíz
 core/model/          modelos de dominio, sin dependencias
-core/domain/         interfaces de repositorio y casos de uso de captura (más adelante, validadores)
+core/domain/         interfaces de repositorio, ports de IA y casos de uso de captura (más adelante, validadores)
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
-core/ai/             DTOs del contrato con la Lambda (paquete contract) y sus tests de ida y vuelta
+core/ai/             DTOs del contrato con la Lambda (paquete contract), su mapeo al dominio y los fakes de generación y revisión
 core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento

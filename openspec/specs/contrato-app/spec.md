@@ -2,7 +2,6 @@
 
 ## Purpose
 Que la app y `../docs/contract/` digan lo mismo: una copia del contrato que se puede comprobar contra la fuente, y mensajes que se leen y se escriben sin perder nada. No redefine el contrato.
-
 ## Requirements
 ### Requirement: Copia del contrato en el repo
 
@@ -53,11 +52,16 @@ La app SHALL poder leer y volver a escribir cada mensaje del contrato v1 (petici
 
 ### Requirement: Rechazar mensajes con la forma equivocada
 
-La app SHALL rechazar al leer un mensaje con un campo que el contrato no define, sin un campo obligatorio o con un valor fuera de un enumerado, y el rechazo SHALL señalar el lugar del mensaje y el motivo. La app SHALL NOT comprobar al leer los límites del contrato (cantidades mínimas, rangos, longitudes): eso corresponde a los validadores de dominio y a la Lambda.
+La app SHALL rechazar al leer un mensaje sin un campo obligatorio o con un valor fuera de un enumerado, y el rechazo SHALL señalar el lugar del mensaje y el motivo. La app SHALL ignorar al leer los campos que el contrato no define: el contrato declara compatible añadir un campo opcional, y rechazar las entradas con campos de más corresponde a la Lambda. La app SHALL NOT comprobar al leer los límites del contrato (cantidades mínimas, rangos, longitudes): eso corresponde a los validadores de dominio y a la Lambda.
 
-#### Scenario: Campo de más
+#### Scenario: Campo de más en una respuesta
 
-- **WHEN** se lee una petición cuyo perfil trae un campo que el contrato no define
+- **WHEN** se lee una respuesta válida que además trae un campo que el contrato no define
+- **THEN** la lectura no falla y el resto del mensaje se lee igual
+
+#### Scenario: Campo de más en un ejemplo inválido
+
+- **WHEN** los tests leen con lectura estricta una petición cuyo perfil trae un campo que el contrato no define
 - **THEN** la lectura falla señalando el perfil y el campo
 
 #### Scenario: Falta un campo obligatorio

@@ -1,7 +1,30 @@
+import app.reporrun.buildlogic.GenerateJsonSourceTask
+
 plugins {
     alias(libs.plugins.reporrun.kmp.library)
     alias(libs.plugins.reporrun.test)
     alias(libs.plugins.kotlinSerialization)
+}
+
+// La copia versionada del contrato (scripts/sync-contract.sh), nunca `../docs/`: el repo
+// tiene que pasar sus tests sin el resto del workspace.
+val contractDir: Directory = rootProject.layout.projectDirectory.dir("contract/v1")
+
+/*
+ * Los fakes devuelven los ejemplos del contrato, y `commonMain` no lee archivos: los cuatro
+ * que usan se empaquetan como fuente Kotlin generada. `contract/v1/examples/` sigue siendo la
+ * única fuente; esto se regenera al sincronizar el contrato.
+ */
+val generateContractExamplesSource by tasks.registering(GenerateJsonSourceTask::class) {
+    jsonFiles.from(
+        contractDir.file("examples/generate-request.small-gym.json"),
+        contractDir.file("examples/generate-response.small-gym.json"),
+        contractDir.file("examples/review-response.sufficient.json"),
+        contractDir.file("examples/review-response.insufficient.json"),
+    )
+    packageName.set("app.reporrun.core.ai.fake")
+    objectName.set("ContractExampleSources")
+    outputDirectory.set(layout.buildDirectory.dir("generated/contractExamples/commonMain/kotlin"))
 }
 
 kotlin {
@@ -10,15 +33,19 @@ kotlin {
     jvm()
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.kotlinx.serialization.json)
+        commonMain {
+            kotlin.srcDir(generateContractExamplesSource)
+            dependencies {
+                // `api`: los fakes se registran por su port de :core:domain.
+                api(project(":core:domain"))
+                implementation(project(":core:model"))
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.koin.core)
+            }
         }
     }
 }
 
-// La copia versionada del contrato (scripts/sync-contract.sh), nunca `../docs/`: el repo
-// tiene que pasar sus tests sin el resto del workspace.
-val contractDir: Directory = rootProject.layout.projectDirectory.dir("contract/v1")
 tasks.named<Test>("jvmTest") {
     inputs.dir(contractDir).withPathSensitivity(PathSensitivity.RELATIVE)
     systemProperty("reporrun.contractDir", contractDir.asFile.absolutePath)
