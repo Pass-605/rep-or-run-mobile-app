@@ -64,10 +64,11 @@ internal fun profile() = UserProfile(
 internal fun preferences(
     availableDays: Set<DayOfWeek> = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY),
     cardioModes: List<String> = listOf("Caminadora"),
+    sessionMinutes: Int = 75,
 ) = BlockPreferences(
     id = BlockPreferencesId("preferences"),
     availableDays = availableDays,
-    sessionMinutes = 75,
+    sessionMinutes = sessionMinutes,
     blockDays = BlockPreferences.BLOCK_DAYS_V1,
     startDate = null,
     cardioModes = cardioModes,
