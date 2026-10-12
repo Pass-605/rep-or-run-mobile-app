@@ -1,16 +1,20 @@
 package app.reporrun.core.domain.di
 
 import app.reporrun.core.domain.usecase.AcceptConsentUseCase
+import app.reporrun.core.domain.usecase.ActivatePlanUseCase
 import app.reporrun.core.domain.usecase.AddEquipmentUseCase
+import app.reporrun.core.domain.usecase.ApprovePlanDayUseCase
 import app.reporrun.core.domain.usecase.BuildGenerationSummaryUseCase
 import app.reporrun.core.domain.usecase.CreateGymUseCase
 import app.reporrun.core.domain.usecase.GeneratePlanUseCase
+import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.IdGenerator
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveCardioOptionsUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveGymInventoryUseCase
 import app.reporrun.core.domain.usecase.ObserveGymsUseCase
+import app.reporrun.core.domain.usecase.ObservePlanUseCase
 import app.reporrun.core.domain.usecase.ObservePreferencesUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
 import app.reporrun.core.domain.usecase.RemoveEquipmentUseCase
@@ -56,6 +60,10 @@ val domainModule: Module = module {
     factoryOf(::ObserveCardioOptionsUseCase)
     factoryOf(::BuildGenerationSummaryUseCase)
     factoryOf(::GeneratePlanUseCase)
+    factoryOf(::ObservePlanUseCase)
+    factoryOf(::ApprovePlanDayUseCase)
+    factoryOf(::ActivatePlanUseCase)
+    factoryOf(::HasSavedPlansUseCase)
     factoryOf(::ObserveConsentUseCase)
     factoryOf(::AcceptConsentUseCase)
 
