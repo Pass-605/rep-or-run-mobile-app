@@ -3,6 +3,7 @@ package app.reporrun
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.reporrun.core.domain.AppDispatchers
+import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
@@ -26,6 +27,9 @@ sealed interface StartDestination {
 
     /** Hay consentimiento y perfil: se entra por los gimnasios, que es el paso siguiente. */
     data object Gyms : StartDestination
+
+    /** El gimnasio activo ya tiene algún plan guardado: se entra por la vista del plan. */
+    data object Plan : StartDestination
 }
 
 data class AppUiState(val start: StartDestination = StartDestination.Loading)
@@ -35,11 +39,16 @@ data class AppUiState(val start: StartDestination = StartDestination.Loading)
  * haya consentimiento; el perfil, mientras no haya uno guardado; después, los gimnasios, que
  * con ninguno enseñan su estado vacío. El consentimiento va primero aunque haya un perfil.
  *
- * Los dos datos se leen **una vez**, al arrancar, y no se observan. Si el destino inicial
+ * **Con algún plan guardado en el gimnasio activo ya no falta ningún paso**, y se entra por la
+ * vista del plan: enseña el activo o, si todos son borradores o están archivados, que no hay
+ * ninguno activo y cómo preparar otro. Cuenta cualquier plan y no solo el activo porque quien ya
+ * ha generado uno no tiene que volver a recorrer el alta para llegar al resumen.
+ *
+ * Los datos se leen **una vez**, al arrancar, y no se observan. Si el destino inicial
  * cambiara al aceptar o al guardar el perfil, `NavHost` reconstruiría el grafo y competiría con
  * la navegación que disparan los efectos de esas pantallas.
  *
- * Con un gimnasio ya creado el inicio sigue siendo la lista de gimnasios, no su inventario:
+ * Con un gimnasio ya creado y sin planes el inicio sigue siendo la lista de gimnasios, no su inventario:
  * desde ella «Continuar» lleva a las máquinas del activo, y el arranque no puede saber si el
  * inventario «falta» (cuántas máquinas bastan lo decide el resumen previo a generar).
  *
@@ -51,6 +60,7 @@ data class AppUiState(val start: StartDestination = StartDestination.Loading)
 class AppViewModel(
     observeConsent: ObserveConsentUseCase,
     observeProfile: ObserveProfileUseCase,
+    hasSavedPlans: HasSavedPlansUseCase,
     loadCatalogSeed: LoadCatalogSeedUseCase,
     dispatchers: AppDispatchers,
 ) : ViewModel() {
@@ -66,6 +76,7 @@ class AppViewModel(
             val start = when {
                 observeConsent().first() == null -> StartDestination.Onboarding
                 observeProfile().first() == null -> StartDestination.Profile
+                hasSavedPlans() -> StartDestination.Plan
                 else -> StartDestination.Gyms
             }
             _state.update { it.copy(start = start) }

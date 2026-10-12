@@ -2,14 +2,30 @@ package app.reporrun
 
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.repository.EquipmentCatalogRepository
+import app.reporrun.core.domain.repository.EquipmentDeletion
+import app.reporrun.core.domain.repository.GymRepository
+import app.reporrun.core.domain.repository.PlanRepository
 import app.reporrun.core.domain.repository.ProfileRepository
 import app.reporrun.core.domain.repository.SettingsRepository
+import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.model.DayStatus
+import app.reporrun.core.model.Equipment
 import app.reporrun.core.model.EquipmentCatalogItem
+import app.reporrun.core.model.EquipmentId
 import app.reporrun.core.model.Experience
+import app.reporrun.core.model.ExportRecord
 import app.reporrun.core.model.Goal
+import app.reporrun.core.model.Gym
+import app.reporrun.core.model.GymId
+import app.reporrun.core.model.Plan
+import app.reporrun.core.model.PlanChange
+import app.reporrun.core.model.PlanDayId
+import app.reporrun.core.model.PlanId
+import app.reporrun.core.model.PlanStatus
+import app.reporrun.core.model.PlanSummary
 import app.reporrun.core.model.ProfileId
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +38,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.LocalDate
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -41,9 +58,12 @@ class AppViewModelTest {
     private fun viewModel(
         settings: SettingsRepository,
         profiles: ProfileRepository = FakeProfileRepository(Stored(null)),
+        gyms: GymRepository = FakeGymRepository(activeGym = null),
+        plans: PlanRepository = FakePlanRepository(savedIn = emptySet()),
     ) = AppViewModel(
         observeConsent = ObserveConsentUseCase(settings),
         observeProfile = ObserveProfileUseCase(profiles),
+        hasSavedPlans = HasSavedPlansUseCase(plans, gyms),
         loadCatalogSeed = LoadCatalogSeedUseCase(catalog),
         dispatchers = AppDispatchers(UnconfinedTestDispatcher()),
     )
@@ -70,6 +90,42 @@ class AppViewModelTest {
         )
 
         assertEquals(StartDestination.Gyms, viewModel.state.value.start)
+    }
+
+    @Test
+    fun startsInTheGymsWhenTheActiveGymHasNoPlans() = runTest {
+        val viewModel = viewModel(
+            settings = FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)),
+            profiles = FakeProfileRepository(Stored(savedProfile())),
+            gyms = FakeGymRepository(activeGym = CENTRAL),
+            // El plan guardado es de otro gimnasio.
+            plans = FakePlanRepository(savedIn = setOf(GymId("gym_norte"))),
+        )
+
+        assertEquals(StartDestination.Gyms, viewModel.state.value.start)
+    }
+
+    @Test
+    fun startsInThePlanWhenTheActiveGymHasASavedPlan() = runTest {
+        val viewModel = viewModel(
+            settings = FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)),
+            profiles = FakeProfileRepository(Stored(savedProfile())),
+            gyms = FakeGymRepository(activeGym = CENTRAL),
+            plans = FakePlanRepository(savedIn = setOf(CENTRAL)),
+        )
+
+        assertEquals(StartDestination.Plan, viewModel.state.value.start)
+    }
+
+    @Test
+    fun asksForTheProfileFirstEvenWithASavedPlan() = runTest {
+        val viewModel = viewModel(
+            settings = FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)),
+            gyms = FakeGymRepository(activeGym = CENTRAL),
+            plans = FakePlanRepository(savedIn = setOf(CENTRAL)),
+        )
+
+        assertEquals(StartDestination.Profile, viewModel.state.value.start)
     }
 
     @Test
@@ -144,6 +200,7 @@ class AppViewModelTest {
 
     private companion object {
         val NOW: Instant = Instant.parse("2026-10-05T10:00:00Z")
+        val CENTRAL = GymId("gym_central")
     }
 }
 
@@ -178,6 +235,70 @@ private class FakeCatalogRepository : EquipmentCatalogRepository {
         loadCalls++
         return 0
     }
+}
+
+/** Solo dice cuál es el gimnasio activo, que es lo único que mira la raíz. */
+private class FakeGymRepository(private val activeGym: GymId?) : GymRepository {
+    private val gym = activeGym?.let {
+        Gym(it, "Gimnasio", isActive = true, notes = "", createdAt = Instant.DISTANT_PAST)
+    }
+
+    override fun observeGyms(): Flow<List<Gym>> = MutableStateFlow(listOfNotNull(gym))
+
+    override fun observeActiveGym(): Flow<Gym?> = MutableStateFlow(gym)
+
+    override suspend fun saveGym(gym: Gym) = Unit
+
+    override suspend fun setActiveGym(gymId: GymId) = Unit
+
+    override suspend fun deleteGym(gymId: GymId) = Unit
+
+    override fun observeEquipment(gymId: GymId): Flow<List<Equipment>> = MutableStateFlow(emptyList())
+
+    override suspend fun saveEquipment(equipment: List<Equipment>) = Unit
+
+    override suspend fun deleteEquipment(equipmentId: EquipmentId): EquipmentDeletion = EquipmentDeletion.Deleted
+}
+
+/** Un borrador guardado en cada gimnasio de [savedIn]; la raíz solo mira si hay alguno. */
+private class FakePlanRepository(private val savedIn: Set<GymId>) : PlanRepository {
+    override fun observePlan(planId: PlanId): Flow<Plan?> = MutableStateFlow(null)
+
+    override fun observeActivePlan(gymId: GymId): Flow<Plan?> = MutableStateFlow(null)
+
+    override fun observeHistory(gymId: GymId): Flow<List<PlanSummary>> = MutableStateFlow(
+        if (gymId in savedIn) {
+            listOf(
+                PlanSummary(
+                    id = PlanId("ROR-2026-10-05-v1"),
+                    gymId = gymId,
+                    createdAt = Instant.DISTANT_PAST,
+                    status = PlanStatus.DRAFT,
+                    startDate = null,
+                    reviewDate = null,
+                    focus = emptyList(),
+                ),
+            )
+        } else {
+            emptyList()
+        },
+    )
+
+    override suspend fun planIdsOn(date: LocalDate): List<PlanId> = emptyList()
+
+    override suspend fun savePlan(plan: Plan) = Unit
+
+    override suspend fun activatePlan(planId: PlanId) = Unit
+
+    override suspend fun setDayStatus(dayId: PlanDayId, status: DayStatus) = Unit
+
+    override fun observeChanges(gymId: GymId): Flow<List<PlanChange>> = MutableStateFlow(emptyList())
+
+    override suspend fun saveChange(change: PlanChange) = Unit
+
+    override fun observeExports(planId: PlanId): Flow<List<ExportRecord>> = MutableStateFlow(emptyList())
+
+    override suspend fun saveExport(record: ExportRecord) = Unit
 }
 
 /** El perfil guardado, una vez leído. Distingue «sin perfil» de «aún no se ha leído». */

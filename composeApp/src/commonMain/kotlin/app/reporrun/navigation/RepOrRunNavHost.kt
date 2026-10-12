@@ -101,10 +101,15 @@ internal fun RepOrRunNavHost(
             onGenerate = navController::navigateToGenerating,
         )
         planGraph(
+            // Como destino inicial el plan no tiene a dónde volver; tras generar, sí: al resumen.
+            canLeave = { navController.previousBackStackEntry != null },
             onBack = { navController.popBackStack() },
             // A la espera solo se llega desde el resumen, así que está justo debajo.
             onBackToSummary = { navController.popBackStack() },
             onPlanGenerated = navController::navigateToGeneratedPlan,
+            // Desde el plan, el resumen es la puerta a todo lo demás: el perfil, el gimnasio, las
+            // preferencias y generar otro.
+            onOpenSummary = navController::navigateToSummary,
         )
     }
 }

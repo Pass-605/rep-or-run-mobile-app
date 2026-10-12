@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.reporrun.core.designsystem.RepOrRunTheme
 import app.reporrun.feature.gym.GymGraphRoute
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
+import app.reporrun.feature.plan.PlanRoute
 import app.reporrun.feature.profile.ProfileGraphRoute
 import app.reporrun.navigation.RepOrRunNavHost
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,6 +38,8 @@ fun RepOrRunApp() {
                 StartDestination.Profile -> RepOrRunNavHost(startDestination = ProfileGraphRoute)
 
                 StartDestination.Gyms -> RepOrRunNavHost(startDestination = GymGraphRoute)
+
+                StartDestination.Plan -> RepOrRunNavHost(startDestination = PlanRoute())
             }
         }
     }
