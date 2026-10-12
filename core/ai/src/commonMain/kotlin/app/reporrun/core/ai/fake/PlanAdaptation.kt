@@ -7,6 +7,7 @@ import app.reporrun.core.ai.contract.PlanDayDto
 import app.reporrun.core.ai.contract.PlanDto
 import app.reporrun.core.ai.contract.PlanExerciseDto
 import app.reporrun.core.domain.port.PlanGenerationRequest
+import app.reporrun.core.domain.validation.codeLetter
 import app.reporrun.core.model.DayOfWeek
 import app.reporrun.core.model.Equipment
 import app.reporrun.core.model.EquipmentCategory
@@ -52,17 +53,6 @@ private val CATALOG_KEYS: Map<String, Set<String>> = mapOf(
     "eq_cable_tower" to setOf("functional_trainer", "cable_crossover"),
     "eq_dumbbells" to setOf("dumbbells"),
     "eq_mat" to setOf("exercise_mat"),
-)
-
-/** Letra del día en los códigos de ejercicio (`L01`, `X04`), como en los ejemplos del contrato. */
-private val DAY_LETTERS: Map<DayOfWeek, String> = mapOf(
-    DayOfWeek.MONDAY to "L",
-    DayOfWeek.TUESDAY to "M",
-    DayOfWeek.WEDNESDAY to "X",
-    DayOfWeek.THURSDAY to "J",
-    DayOfWeek.FRIDAY to "V",
-    DayOfWeek.SATURDAY to "S",
-    DayOfWeek.SUNDAY to "D",
 )
 
 /** El calentamiento del ejemplo nombra máquinas; este no, y vale para cualquier día adaptado. */
@@ -129,7 +119,7 @@ private fun chooseDays(exampleDays: List<DayOfWeekDto>, available: Set<DayOfWeek
 private fun PlanDayDto.adapted(day: DayOfWeek, substitutes: Map<String, Substitute>, cardioMode: String?): PlanDayDto? {
     val kept = exercises.mapNotNull { it.adapted(substitutes) }.mapIndexed { index, exercise ->
         val order = index + 1
-        exercise.copy(order = order, code = DAY_LETTERS.getValue(day) + order.toString().padStart(CODE_DIGITS, '0'))
+        exercise.copy(order = order, code = day.codeLetter + order.toString().padStart(CODE_DIGITS, '0'))
     }
     val sameCardio = cardioMode != null && cardioMode.equals(this.cardioMode, ignoreCase = true)
     // Con todos sus aparatos y su mismo cardio, el día es el del ejemplo y su calentamiento vale.
