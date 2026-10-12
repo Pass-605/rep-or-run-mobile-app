@@ -20,6 +20,7 @@ import app.reporrun.core.model.PlanId
 import app.reporrun.core.model.PlanSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 
 class PlanRepositoryImpl(private val planDao: PlanDao, private val historyDao: PlanHistoryDao) : PlanRepository {
     override fun observePlan(planId: PlanId): Flow<Plan?> =
@@ -30,6 +31,9 @@ class PlanRepositoryImpl(private val planDao: PlanDao, private val historyDao: P
 
     override fun observeHistory(gymId: GymId): Flow<List<PlanSummary>> =
         historyDao.observeHistory(gymId.value).map { rows -> rows.map { it.toSummary() } }
+
+    override suspend fun planIdsOn(date: LocalDate): List<PlanId> =
+        planDao.idsStartingWith(PlanId.prefixOf(date)).map(::PlanId)
 
     override suspend fun savePlan(plan: Plan) {
         val rows = plan.toRows()
@@ -50,14 +54,14 @@ class PlanRepositoryImpl(private val planDao: PlanDao, private val historyDao: P
         historyDao.observeExports(planId.value).map { rows -> rows.map { it.toModel() } }
 
     override suspend fun saveExport(record: ExportRecord) = historyDao.insertExport(record.toEntity())
+}
 
-    /**
-     * Un plan guardado salió de un [Plan] válido: si ya no se puede leer, la base está dañada
-     * o hay un fallo en el mapper, y no es algo que la persona pueda arreglar. Se lanza con
-     * todos los errores (rutas y reglas, sin contenido del plan) para que el fallo se vea.
-     */
-    private fun PlanWithDays.toPlanOrThrow(): Plan = when (val mapped = toPlan()) {
-        is Mapped.Valid -> mapped.value
-        is Mapped.Invalid -> error("Plan ${plan.id} ilegible: ${mapped.errors.joinToString("; ")}")
-    }
+/**
+ * Un plan guardado salió de un [Plan] válido: si ya no se puede leer, la base está dañada
+ * o hay un fallo en el mapper, y no es algo que la persona pueda arreglar. Se lanza con
+ * todos los errores (rutas y reglas, sin contenido del plan) para que el fallo se vea.
+ */
+private fun PlanWithDays.toPlanOrThrow(): Plan = when (val mapped = toPlan()) {
+    is Mapped.Valid -> mapped.value
+    is Mapped.Invalid -> error("Plan ${plan.id} ilegible: ${mapped.errors.joinToString("; ")}")
 }

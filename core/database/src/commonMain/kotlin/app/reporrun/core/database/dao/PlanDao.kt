@@ -34,6 +34,14 @@ interface PlanDao {
     @Query("SELECT * FROM plan WHERE id = :planId")
     fun observePlan(planId: String): Flow<PlanWithDays?>
 
+    /**
+     * Los ids que empiezan por [prefix], de cualquier gimnasio y en cualquier estado. Con
+     * `ROR-AAAA-MM-DD-v`, los planes de ese día. `substr` y no `LIKE`: compara tal cual, sin
+     * comodines ni mayúsculas equivalentes.
+     */
+    @Query("SELECT id FROM plan WHERE substr(id, 1, length(:prefix)) = :prefix")
+    suspend fun idsStartingWith(prefix: String): List<String>
+
     /** El plan activo del gimnasio, entero; `null` si no hay ninguno. */
     @Transaction
     @Query("SELECT * FROM plan WHERE gymId = :gymId AND status = 'ACTIVE' LIMIT 1")

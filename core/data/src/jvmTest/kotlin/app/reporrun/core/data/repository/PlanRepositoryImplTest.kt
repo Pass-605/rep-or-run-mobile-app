@@ -84,6 +84,19 @@ class PlanRepositoryImplTest {
     }
 
     @Test
+    fun listsThePlanIdsOfOneDay() = runTest {
+        db.seedGymWithPlanEquipment()
+        repository.savePlan(plan("ROR-2026-09-30-v1"))
+        repository.savePlan(plan("ROR-2026-09-30-v2", status = PlanStatus.ARCHIVED))
+        repository.savePlan(plan("ROR-2026-10-01-v1"))
+
+        val ids = repository.planIdsOn(LocalDate(2026, 9, 30))
+
+        assertEquals(setOf(PlanId("ROR-2026-09-30-v1"), PlanId("ROR-2026-09-30-v2")), ids.toSet())
+        assertEquals(emptyList(), repository.planIdsOn(LocalDate(2026, 9, 29)))
+    }
+
+    @Test
     fun recordsVersionChangesAndExports() = runTest {
         db.seedGymWithPlanEquipment()
         val v1 = plan("ROR-2026-09-30-v1")

@@ -9,6 +9,7 @@ import app.reporrun.core.model.PlanDayId
 import app.reporrun.core.model.PlanId
 import app.reporrun.core.model.PlanSummary
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
 /**
  * Versiones de plan y su historial. Un plan no se edita en el sitio (plan §4.12): una versión
@@ -24,6 +25,13 @@ interface PlanRepository {
 
     /** Versiones de [gymId] sin sus días, de la más reciente a la más antigua. */
     fun observeHistory(gymId: GymId): Flow<List<PlanSummary>>
+
+    /**
+     * Los ids de los planes generados el día [date], en cualquier gimnasio y en cualquier
+     * estado: el id es único en toda la app, no por gimnasio. De aquí sale el `N` de la versión
+     * siguiente.
+     */
+    suspend fun planIdsOn(date: LocalDate): List<PlanId>
 
     /**
      * Guarda un plan nuevo con todos sus días, ejercicios y alternativas, o nada. Tiene que
