@@ -44,7 +44,7 @@ En Windows, desde Git Bash. Los tests de contrato (`gradlew.bat :core:ai:allTest
 androidApp/          módulo de aplicación Android: arranque, manifest y R8
 composeApp/          UI compartida (librería KMP) y framework de iOS; grafo de Koin y navegación raíz
 core/model/          modelos de dominio, sin dependencias
-core/domain/         interfaces de repositorio, ports de IA, casos de uso de captura y PlanValidator (paquete validation)
+core/domain/         interfaces de repositorio, ports de IA, casos de uso de captura, GeneratePlanUseCase y PlanValidator (paquete validation)
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
