@@ -122,9 +122,23 @@ internal class FakePlanRepository : PlanRepository {
         plans.value += plan
     }
 
-    override suspend fun activatePlan(planId: PlanId) = Unit
+    /** Como `PlanDao.activate`: archiva el que estuviera activo en el mismo gimnasio. */
+    override suspend fun activatePlan(planId: PlanId) {
+        val gymId = plans.value.firstOrNull { it.id == planId }?.gymId
+        plans.value = plans.value.map {
+            when {
+                it.id == planId -> it.copy(status = PlanStatus.ACTIVE)
+                it.gymId == gymId && it.status == PlanStatus.ACTIVE -> it.copy(status = PlanStatus.ARCHIVED)
+                else -> it
+            }
+        }
+    }
 
-    override suspend fun setDayStatus(dayId: PlanDayId, status: DayStatus) = Unit
+    override suspend fun setDayStatus(dayId: PlanDayId, status: DayStatus) {
+        plans.value = plans.value.map { plan ->
+            plan.copy(days = plan.days.map { if (it.id == dayId) it.copy(status = status) else it })
+        }
+    }
 
     override fun observeChanges(gymId: GymId): Flow<List<PlanChange>> = MutableStateFlow(emptyList())
 
