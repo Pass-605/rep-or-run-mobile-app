@@ -48,6 +48,7 @@ import app.reporrun.feature.plan.resources.Res
 import app.reporrun.feature.plan.resources.generating_cancel
 import app.reporrun.feature.plan.resources.generating_close
 import app.reporrun.feature.plan.resources.generating_problem_line
+import app.reporrun.feature.plan.resources.generating_problems_hint
 import app.reporrun.feature.plan.resources.generating_problems_title
 import app.reporrun.feature.plan.resources.generating_retry_in
 import app.reporrun.feature.plan.resources.generating_subtitle
@@ -230,24 +231,36 @@ private fun ColumnScope.Failed(failure: FailureTexts) {
     if (failure.problems.isNotEmpty()) Problems(failure.problems)
 }
 
-/** El overline va en acento y dentro de la tarjeta: sobre el lienzo no cumple (Anexo A). */
+/**
+ * Los problemas, **como detalle técnico y no como mensaje**: están escritos para el prompt de
+ * reparación del servicio (`plan.days[0]…: regla 1`), no para una persona. Qué pasó y qué hacer
+ * ya lo dicen el título y el cuerpo de encima; esto va debajo, sin acento, con un rótulo que dice
+ * lo que es y una línea que avisa de que no hace falta entenderlo.
+ */
 @Composable
 private fun Problems(problems: List<String>) {
+    val secondary = MaterialTheme.colorScheme.onSurfaceVariant
     RepOrRunCard(modifier = Modifier.fillMaxWidth()) {
         Text(
             stringResource(Res.string.generating_problems_title).uppercase(),
             style = RepOrRunTheme.extendedTypography.overline,
-            color = RepOrRunTheme.extendedColors.accentText,
+            color = secondary,
+        )
+        Text(
+            stringResource(Res.string.generating_problems_hint),
+            modifier = Modifier.padding(top = RepOrRunDimens.FieldLabelSpacing),
+            style = MaterialTheme.typography.bodySmall,
+            color = secondary,
         )
         Column(
-            modifier = Modifier.padding(top = RepOrRunDimens.FieldLabelSpacing),
+            modifier = Modifier.padding(top = RepOrRunDimens.ListRowSpacing),
             verticalArrangement = Arrangement.spacedBy(RepOrRunDimens.FieldLabelSpacing),
         ) {
             problems.forEach { problem ->
                 Text(
                     stringResource(Res.string.generating_problem_line, problem),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = secondary,
                 )
             }
         }

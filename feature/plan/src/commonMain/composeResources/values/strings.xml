@@ -46,8 +46,10 @@
     <string name="generating_error_interrupted_title">La generación se interrumpió</string>
     <string name="generating_error_interrupted_body">La app se cerró durante la espera y la generación no terminó. Si quieres un plan, genera otra vez: es una generación nueva.</string>
 
-    <!-- La lista de problemas que da la validación, tal cual, una línea por problema. -->
-    <string name="generating_problems_title">Qué ha fallado</string>
+    <!-- La lista de problemas que da la validación, tal cual, una línea por problema. No es un
+         mensaje para la persona: va como detalle técnico. Traducirlos está pendiente. -->
+    <string name="generating_problems_title">Detalle técnico</string>
+    <string name="generating_problems_hint">Lo que devolvió la comprobación del plan, tal cual. No hace falta entenderlo para seguir.</string>
     <string name="generating_problem_line">· %1$s</string>
 
     <!-- Destino del plan recién generado. Provisional: lo sustituye la vista del plan (C-12). -->
