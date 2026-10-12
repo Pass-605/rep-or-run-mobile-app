@@ -2,13 +2,13 @@ package app.reporrun.core.ai.fake
 
 import app.reporrun.core.ai.contract.ProposalDto
 import app.reporrun.core.ai.contract.ProposalTypeDto
-import app.reporrun.core.ai.mapper.Mapped
 import app.reporrun.core.ai.mapper.toGeneratedReview
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.port.AiError
 import app.reporrun.core.domain.port.PlanReviewRequest
 import app.reporrun.core.domain.port.PlanReviewResult
 import app.reporrun.core.domain.port.PlanReviewer
+import app.reporrun.core.domain.validation.Mapped
 import app.reporrun.core.model.ExerciseDose
 import app.reporrun.core.model.ExerciseFeedback
 import app.reporrun.core.model.FeedbackRating

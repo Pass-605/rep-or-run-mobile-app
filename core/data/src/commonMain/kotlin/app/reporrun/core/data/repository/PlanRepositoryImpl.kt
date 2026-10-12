@@ -1,6 +1,5 @@
 package app.reporrun.core.data.repository
 
-import app.reporrun.core.data.mapper.Mapped
 import app.reporrun.core.data.mapper.toEntity
 import app.reporrun.core.data.mapper.toModel
 import app.reporrun.core.data.mapper.toPlan
@@ -10,6 +9,7 @@ import app.reporrun.core.database.dao.PlanDao
 import app.reporrun.core.database.dao.PlanHistoryDao
 import app.reporrun.core.database.entity.PlanWithDays
 import app.reporrun.core.domain.repository.PlanRepository
+import app.reporrun.core.domain.validation.Mapped
 import app.reporrun.core.model.DayStatus
 import app.reporrun.core.model.ExportRecord
 import app.reporrun.core.model.GymId

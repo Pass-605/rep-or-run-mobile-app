@@ -3,6 +3,8 @@ package app.reporrun.core.ai.mapper
 import app.reporrun.core.ai.contract.ProposalDto
 import app.reporrun.core.ai.contract.ReviewPlanResponse
 import app.reporrun.core.domain.port.GeneratedReview
+import app.reporrun.core.domain.validation.Mapped
+import app.reporrun.core.domain.validation.ModelErrors
 import app.reporrun.core.model.Confidence
 import app.reporrun.core.model.DataQuality
 import app.reporrun.core.model.DayOfWeek

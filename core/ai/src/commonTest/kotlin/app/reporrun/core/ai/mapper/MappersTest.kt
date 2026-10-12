@@ -21,6 +21,7 @@ import app.reporrun.core.ai.fake.SequentialIds
 import app.reporrun.core.ai.fake.generationRequest
 import app.reporrun.core.domain.port.GeneratedPlan
 import app.reporrun.core.domain.port.GeneratedReview
+import app.reporrun.core.domain.validation.Mapped
 import app.reporrun.core.model.Confidence
 import app.reporrun.core.model.DataQuality
 import app.reporrun.core.model.DayOfWeek

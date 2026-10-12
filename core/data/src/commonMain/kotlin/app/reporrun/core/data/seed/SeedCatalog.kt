@@ -1,7 +1,7 @@
 package app.reporrun.core.data.seed
 
-import app.reporrun.core.data.mapper.Mapped
-import app.reporrun.core.data.mapper.ModelErrors
+import app.reporrun.core.domain.validation.Mapped
+import app.reporrun.core.domain.validation.ModelErrors
 import app.reporrun.core.model.CatalogKey
 import app.reporrun.core.model.EquipmentCatalogItem
 import app.reporrun.core.model.EquipmentCategory

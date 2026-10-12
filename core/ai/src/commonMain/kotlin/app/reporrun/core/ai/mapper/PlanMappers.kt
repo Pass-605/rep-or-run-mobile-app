@@ -7,6 +7,8 @@ import app.reporrun.core.ai.contract.PlanDayDto
 import app.reporrun.core.ai.contract.PlanExerciseDto
 import app.reporrun.core.domain.port.GeneratedPlan
 import app.reporrun.core.domain.usecase.IdGenerator
+import app.reporrun.core.domain.validation.Mapped
+import app.reporrun.core.domain.validation.ModelErrors
 import app.reporrun.core.model.Alternative
 import app.reporrun.core.model.BlockPreferences
 import app.reporrun.core.model.CardioPrescription

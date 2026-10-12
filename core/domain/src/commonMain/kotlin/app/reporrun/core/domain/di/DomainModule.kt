@@ -21,12 +21,13 @@ import app.reporrun.core.domain.usecase.ToggleEquipmentUseCase
 import app.reporrun.core.domain.usecase.UpdateEquipmentUseCase
 import app.reporrun.core.domain.usecase.UuidIdGenerator
 import app.reporrun.core.domain.usecase.ValidateProfileUseCase
+import app.reporrun.core.domain.validation.PlanValidator
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 /**
- * Los casos de uso de `:core:domain`. Un caso de uso nuevo se añade aquí, en la misma change
+ * Los casos de uso y validadores de `:core:domain`. Un caso de uso nuevo se añade aquí, en la misma change
  * que lo crea.
  *
  * Son `factory` porque no guardan estado: cada ViewModel recibe el suyo. Los repositorios, el
@@ -55,4 +56,6 @@ val domainModule: Module = module {
     factoryOf(::BuildGenerationSummaryUseCase)
     factoryOf(::ObserveConsentUseCase)
     factoryOf(::AcceptConsentUseCase)
+
+    factoryOf(::PlanValidator)
 }

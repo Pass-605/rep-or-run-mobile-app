@@ -1,12 +1,12 @@
 package app.reporrun.core.data.repository
 
-import app.reporrun.core.data.mapper.Mapped
 import app.reporrun.core.data.mapper.toEntity
 import app.reporrun.core.data.mapper.toModel
 import app.reporrun.core.data.seed.SeedCatalog
 import app.reporrun.core.data.seed.SeedCatalogSource
 import app.reporrun.core.database.dao.EquipmentDao
 import app.reporrun.core.domain.repository.EquipmentCatalogRepository
+import app.reporrun.core.domain.validation.Mapped
 import app.reporrun.core.model.EquipmentCatalogItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

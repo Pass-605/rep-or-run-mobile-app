@@ -2,11 +2,15 @@ package app.reporrun.core.ai.fake
 
 import app.reporrun.core.ai.contract.ContractJson
 import app.reporrun.core.ai.contract.GeneratePlanRequest
+import app.reporrun.core.ai.mapper.toGeneratedPlan
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.port.AiError
 import app.reporrun.core.domain.port.GeneratedPlan
 import app.reporrun.core.domain.port.PlanGenerationRequest
 import app.reporrun.core.domain.port.PlanGenerationResult
+import app.reporrun.core.domain.validation.Mapped
+import app.reporrun.core.domain.validation.PlanValidation
+import app.reporrun.core.domain.validation.PlanValidator
 import app.reporrun.core.model.DayOfWeek
 import app.reporrun.core.model.EquipmentCategory
 import app.reporrun.core.model.ExerciseDose
@@ -185,6 +189,61 @@ class FakePlanGeneratorTest {
         assertTrue(cardio.all { it.mode == "Elíptica" && it.speed == null && it.incline == null })
     }
 
+    // ------------------------------------------------------------ minutos por sesión
+
+    @Test
+    fun keepsTheWholeExampleWhenTheSessionIsAsLongAsItsOwn() = runTest {
+        val request = generationRequest(preferences = preferences(sessionMinutes = 75))
+
+        val plan = generate(request)
+
+        assertEquals(listOf(5, 4, 5), plan.days.map { it.exercises.size })
+        assertTrue(plan.days.all { it.cardio != null })
+        assertValidFor(request, plan)
+    }
+
+    @Test
+    fun keepsTheWholeExampleWithTheDefaultSixtyMinutes() = runTest {
+        val request = generationRequest(preferences = preferences(sessionMinutes = 60))
+
+        val plan = generate(request)
+
+        assertEquals(listOf(5, 4, 5), plan.days.map { it.exercises.size })
+        assertValidFor(request, plan)
+    }
+
+    @Test
+    fun dropsTheLastExercisesWhenTheSessionIsShort() = runTest {
+        val request = generationRequest(preferences = preferences(sessionMinutes = 45))
+
+        val plan = generate(request)
+
+        assertEquals(listOf(4, 4, 4), plan.days.map { it.exercises.size })
+        assertEquals(listOf("L04", "X04", "S04"), plan.days.map { it.exercises.last().code.value })
+        assertTrue(plan.days.all { it.cardio != null })
+        assertValidFor(request, plan)
+    }
+
+    @Test
+    fun dropsTheCardioBeforeLeavingADayWithOneExercise() = runTest {
+        val request = generationRequest(preferences = preferences(sessionMinutes = 20))
+
+        val plan = generate(request)
+
+        assertTrue(plan.days.all { it.cardio == null && it.exercises.size >= 2 })
+        assertValidFor(request, plan)
+    }
+
+    @Test
+    fun theExampleOfTheContractPassesTheValidatorAsIs() = runTest {
+        val request = generationRequest(preferences = preferences(sessionMinutes = 60))
+        val example = FakeExamples.generateResponse.toGeneratedPlan(SequentialIds(), inputSnapshotJson = "{}")
+
+        val plan = assertIs<Mapped.Valid<GeneratedPlan>>(example).value
+
+        assertEquals(PlanValidation.Valid, PlanValidator().validate(plan.days, request.equipment, request.preferences))
+    }
+
     // ------------------------------------------------------------ lo que firma
 
     @Test
@@ -257,26 +316,15 @@ class FakePlanGeneratorTest {
     private fun GeneratedPlan.exercises(): List<PlanExercise> = days.flatMap { it.exercises }
 
     /**
-     * Las reglas de `PlanValidator` (B-06) que ya se pueden escribir: aparatos del inventario
-     * también en las alternativas, días disponibles y sin repetir, códigos únicos con la letra
-     * de su día y en orden. Cuando exista el validador, este test pasa a llamarlo.
+     * El plan pasa `PlanValidator` con el inventario y las preferencias de la petición. Además,
+     * lo que el fake promete y el contrato no numera: ningún día vacío y un cardio elegido.
      */
     private fun assertValidFor(request: PlanGenerationRequest, plan: GeneratedPlan) {
-        val inventory = request.equipment.map { it.id }.toSet()
-        val used = plan.exercises().flatMap { exercise ->
-            exercise.alternatives.map { it.equipmentId } +
-                exercise.equipmentId
-        }
-        val codes = plan.exercises().map { it.code.value }
+        val validation = PlanValidator().validate(plan.days, request.equipment, request.preferences)
 
-        assertEquals(emptyList(), used.filterNot { it in inventory }, "aparatos fuera del inventario")
-        assertTrue(plan.days.all { it.dayOfWeek in request.preferences.availableDays }, "día no disponible")
-        assertEquals(plan.days.size, plan.days.map { it.dayOfWeek }.toSet().size, "día repetido")
-        assertEquals(codes.size, codes.toSet().size, "códigos repetidos")
+        assertEquals(PlanValidation.Valid, validation)
         assertTrue(plan.days.none { it.exercises.isEmpty() }, "día sin ejercicios")
         plan.days.forEach { day ->
-            assertEquals((1..day.exercises.size).toList(), day.exercises.map { it.order }, "orden con huecos")
-            assertEquals(1, day.exercises.map { it.code.value.first() }.toSet().size, "letras distintas en un día")
             assertNull(day.cardio?.mode?.takeIf { it !in request.preferences.cardioModes }, "cardio no elegido")
         }
     }
