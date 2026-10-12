@@ -1,21 +1,35 @@
 package app.reporrun.core.domain.usecase
 
+import app.reporrun.core.domain.port.AiError
+import app.reporrun.core.domain.port.PlanGenerationRequest
+import app.reporrun.core.domain.port.PlanGenerationResult
+import app.reporrun.core.domain.port.PlanGenerator
 import app.reporrun.core.domain.repository.EquipmentCatalogRepository
 import app.reporrun.core.domain.repository.EquipmentDeletion
 import app.reporrun.core.domain.repository.GymRepository
+import app.reporrun.core.domain.repository.PlanRepository
 import app.reporrun.core.domain.repository.PreferencesRepository
 import app.reporrun.core.domain.repository.ProfileRepository
 import app.reporrun.core.domain.repository.SettingsRepository
 import app.reporrun.core.model.BlockPreferences
+import app.reporrun.core.model.DayStatus
 import app.reporrun.core.model.Equipment
 import app.reporrun.core.model.EquipmentCatalogItem
 import app.reporrun.core.model.EquipmentId
+import app.reporrun.core.model.ExportRecord
 import app.reporrun.core.model.Gym
 import app.reporrun.core.model.GymId
+import app.reporrun.core.model.Plan
+import app.reporrun.core.model.PlanChange
+import app.reporrun.core.model.PlanDayId
+import app.reporrun.core.model.PlanId
+import app.reporrun.core.model.PlanStatus
+import app.reporrun.core.model.PlanSummary
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -143,4 +157,81 @@ internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : Sett
     }
 
     override suspend fun installId(): String = "install-test"
+}
+
+/** Como `PlanRepositoryImpl`: un plan se inserta entero y un id repetido falla. */
+internal class FakePlanRepository : PlanRepository {
+    private val plans = MutableStateFlow<List<Plan>>(emptyList())
+    private val changes = MutableStateFlow<List<PlanChange>>(emptyList())
+    private val exports = MutableStateFlow<List<ExportRecord>>(emptyList())
+
+    val saved: List<Plan>
+        get() = plans.value
+
+    override fun observePlan(planId: PlanId): Flow<Plan?> = plans.map { all -> all.firstOrNull { it.id == planId } }
+
+    override fun observeActivePlan(gymId: GymId): Flow<Plan?> =
+        plans.map { all -> all.firstOrNull { it.gymId == gymId && it.status == PlanStatus.ACTIVE } }
+
+    override fun observeHistory(gymId: GymId): Flow<List<PlanSummary>> = plans.map { all ->
+        all.filter { it.gymId == gymId }.sortedByDescending { it.createdAt }.map {
+            PlanSummary(it.id, it.gymId, it.createdAt, it.status, it.startDate, it.reviewDate, it.focus)
+        }
+    }
+
+    override suspend fun planIdsOn(date: LocalDate): List<PlanId> =
+        plans.value.map { it.id }.filter { it.value.startsWith(PlanId.prefixOf(date)) }
+
+    override suspend fun savePlan(plan: Plan) {
+        check(plans.value.none { it.id == plan.id }) { "ya existe ${plan.id.value}" }
+        plans.value += plan
+    }
+
+    override suspend fun activatePlan(planId: PlanId) {
+        val gymId = plans.value.firstOrNull { it.id == planId }?.gymId
+        plans.value = plans.value.map {
+            when {
+                it.id == planId -> it.copy(status = PlanStatus.ACTIVE)
+                it.gymId == gymId && it.status == PlanStatus.ACTIVE -> it.copy(status = PlanStatus.ARCHIVED)
+                else -> it
+            }
+        }
+    }
+
+    override suspend fun setDayStatus(dayId: PlanDayId, status: DayStatus) {
+        plans.value = plans.value.map { plan ->
+            plan.copy(days = plan.days.map { if (it.id == dayId) it.copy(status = status) else it })
+        }
+    }
+
+    override fun observeChanges(gymId: GymId): Flow<List<PlanChange>> = changes
+
+    override suspend fun saveChange(change: PlanChange) {
+        changes.value += change
+    }
+
+    override fun observeExports(planId: PlanId): Flow<List<ExportRecord>> =
+        exports.map { all -> all.filter { it.planId == planId } }
+
+    override suspend fun saveExport(record: ExportRecord) {
+        exports.value += record
+    }
+}
+
+/** Guarda lo que se le pide y contesta con [answer]; por defecto, [generatedPlan]. */
+internal class RecordingPlanGenerator : PlanGenerator {
+    val requests = mutableListOf<PlanGenerationRequest>()
+
+    var answer: suspend (PlanGenerationRequest) -> PlanGenerationResult = {
+        PlanGenerationResult.Success(generatedPlan())
+    }
+
+    fun fails(error: AiError) {
+        answer = { PlanGenerationResult.Failure(error) }
+    }
+
+    override suspend fun generate(request: PlanGenerationRequest): PlanGenerationResult {
+        requests += request
+        return answer(request)
+    }
 }

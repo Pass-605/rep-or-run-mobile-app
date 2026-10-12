@@ -97,6 +97,14 @@ class PlanTest {
     }
 
     @Test
+    fun buildsThePlanIdFromDateAndVersion() {
+        assertEquals(PlanId("ROR-2026-10-05-v12"), PlanId.of(LocalDate(2026, 10, 5), version = 12))
+        assertTrue(
+            PlanId.of(LocalDate(2026, 1, 9), version = 1).value.startsWith(PlanId.prefixOf(LocalDate(2026, 1, 9))),
+        )
+    }
+
+    @Test
     fun rejectsMalformedIds() {
         assertFailsWith<IllegalArgumentException> { PlanId("ROR-2026-09-21") }
         assertFailsWith<IllegalArgumentException> { EquipmentId("chest_press") }

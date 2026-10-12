@@ -1,5 +1,6 @@
 package app.reporrun.core.model
 
+import kotlinx.datetime.LocalDate
 import kotlin.jvm.JvmInline
 
 /*
@@ -68,8 +69,14 @@ value class PlanId(val value: String) {
     val version: Int
         get() = value.substringAfterLast("-v").toInt()
 
-    private companion object {
-        val PATTERN = Regex("^ROR-[0-9]{4}-[0-9]{2}-[0-9]{2}-v[1-9][0-9]*$")
+    companion object {
+        private val PATTERN = Regex("^ROR-[0-9]{4}-[0-9]{2}-[0-9]{2}-v[1-9][0-9]*$")
+
+        /** El id de la versión [version] (desde 1) de los planes generados el día [date]. */
+        fun of(date: LocalDate, version: Int): PlanId = PlanId(prefixOf(date) + version)
+
+        /** Lo que comparten los ids de todos los planes generados el día [date]: `ROR-AAAA-MM-DD-v`. */
+        fun prefixOf(date: LocalDate): String = "ROR-$date-v"
     }
 }
 

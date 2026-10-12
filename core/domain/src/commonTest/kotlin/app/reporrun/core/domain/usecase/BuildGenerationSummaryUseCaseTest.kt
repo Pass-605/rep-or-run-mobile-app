@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class BuildGenerationSummaryUseCaseTest {
@@ -16,7 +19,8 @@ class BuildGenerationSummaryUseCaseTest {
     private val gyms = FakeGymRepository()
     private val preferences = FakePreferencesRepository()
     private val settings = FakeSettingsRepository()
-    private val buildSummary = BuildGenerationSummaryUseCase(profiles, gyms, preferences, settings)
+    private val buildSummary =
+        BuildGenerationSummaryUseCase(profiles, gyms, preferences, settings, FixedClock(NOW), TimeZone.UTC)
 
     private suspend fun completeEverything(machines: Int = InventoryRules.MIN_EQUIPMENT_TO_GENERATE) {
         profiles.saveProfile(profile())
@@ -24,6 +28,22 @@ class BuildGenerationSummaryUseCaseTest {
         gyms.saveEquipment(inventory(machines))
         preferences.savePreferences(preferences())
         settings.acceptConsent(NOW)
+    }
+
+    @Test
+    fun treatsAPastStartDateAsNoStartDate() = runTest {
+        completeEverything()
+        preferences.savePreferences(preferences().copy(startDate = LocalDate(2026, 9, 20)))
+
+        assertNull(buildSummary().first().preferences?.startDate)
+    }
+
+    @Test
+    fun keepsAStartDateOfToday() = runTest {
+        completeEverything()
+        preferences.savePreferences(preferences().copy(startDate = LocalDate(2026, 9, 21)))
+
+        assertEquals(LocalDate(2026, 9, 21), buildSummary().first().preferences?.startDate)
     }
 
     @Test

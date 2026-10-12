@@ -157,7 +157,7 @@ private fun BlockPreferences.toUiState(today: LocalDate) = PreferencesUiState(
     availableDays = availableDays,
     sessionMinutes = sessionMinutes,
     blockDays = blockDays,
-    startDate = startDate?.takeIf { it >= today },
+    startDate = effectiveStartDate(today),
     cardioModes = cardioModes.toSet(),
     avoidExercises = avoidExercises,
 )

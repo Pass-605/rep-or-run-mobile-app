@@ -3,6 +3,7 @@ package app.reporrun.core.domain.usecase
 import app.cash.turbine.test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -57,6 +58,8 @@ class ConsentUseCasesTest {
             FakeGymRepository(),
             FakePreferencesRepository(),
             settings,
+            FixedClock(NOW),
+            TimeZone.UTC,
         )
         assertTrue(GenerationBlocker.MissingConsent in buildSummary().first().blockers)
 
