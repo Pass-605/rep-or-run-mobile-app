@@ -55,6 +55,7 @@ feature/onboarding/  bienvenida, aviso y consentimiento
 feature/profile/     perfil en dos pasos
 feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
 feature/plansetup/   preferencias del bloque y resumen previo a generar
+feature/plan/        pantalla Generando y destino del plan recién generado
 iosApp/              proyecto Xcode que consume el framework
 contract/v1/         copia versionada del contrato: schemas y ejemplos (no se edita a mano)
 scripts/             sync-contract.sh
@@ -86,7 +87,9 @@ El inventario (C-08), en el mismo módulo, es el ejemplo de **lista larga con b�
 
 El resumen (C-10), en el mismo módulo, es el ejemplo de **pantalla que solo observa**: su estado es el `GenerationSummary` de `BuildGenerationSummaryUseCase`, sin traducir, y la pantalla no decide qué falta para generar. También es el ejemplo de **salidas que dependen de por dónde se entró**: perfil, inventario y preferencias avisan de que han guardado y `RepOrRunNavHost` pregunta a la pila con `popBackToSummary()`; si el resumen está debajo se vuelve a él, y si no, se sigue el alta. Ningún formulario sabe desde dónde lo abrieron.
 
-El flujo hoy es bienvenida → perfil → gimnasios → máquinas → preferencias → resumen, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. «Generar plan» lleva a un destino provisional de `composeApp` hasta que llegue la pantalla Generando (C-11).
+`feature/plan/` (C-11) es el ejemplo de **operación larga que se puede cancelar**: `GeneratingViewModel` pide el plan al crearse, dentro de `viewModelScope`, así que un giro no lo pide dos veces y cancelar o salir cancela la corrutina. Qué se puede reintentar no lo decide la pantalla: lo lee del tipo de `GeneratePlanResult`, y `GeneratingLabels` le pone la palabra —«Reintentar» si no hubo servicio, «Generar otra vez» si el plan volvió inválido, que es otra llamada—. Lo único suyo es el tope de dos planes inválidos seguidos, en memoria. No usa `RepOrRunScreenScaffold`: es una espera a pantalla completa.
+
+El flujo hoy es bienvenida → perfil → gimnasios → máquinas → preferencias → resumen → generando → plan guardado, y `AppViewModel` abre la app por el primer paso que falte (con gimnasio creado, la lista de gimnasios) y carga el catálogo semilla en cada arranque. El plan generado abre un destino mínimo de `feature/plan/` que dice con qué versión se guardó el borrador, hasta que llegue la vista del plan (C-12). Para ver un error en el dispositivo, `FakeAiConfig(failure = …)` en `aiModule`.
 
 ## Comandos
 

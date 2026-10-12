@@ -61,7 +61,7 @@ Si no llega un plan utilizable, o llega uno que incumple las reglas de `validaci
 
 ### Requirement: Distinguir lo que se puede reintentar
 
-La respuesta a una generación fallida SHALL distinguir lo que la persona puede reintentar tal cual (sin conexión, sin respuesta a tiempo, demasiadas peticiones, fallo del servicio) de lo que no (plan inválido, datos que no sirven para generar). En ningún caso SHALL quedar un plan guardado.
+La respuesta a una generación fallida SHALL distinguir tres cosas: lo que la persona puede reintentar tal cual (sin conexión, sin respuesta a tiempo, demasiadas peticiones, fallo del servicio); un plan inválido, que no se repite pero admite pedir una generación nueva; y datos que no sirven para generar, que no admiten otro intento hasta cambiarlos. En ningún caso SHALL quedar un plan guardado.
 
 #### Scenario: Sin conexión
 
@@ -76,7 +76,12 @@ La respuesta a una generación fallida SHALL distinguir lo que la persona puede 
 #### Scenario: Plan inválido
 
 - **WHEN** no hay plan válido tras la generación
-- **THEN** la respuesta no es de las reintentables
+- **THEN** la respuesta no es de las reintentables tal cual, y se distingue de la de datos que no sirven
+
+#### Scenario: Datos que no sirven
+
+- **WHEN** el servicio no acepta lo enviado
+- **THEN** la respuesta dice qué falla y no es de las que admiten otro intento
 
 ### Requirement: Cancelar no guarda nada
 
