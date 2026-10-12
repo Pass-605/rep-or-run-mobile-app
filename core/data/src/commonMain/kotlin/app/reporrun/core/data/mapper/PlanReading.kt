@@ -5,6 +5,8 @@ import app.reporrun.core.database.entity.DoseColumns
 import app.reporrun.core.database.entity.PlanDayWithExercises
 import app.reporrun.core.database.entity.PlanExerciseWithAlternatives
 import app.reporrun.core.database.entity.PlanWithDays
+import app.reporrun.core.domain.validation.Mapped
+import app.reporrun.core.domain.validation.ModelErrors
 import app.reporrun.core.model.Alternative
 import app.reporrun.core.model.CardioPrescription
 import app.reporrun.core.model.EquipmentId

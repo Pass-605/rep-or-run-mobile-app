@@ -2,7 +2,6 @@ package app.reporrun.core.ai.fake
 
 import app.reporrun.core.ai.contract.ContractJson
 import app.reporrun.core.ai.contract.GeneratePlanRequest
-import app.reporrun.core.ai.mapper.Mapped
 import app.reporrun.core.ai.mapper.toDto
 import app.reporrun.core.ai.mapper.toGeneratedPlan
 import app.reporrun.core.domain.AppDispatchers
@@ -11,6 +10,7 @@ import app.reporrun.core.domain.port.PlanGenerationRequest
 import app.reporrun.core.domain.port.PlanGenerationResult
 import app.reporrun.core.domain.port.PlanGenerator
 import app.reporrun.core.domain.usecase.IdGenerator
+import app.reporrun.core.domain.validation.Mapped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.time.Clock
