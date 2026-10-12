@@ -1,5 +1,6 @@
 package app.reporrun.feature.plan
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.reporrun.core.domain.usecase.GeneratePlanResult
@@ -22,8 +23,14 @@ import kotlinx.coroutines.launch
  *
  * La generación corre en `viewModelScope`: sobrevive a un giro de pantalla y **se cancela** al
  * cancelar o al salir, que es lo que evita que quede un plan que nadie esperaba.
+ *
+ * **Entrar genera una vez, restaurarse no.** Al arrancar la primera generación se deja una marca
+ * en [savedState]. Esa marca sobrevive a la muerte del proceso y no a salir de la pantalla: si
+ * al crearse el ViewModel ya está, es que el proceso murió con la espera delante, y pedir otro
+ * plan guardaría uno que nadie ha pedido. Entonces no se arranca nada y la persona decide.
  */
-class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase) : ViewModel() {
+class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private val savedState: SavedStateHandle) :
+    ViewModel() {
     private val _state = MutableStateFlow(GeneratingUiState())
     val state: StateFlow<GeneratingUiState> = _state.asStateFlow()
 
@@ -37,7 +44,13 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase) : ViewM
     private var finished = false
 
     init {
-        generate()
+        if (savedState.get<Boolean>(STARTED_KEY) == true) {
+            _state.value = GeneratingUiState(GenerationFailure.Interrupted)
+        } else {
+            // Antes de pedir nada: si el proceso muere en cuanto sale la petición, la marca ya está.
+            savedState[STARTED_KEY] = true
+            generate()
+        }
     }
 
     fun onEvent(event: GeneratingEvent) {
@@ -95,11 +108,15 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase) : ViewM
     private fun fail(failure: GenerationFailure) {
         _state.value = GeneratingUiState(failure)
     }
+
+    private companion object {
+        const val STARTED_KEY = "generation_started"
+    }
 }
 
 /** Si desde este error se puede pedir un plan de nuevo, sea repitiendo o generando otro. */
 private fun GenerationFailure?.canAskAgain(): Boolean = when (this) {
-    is GenerationFailure.Unavailable -> true
+    is GenerationFailure.Unavailable, GenerationFailure.Interrupted -> true
     is GenerationFailure.InvalidPlan -> canGenerateAgain
     is GenerationFailure.InvalidInput, null -> false
 }

@@ -1,5 +1,6 @@
 package app.reporrun.feature.plan
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import app.reporrun.core.domain.port.AiError
 import app.reporrun.core.domain.usecase.BuildGenerationSummaryUseCase
@@ -43,7 +44,7 @@ class GeneratingViewModelTest {
     @AfterTest
     fun resetMainDispatcher() = Dispatchers.resetMain()
 
-    private fun viewModel(): GeneratingViewModel {
+    private fun viewModel(savedState: SavedStateHandle = SavedStateHandle()): GeneratingViewModel {
         val clock = FixedClock(NOW)
         val summary = BuildGenerationSummaryUseCase(
             FakeProfileRepository(profile()),
@@ -55,6 +56,7 @@ class GeneratingViewModelTest {
         )
         return GeneratingViewModel(
             GeneratePlanUseCase(summary, generator, PlanValidator(), plans, clock, TimeZone.UTC),
+            savedState,
         )
     }
 
@@ -289,6 +291,61 @@ class GeneratingViewModelTest {
 
         val failure = assertIs<GenerationFailure.InvalidPlan>(second.state.value.failure)
         assertTrue(failure.canGenerateAgain)
+    }
+
+    // ------------------------------------------------------------ proceso muerto
+
+    @Test
+    fun restoringAfterTheProcessDiedDoesNotAskForAPlan() = runTest {
+        // Lo que queda de la primera vida del proceso: la marca, y nada más.
+        val savedState = SavedStateHandle()
+        viewModel(savedState)
+        generator.thenSucceeds()
+
+        val restored = viewModel(SavedStateHandle(savedState.keys().associateWith { savedState.get<Any?>(it) }))
+        advanceUntilIdle()
+
+        assertEquals(GenerationFailure.Interrupted, restored.state.value.failure)
+        // Una sola llamada: la de la primera vida. El restaurado no ha pedido nada.
+        assertEquals(1, generator.calls)
+    }
+
+    @Test
+    fun anInterruptedGenerationCanBeAskedAgainByThePerson() = runTest {
+        val restored = viewModel(SavedStateHandle(mapOf("generation_started" to true)))
+        assertEquals(0, generator.calls)
+
+        restored.effects.test {
+            restored.onEvent(GeneratingEvent.RetryClicked)
+            assertTrue(restored.state.value.isGenerating)
+            advanceUntilIdle()
+
+            assertIs<GeneratingEffect.PlanGenerated>(awaitItem())
+        }
+        assertEquals(1, generator.calls)
+    }
+
+    @Test
+    fun anInterruptionDoesNotCountTowardsTheLimit() = runTest {
+        generator.thenReturnsAPlanWithForeignEquipment()
+        val restored = viewModel(SavedStateHandle(mapOf("generation_started" to true)))
+
+        restored.onEvent(GeneratingEvent.RetryClicked)
+        advanceUntilIdle()
+
+        // Es el primer plan inválido, no el segundo: la interrupción no era uno.
+        val failure = assertIs<GenerationFailure.InvalidPlan>(restored.state.value.failure)
+        assertTrue(failure.canGenerateAgain)
+    }
+
+    @Test
+    fun enteringOnPurposeGeneratesEvenAfterAnInterruption() = runTest {
+        viewModel(SavedStateHandle(mapOf("generation_started" to true)))
+
+        // Salir y volver a entrar es otra entrada de la pila, con su estado guardado vacío.
+        viewModel()
+
+        assertEquals(1, generator.calls)
     }
 
     // ------------------------------------------------------------ datos que no sirven

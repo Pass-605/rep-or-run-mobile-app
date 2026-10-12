@@ -40,6 +40,10 @@
     <string name="generating_error_invalid_input_title">Con estos datos no se puede generar</string>
     <string name="generating_error_invalid_input_body">El servicio no ha aceptado lo enviado y no se ha guardado nada. Corrígelo en el resumen.</string>
 
+    <!-- El proceso murió con la espera en pantalla: al volver no se genera sin que se pida. -->
+    <string name="generating_error_interrupted_title">La generación se interrumpió</string>
+    <string name="generating_error_interrupted_body">La app se cerró durante la espera y la generación no terminó. Si quieres un plan, genera otra vez: es una generación nueva.</string>
+
     <!-- La lista de problemas que da la validación, tal cual, una línea por problema. -->
     <string name="generating_problems_title">Qué ha fallado</string>
     <string name="generating_problem_line">· %1$s</string>

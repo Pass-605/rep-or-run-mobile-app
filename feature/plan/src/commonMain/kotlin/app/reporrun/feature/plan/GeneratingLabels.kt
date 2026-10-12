@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import app.reporrun.core.domain.usecase.GenerationUnavailable
 import app.reporrun.feature.plan.resources.Res
 import app.reporrun.feature.plan.resources.generating_back_to_summary
+import app.reporrun.feature.plan.resources.generating_error_interrupted_body
+import app.reporrun.feature.plan.resources.generating_error_interrupted_title
 import app.reporrun.feature.plan.resources.generating_error_invalid_input_body
 import app.reporrun.feature.plan.resources.generating_error_invalid_input_title
 import app.reporrun.feature.plan.resources.generating_error_invalid_plan_body
@@ -85,6 +87,14 @@ internal fun GenerationFailure.texts(): FailureTexts = when (this) {
             problems = problems,
         )
     }
+
+    // La misma palabra que tras un plan inválido: aquí tampoco se repite nada, se pide otro plan.
+    GenerationFailure.Interrupted -> FailureTexts(
+        title = stringResource(Res.string.generating_error_interrupted_title),
+        body = stringResource(Res.string.generating_error_interrupted_body),
+        action = stringResource(Res.string.generating_generate_again),
+        actionEvent = GeneratingEvent.RetryClicked,
+    )
 
     is GenerationFailure.InvalidInput -> FailureTexts(
         title = stringResource(Res.string.generating_error_invalid_input_title),

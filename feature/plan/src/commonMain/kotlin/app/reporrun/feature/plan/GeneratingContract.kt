@@ -36,6 +36,12 @@ sealed interface GenerationFailure {
 
     /** El servicio no acepta lo enviado: hay que cambiar datos en el resumen. */
     data class InvalidInput(val problems: List<String>) : GenerationFailure
+
+    /**
+     * La generación se quedó a medias: el proceso murió con la espera en pantalla y, al volver,
+     * **no se pide otra por cuenta propia**. No es un plan inválido y no cuenta para el tope.
+     */
+    data object Interrupted : GenerationFailure
 }
 
 sealed interface GeneratingEvent {

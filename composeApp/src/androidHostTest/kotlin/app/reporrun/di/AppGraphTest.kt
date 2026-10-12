@@ -2,6 +2,7 @@ package app.reporrun.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.RoomDatabase
 import app.reporrun.core.database.RepOrRunDatabase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,8 +30,14 @@ class AppGraphTest {
         }
 
         module { includes(appModules(platformTypes)) }.verify(
-            // Parámetros que una definición construye a mano en su lambda, sin pedirlos al grafo.
-            extraTypes = listOf(Context::class, CoroutineDispatcher::class, Function0::class),
+            // Parámetros que una definición construye a mano en su lambda, sin pedirlos al grafo, y
+            // el `SavedStateHandle` de un ViewModel, que Koin saca de su entrada en la pila.
+            extraTypes = listOf(
+                Context::class,
+                CoroutineDispatcher::class,
+                Function0::class,
+                SavedStateHandle::class,
+            ),
         )
     }
 }
