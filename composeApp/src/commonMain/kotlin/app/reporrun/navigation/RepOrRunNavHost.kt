@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.reporrun.feature.gym.GymGraphRoute
 import app.reporrun.feature.gym.gymGraph
@@ -14,6 +13,9 @@ import app.reporrun.feature.gym.navigateToInventory
 import app.reporrun.feature.onboarding.OnboardingGraphRoute
 import app.reporrun.feature.onboarding.navigateToNotice
 import app.reporrun.feature.onboarding.onboardingGraph
+import app.reporrun.feature.plan.navigateToGeneratedPlan
+import app.reporrun.feature.plan.navigateToGenerating
+import app.reporrun.feature.plan.planGraph
 import app.reporrun.feature.plansetup.navigateToPlanSetup
 import app.reporrun.feature.plansetup.navigateToPreferences
 import app.reporrun.feature.plansetup.navigateToSummary
@@ -95,11 +97,14 @@ internal fun RepOrRunNavHost(
                 }
             },
             onEditPreferences = navController::navigateToPreferences,
-            onGenerate = { navController.navigate(GeneratingPlaceholderRoute) { launchSingleTop = true } },
+            // Abrir la espera es pedir el plan: la generación empieza con ella.
+            onGenerate = navController::navigateToGenerating,
         )
-        // Provisional: lo sustituye el grafo de `:feature:plan` con la pantalla Generando (C-11).
-        composable<GeneratingPlaceholderRoute> {
-            GeneratingPlaceholderScreen(onBack = { navController.popBackStack() })
-        }
+        planGraph(
+            onBack = { navController.popBackStack() },
+            // A la espera solo se llega desde el resumen, así que está justo debajo.
+            onBackToSummary = { navController.popBackStack() },
+            onPlanGenerated = navController::navigateToGeneratedPlan,
+        )
     }
 }

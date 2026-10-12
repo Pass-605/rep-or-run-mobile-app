@@ -210,7 +210,7 @@ class GeneratePlanUseCaseTest {
     }
 
     @Test
-    fun aRejectedPlanFromTheServiceIsDefinitive() = runTest {
+    fun aRejectedPlanFromTheServiceIsNotAskedForAgain() = runTest {
         activeGymWithInventory()
         // Donde caerá el `422 PLAN_INVALID` del proxy (A-13).
         generator.fails(AiError.InvalidResponse(listOf("plan.days[0]: regla 6")))

@@ -36,6 +36,7 @@ viejo.
 | 03 · Mi gimnasio | `104:938` | `115:1216` |
 | 04 · Preferencias | `106:870` | `115:1281` |
 | 05 · Resumen | `106:937` | `115:1344` |
+| 06 · Generando | `106:1004` | `115:1395` |
 
 **`get_metadata` sin `nodeId` no lista todas las páginas del archivo.** El 08/10 devolvió solo
 *Pantallas · Claro* (la vieja) de un archivo que también tiene las dos `v2`: si te fías de esa

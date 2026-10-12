@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generando (pantalla 06 de Figma). Todos los textos son nuevos: pendientes de revisión. -->
+    <string name="generating_title">Generando tu plan</string>
+    <string name="generating_subtitle">Puede tardar hasta un minuto.</string>
+    <string name="generating_cancel">Cancelar</string>
+
+    <!-- Mensajes que rotan durante la espera. Describen la espera y lo que hace la app con la
+         respuesta; ninguno promete nada del contenido del plan. -->
+    <string name="generating_message_sent">Tu petición está en camino.</string>
+    <string name="generating_message_waiting">Esperando la respuesta del generador.</string>
+    <string name="generating_message_checked">Cuando llegue, el plan se comprueba contra tus máquinas antes de guardarse.</string>
+    <string name="generating_message_cancel">Si cancelas, no se guarda nada a medias.</string>
+
+    <!-- Errores. El pie cambia según el caso, y las dos primeras palabras no son intercambiables:
+         «Reintentar» repite una petición que no llegó; «Generar otra vez» pide otro plan. -->
+    <string name="generating_close">Volver al resumen</string>
+    <string name="generating_retry">Reintentar</string>
+    <!-- El pie mientras dura la espera que pidió el servicio: deshabilitado y contando. -->
+    <string name="generating_retry_in">Reintentar en %1$d s</string>
+    <string name="generating_generate_again">Generar otra vez</string>
+    <string name="generating_review_data">Revisar mis datos</string>
+    <string name="generating_back_to_summary">Volver al resumen</string>
+
+    <string name="generating_error_network_title">Sin conexión</string>
+    <string name="generating_error_network_body">No se pudo enviar la petición y no se ha guardado nada. Revisa tu conexión y reinténtalo.</string>
+    <string name="generating_error_timeout_title">El servicio no ha contestado a tiempo</string>
+    <string name="generating_error_timeout_body">No se ha guardado nada. Puedes reintentarlo ahora o un poco más tarde.</string>
+    <string name="generating_error_rate_limited_title">Demasiadas peticiones</string>
+    <plurals name="generating_error_rate_limited_body">
+        <item quantity="one">El servicio pide esperar %1$d segundo. Podrás reintentar cuando pase.</item>
+        <item quantity="other">El servicio pide esperar %1$d segundos. Podrás reintentar cuando pasen.</item>
+    </plurals>
+    <string name="generating_error_rate_limited_body_unknown">El servicio pide esperar un momento antes de reintentar.</string>
+    <string name="generating_error_upstream_title">El servicio ha fallado</string>
+    <string name="generating_error_upstream_body">No es por tus datos y no se ha guardado nada. Reinténtalo en unos minutos.</string>
+
+    <string name="generating_error_invalid_plan_title">El plan que volvió no está completo</string>
+    <string name="generating_error_invalid_plan_body">No se ha guardado. Puedes generar otro: es una generación nueva, no la repetición de esta.</string>
+    <string name="generating_error_invalid_plan_limit_title">Dos planes seguidos han vuelto incompletos</string>
+    <string name="generating_error_invalid_plan_limit_body">No se ha guardado ninguno. Vuelve al resumen y revisa tus datos antes de generar de nuevo.</string>
+    <string name="generating_error_invalid_input_title">Con estos datos no se puede generar</string>
+    <string name="generating_error_invalid_input_body">El servicio no ha aceptado lo enviado y no se ha guardado nada. Corrígelo en el resumen.</string>
+
+    <!-- El proceso murió con la espera en pantalla: al volver no se genera sin que se pida. -->
+    <string name="generating_error_interrupted_title">La generación se interrumpió</string>
+    <string name="generating_error_interrupted_body">La app se cerró durante la espera y la generación no terminó. Si quieres un plan, genera otra vez: es una generación nueva.</string>
+
+    <!-- La lista de problemas que da la validación, tal cual, una línea por problema. No es un
+         mensaje para la persona: va como detalle técnico. Traducirlos está pendiente. -->
+    <string name="generating_problems_title">Detalle técnico</string>
+    <string name="generating_problems_hint">Lo que devolvió la comprobación del plan, tal cual. No hace falta entenderlo para seguir.</string>
+    <string name="generating_problem_line">· %1$s</string>
+
+    <!-- Destino del plan recién generado. Provisional: lo sustituye la vista del plan (C-12). -->
+    <string name="plan_draft_title">Tu plan</string>
+    <string name="plan_draft_back">Volver</string>
+    <string name="plan_draft_headline">Tu plan está guardado como borrador</string>
+    <string name="plan_draft_version">Versión</string>
+    <string name="plan_draft_body">Verlo día por día todavía no está en esta versión de la app.</string>
+</resources>

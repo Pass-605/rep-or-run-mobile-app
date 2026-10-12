@@ -33,6 +33,12 @@ enum class RepOrRunButtonStyle {
 
     /** Acción secundaria: sin relleno, con borde `outline`. */
     Outline,
+
+    /**
+     * Acción que no es la principal y va sola al pie, sobre el fondo de la pantalla: relleno
+     * `surface`, como una tarjeta. Es el «Cancelar» de la pantalla 06.
+     */
+    Tonal,
 }
 
 /**
@@ -49,7 +55,11 @@ fun RepOrRunButton(
     enabled: Boolean = true,
 ) {
     val colors = MaterialTheme.colorScheme
-    val primary = style == RepOrRunButtonStyle.Primary
+    val container = when (style) {
+        RepOrRunButtonStyle.Primary -> colors.inverseSurface
+        RepOrRunButtonStyle.Outline -> Color.Transparent
+        RepOrRunButtonStyle.Tonal -> colors.surface
+    }
     Surface(
         onClick = onClick,
         modifier = modifier
@@ -57,9 +67,13 @@ fun RepOrRunButton(
             .alpha(if (enabled) 1f else RepOrRunAlpha.DISABLED),
         enabled = enabled,
         shape = MaterialTheme.shapes.large,
-        color = if (primary) colors.inverseSurface else Color.Transparent,
-        contentColor = if (primary) colors.inverseOnSurface else colors.onSurface,
-        border = if (primary) null else BorderStroke(RepOrRunDimens.OutlineThickness, colors.outline),
+        color = container,
+        contentColor = if (style == RepOrRunButtonStyle.Primary) colors.inverseOnSurface else colors.onSurface,
+        border = if (style == RepOrRunButtonStyle.Outline) {
+            BorderStroke(RepOrRunDimens.OutlineThickness, colors.outline)
+        } else {
+            null
+        },
     ) {
         Row(
             modifier = Modifier

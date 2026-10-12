@@ -204,6 +204,12 @@ internal fun ButtonSample() {
     }
     RepOrRunButton("Continuar", onClick = {}, modifier = Modifier.fillMaxWidth(), icon = RepOrRunIcons.ArrowForward)
     RepOrRunButton("Generar plan", onClick = {}, modifier = Modifier.fillMaxWidth(), enabled = false)
+    RepOrRunButton(
+        "Cancelar",
+        onClick = {},
+        modifier = Modifier.fillMaxWidth(),
+        style = RepOrRunButtonStyle.Tonal,
+    )
 }
 
 @Composable

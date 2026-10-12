@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Destino provisional tras «Generar plan». Se borra cuando entre la pantalla Generando (C-11). -->
-    <string name="generating_placeholder_title">Generar plan</string>
-    <string name="generating_placeholder_body">Tus datos están completos. La generación del plan todavía no está en esta versión de la app.</string>
-    <string name="generating_placeholder_back">Volver al resumen</string>
+    <!-- La raíz no tiene textos propios: cada feature lleva los suyos. -->
 </resources>

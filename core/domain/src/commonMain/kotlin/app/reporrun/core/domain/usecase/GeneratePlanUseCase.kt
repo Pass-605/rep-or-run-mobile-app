@@ -44,9 +44,9 @@ sealed interface GenerationUnavailable {
 /**
  * Resultado de [GeneratePlanUseCase]. Solo [Saved] deja algo guardado.
  *
- * Lo que la persona puede reintentar tal cual ([Unavailable]) y lo que no ([InvalidPlan],
- * [InvalidInput], [Blocked]) son tipos distintos a propósito: quien pinta el error no tiene
- * que deducirlo.
+ * Qué puede hacer la persona después está en el tipo, a propósito: quien pinta el error no
+ * tiene que deducirlo. [Unavailable] se reintenta tal cual; [InvalidPlan] admite pedir otra
+ * generación, que cuesta otra llamada; [InvalidInput] y [Blocked] piden cambiar datos antes.
  */
 sealed interface GeneratePlanResult {
     /** Hay plan, guardado como [PlanStatus.DRAFT]. Lo activa la persona, no esto. */
@@ -64,8 +64,12 @@ sealed interface GeneratePlanResult {
 
     /**
      * No hay plan válido: el servicio no consiguió uno (su `422 PLAN_INVALID`, después de
-     * reparar) o el que llegó no pasa `PlanValidator`. **Definitivo**: no se repara ni se
-     * reintenta desde aquí, y no se guarda nada.
+     * reparar) o el que llegó no pasa `PlanValidator`. No se guarda nada, y este caso de uso
+     * no repara ni vuelve a pedirlo por su cuenta.
+     *
+     * **No es definitivo:** la reparación del servicio se agota dentro de su petición, pero
+     * una generación nueva es otra muestra del modelo. La persona puede pedirla, sabiendo que
+     * no repite la petición fallida: es otra llamada, y quien la ofrece le pone un tope.
      *
      * @property problems todos los problemas, con ruta y regla; sin nombres ni notas.
      */
