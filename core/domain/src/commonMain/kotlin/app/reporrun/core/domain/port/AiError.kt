@@ -7,9 +7,10 @@ package app.reporrun.core.domain.port
  * La cancelación **no** está aquí: una corrutina cancelada termina con su
  * `CancellationException`, sin resultado y sin error.
  *
- * Quien orquesta distingue con esto qué merece otro intento: [InvalidResponse] es lo que un
- * reintento puede arreglar; [Network] y [Timeout], lo que la persona reintenta a mano;
- * [RateLimited], lo que hay que esperar.
+ * Quien orquesta distingue con esto qué merece otro intento, que siempre es de la persona y
+ * nunca automático: [Network], [Timeout] y [Upstream] se reintentan tal cual; [RateLimited],
+ * tras esperar. [InvalidResponse] e [InvalidInput] son definitivos: repetir lo mismo no los
+ * arregla.
  */
 sealed interface AiError {
     /** No se pudo hablar con el servicio. */
@@ -38,6 +39,9 @@ sealed interface AiError {
     /**
      * Llegó una respuesta, pero no cumple el contrato: no se deja leer, o rompe una regla que
      * el modelo de dominio no admite. No hay plan ni revisión que usar.
+     *
+     * Aquí cae también el `422 PLAN_INVALID` del proxy: la reparación vive en la Lambda (plan
+     * §11), así que cuando llega ya se intentó reparar y falló. La app no repara ni reintenta.
      *
      * @property problems todos los problemas encontrados, no solo el primero, con la ruta del
      *   campo (`days[0].exercises[2].dose: …`) y la regla; nunca nombres ni notas.
