@@ -86,6 +86,16 @@ object RepOrRunDimens {
     val ProgressStroke = 4.dp
     val OutlineThickness = 1.dp
 
+    // Generando (pantalla 06): la espera a pantalla completa.
+
+    /** El anillo de progreso, y el hueco que Figma deja entre el botón de cerrar y él. */
+    val WaitRingSize = 200.dp
+    val WaitRingStroke = 14.dp
+    val WaitTopSpacing = 40.dp
+
+    /** El punto que marca lo que está pasando ahora, delante del mensaje. */
+    val WaitDotSize = 24.dp
+
     // Bienvenida (pantalla 01): es la única con composición propia.
 
     /** Los 64 del frame de Figma menos la barra de estado, que aquí pone el sistema. */
