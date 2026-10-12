@@ -9,8 +9,9 @@ package app.reporrun.core.domain.port
  *
  * Quien orquesta distingue con esto qué merece otro intento, que siempre es de la persona y
  * nunca automático: [Network], [Timeout] y [Upstream] se reintentan tal cual; [RateLimited],
- * tras esperar. [InvalidResponse] e [InvalidInput] son definitivos: repetir lo mismo no los
- * arregla.
+ * tras esperar. [InvalidResponse] también admite otro intento, pero no es repetir la petición:
+ * es pedir una generación nueva, que cuesta otra llamada. [InvalidInput] es el único
+ * definitivo: hasta que cambien los datos enviados, repetirlo no lo arregla.
  */
 sealed interface AiError {
     /** No se pudo hablar con el servicio. */
@@ -41,7 +42,9 @@ sealed interface AiError {
      * el modelo de dominio no admite. No hay plan ni revisión que usar.
      *
      * Aquí cae también el `422 PLAN_INVALID` del proxy: la reparación vive en la Lambda (plan
-     * §11), así que cuando llega ya se intentó reparar y falló. La app no repara ni reintenta.
+     * §11) y se agota dentro de esa petición, así que la app no repara ni reintenta por su
+     * cuenta. Eso no lo hace definitivo: una generación nueva es otra muestra del modelo y
+     * puede salir bien. Pedirla es decisión de la persona, y cuesta otra llamada.
      *
      * @property problems todos los problemas encontrados, no solo el primero, con la ruta del
      *   campo (`days[0].exercises[2].dose: …`) y la regla; nunca nombres ni notas.
