@@ -49,6 +49,7 @@ import app.reporrun.feature.plan.resources.generating_cancel
 import app.reporrun.feature.plan.resources.generating_close
 import app.reporrun.feature.plan.resources.generating_problem_line
 import app.reporrun.feature.plan.resources.generating_problems_title
+import app.reporrun.feature.plan.resources.generating_retry_in
 import app.reporrun.feature.plan.resources.generating_subtitle
 import app.reporrun.feature.plan.resources.generating_title
 import kotlinx.coroutines.delay
@@ -130,10 +131,16 @@ internal fun GeneratingScreen(
                 style = RepOrRunButtonStyle.Tonal,
             )
         } else {
+            // Tras un límite de peticiones el pie espera lo que pidió el servicio, y lo cuenta.
             RepOrRunButton(
-                text = failure.action,
+                text = if (state.canRetryNow) {
+                    failure.action
+                } else {
+                    stringResource(Res.string.generating_retry_in, state.secondsUntilRetry)
+                },
                 onClick = { onEvent(failure.actionEvent) },
                 modifier = Modifier.fillMaxWidth().padding(vertical = RepOrRunDimens.SectionSpacing),
+                enabled = state.canRetryNow,
             )
         }
     }

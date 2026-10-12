@@ -11,10 +11,16 @@ import app.reporrun.core.model.PlanId
  * La pantalla Generando: o se está esperando, o la generación terminó sin plan.
  *
  * @property failure `null` mientras se espera; si no, por qué no hay plan y qué se puede hacer.
+ * @property secondsUntilRetry cuánto falta para poder reintentar cuando el servicio pidió
+ *   esperar; `0` si no pidió nada o ya ha pasado. Mientras no sea `0`, el pie no se puede pulsar:
+ *   reintentar antes devolvería el mismo error.
  */
-data class GeneratingUiState(val failure: GenerationFailure? = null) {
+data class GeneratingUiState(val failure: GenerationFailure? = null, val secondsUntilRetry: Int = 0) {
     val isGenerating: Boolean
         get() = failure == null
+
+    val canRetryNow: Boolean
+        get() = secondsUntilRetry == 0
 }
 
 /**

@@ -15,6 +15,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.TimeZone
@@ -38,8 +39,10 @@ class GeneratingViewModelTest {
     private val plans = FakePlanRepository()
     private var settings = FakeSettingsRepository(NOW)
 
+    private val dispatcher = UnconfinedTestDispatcher()
+
     @BeforeTest
-    fun setMainDispatcher() = Dispatchers.setMain(UnconfinedTestDispatcher())
+    fun setMainDispatcher() = Dispatchers.setMain(dispatcher)
 
     @AfterTest
     fun resetMainDispatcher() = Dispatchers.resetMain()
@@ -56,6 +59,7 @@ class GeneratingViewModelTest {
         )
         return GeneratingViewModel(
             GeneratePlanUseCase(summary, generator, PlanValidator(), plans, clock, TimeZone.UTC),
+            VirtualClock { dispatcher.scheduler.currentTime },
             savedState,
         )
     }
@@ -162,17 +166,93 @@ class GeneratingViewModelTest {
         assertEquals(2, generator.calls)
     }
 
+    // ------------------------------------------------------------ límite de peticiones
+
     @Test
-    fun aRateLimitKeepsTheSecondsToWait() = runTest {
+    fun aRateLimitKeepsTheSecondsAndStartsCountingThem() = runTest {
         generator.thenFails(AiError.RateLimited(retryAfterSeconds = 30))
         val viewModel = viewModel()
 
+        // Lo que tarda el servicio en contestar, y ni un instante más.
+        advanceTimeBy(3.seconds)
+        runCurrent()
+
+        val state = viewModel.state.value
+        assertEquals(GenerationFailure.Unavailable(GenerationUnavailable.RateLimited(30)), state.failure)
+        assertEquals(30, state.secondsUntilRetry)
+        assertFalse(state.canRetryNow)
+    }
+
+    @Test
+    fun theCountdownGoesDownWithTheClock() = runTest {
+        generator.thenFails(AiError.RateLimited(retryAfterSeconds = 30))
+        val viewModel = viewModel()
+        advanceTimeBy(3.seconds)
+        runCurrent()
+
+        advanceTimeBy(12.seconds)
+        runCurrent()
+
+        assertEquals(18, viewModel.state.value.secondsUntilRetry)
+    }
+
+    @Test
+    fun retryingBeforeTheWaitIsOverAsksNothing() = runTest {
+        generator.thenFails(AiError.RateLimited(retryAfterSeconds = 30))
+        val viewModel = viewModel()
+        advanceTimeBy(3.seconds + 29.seconds)
+        runCurrent()
+        assertEquals(1, viewModel.state.value.secondsUntilRetry)
+
+        viewModel.onEvent(GeneratingEvent.RetryClicked)
+
+        assertEquals(1, generator.calls)
+        assertFalse(viewModel.state.value.isGenerating)
+    }
+
+    @Test
+    fun retryIsAllowedOnceTheWaitIsOver() = runTest {
+        generator.thenFails(AiError.RateLimited(retryAfterSeconds = 30))
+        generator.thenSucceeds()
+        val viewModel = viewModel()
+        advanceTimeBy(3.seconds + 30.seconds)
+        runCurrent()
+        assertTrue(viewModel.state.value.canRetryNow)
+
+        viewModel.effects.test {
+            viewModel.onEvent(GeneratingEvent.RetryClicked)
+            advanceUntilIdle()
+
+            assertIs<GeneratingEffect.PlanGenerated>(awaitItem())
+        }
+        assertEquals(2, generator.calls)
+    }
+
+    @Test
+    fun aRateLimitWithoutSecondsCanBeRetriedAtOnce() = runTest {
+        generator.thenFails(AiError.RateLimited(retryAfterSeconds = null))
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.canRetryNow)
+
+        viewModel.onEvent(GeneratingEvent.RetryClicked)
+
+        assertEquals(2, generator.calls)
+    }
+
+    @Test
+    fun aNewWaitDoesNotInheritTheCountdownOfTheLastOne() = runTest {
+        generator.thenFails(AiError.RateLimited(retryAfterSeconds = 5))
+        generator.thenFails(AiError.Network)
+        val viewModel = viewModel()
+        advanceTimeBy(3.seconds + 5.seconds)
+        runCurrent()
+
+        viewModel.onEvent(GeneratingEvent.RetryClicked)
         advanceUntilIdle()
 
-        assertEquals(
-            GenerationFailure.Unavailable(GenerationUnavailable.RateLimited(30)),
-            viewModel.state.value.failure,
-        )
+        assertEquals(GenerationFailure.Unavailable(GenerationUnavailable.Network), viewModel.state.value.failure)
+        assertTrue(viewModel.state.value.canRetryNow)
     }
 
     @Test

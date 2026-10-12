@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
@@ -58,6 +59,11 @@ import kotlin.time.Instant
 
 internal class FixedClock(private val instant: Instant) : Clock {
     override fun now(): Instant = instant
+}
+
+/** Un reloj que avanza con el tiempo virtual del test: [NOW] más lo que haya corrido. */
+internal class VirtualClock(private val elapsedMillis: () -> Long) : Clock {
+    override fun now(): Instant = NOW + elapsedMillis().milliseconds
 }
 
 /**

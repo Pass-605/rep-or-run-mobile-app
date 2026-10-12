@@ -16,6 +16,8 @@
          «Reintentar» repite una petición que no llegó; «Generar otra vez» pide otro plan. -->
     <string name="generating_close">Volver al resumen</string>
     <string name="generating_retry">Reintentar</string>
+    <!-- El pie mientras dura la espera que pidió el servicio: deshabilitado y contando. -->
+    <string name="generating_retry_in">Reintentar en %1$d s</string>
     <string name="generating_generate_again">Generar otra vez</string>
     <string name="generating_review_data">Revisar mis datos</string>
     <string name="generating_back_to_summary">Volver al resumen</string>
@@ -26,8 +28,8 @@
     <string name="generating_error_timeout_body">No se ha guardado nada. Puedes reintentarlo ahora o un poco más tarde.</string>
     <string name="generating_error_rate_limited_title">Demasiadas peticiones</string>
     <plurals name="generating_error_rate_limited_body">
-        <item quantity="one">El servicio pide esperar %1$d segundo antes de reintentar.</item>
-        <item quantity="other">El servicio pide esperar %1$d segundos antes de reintentar.</item>
+        <item quantity="one">El servicio pide esperar %1$d segundo. Podrás reintentar cuando pase.</item>
+        <item quantity="other">El servicio pide esperar %1$d segundos. Podrás reintentar cuando pasen.</item>
     </plurals>
     <string name="generating_error_rate_limited_body_unknown">El servicio pide esperar un momento antes de reintentar.</string>
     <string name="generating_error_upstream_title">El servicio ha fallado</string>

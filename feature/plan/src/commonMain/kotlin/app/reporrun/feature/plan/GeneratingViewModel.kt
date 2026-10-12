@@ -5,14 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.reporrun.core.domain.usecase.GeneratePlanResult
 import app.reporrun.core.domain.usecase.GeneratePlanUseCase
+import app.reporrun.core.domain.usecase.GenerationUnavailable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Pide el plan al entrar y traduce el resultado a lo que la pantalla puede ofrecer.
@@ -28,9 +34,14 @@ import kotlinx.coroutines.launch
  * en [savedState]. Esa marca sobrevive a la muerte del proceso y no a salir de la pantalla: si
  * al crearse el ViewModel ya está, es que el proceso murió con la espera delante, y pedir otro
  * plan guardaría uno que nadie ha pedido. Entonces no se arranca nada y la persona decide.
+ *
+ * @param clock con él se cuenta lo que el servicio pide esperar tras un límite de peticiones.
  */
-class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private val savedState: SavedStateHandle) :
-    ViewModel() {
+class GeneratingViewModel(
+    private val generatePlan: GeneratePlanUseCase,
+    private val clock: Clock,
+    private val savedState: SavedStateHandle,
+) : ViewModel() {
     private val _state = MutableStateFlow(GeneratingUiState())
     val state: StateFlow<GeneratingUiState> = _state.asStateFlow()
 
@@ -38,6 +49,7 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private
     val effects: Flow<GeneratingEffect> = _effects.receiveAsFlow()
 
     private var generation: Job? = null
+    private var countdown: Job? = null
     private var invalidPlansInARow = 0
 
     /** Ya hay plan guardado o ya se ha pedido salir: lo que llegue después no cuenta. */
@@ -57,7 +69,7 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private
         when (event) {
             // El pie solo ofrece esto cuando se puede; la comprobación es por si el estado cambia
             // entre el toque y el evento, y para que el tope no dependa de la pantalla.
-            GeneratingEvent.RetryClicked -> if (_state.value.failure.canAskAgain()) generate()
+            GeneratingEvent.RetryClicked -> if (_state.value.canAskAgain()) generate()
 
             GeneratingEvent.CloseClicked -> if (!finished) {
                 finished = true
@@ -69,6 +81,7 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private
 
     private fun generate() {
         if (finished || generation?.isActive == true) return
+        countdown?.cancel()
         _state.value = GeneratingUiState()
         generation = viewModelScope.launch { onResult(generatePlan()) }
     }
@@ -89,7 +102,10 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private
                 _effects.trySend(GeneratingEffect.BackToSummary)
             }
 
-            is GeneratePlanResult.Unavailable -> fail(GenerationFailure.Unavailable(result.reason))
+            is GeneratePlanResult.Unavailable -> {
+                fail(GenerationFailure.Unavailable(result.reason))
+                (result.reason as? GenerationUnavailable.RateLimited)?.retryAfterSeconds?.let(::waitBeforeRetrying)
+            }
 
             is GeneratePlanResult.InvalidPlan -> {
                 invalidPlansInARow++
@@ -109,14 +125,43 @@ class GeneratingViewModel(private val generatePlan: GeneratePlanUseCase, private
         _state.value = GeneratingUiState(failure)
     }
 
+    /**
+     * Cuenta hacia atrás lo que pidió el servicio. Lo que falta se calcula cada vez contra la hora
+     * a la que se podrá reintentar, no restando uno: un tic que llegue tarde no alarga la espera.
+     */
+    private fun waitBeforeRetrying(seconds: Int) {
+        if (seconds <= 0) return
+        val retryAt = clock.now() + seconds.seconds
+        _state.update { it.copy(secondsUntilRetry = seconds) }
+        countdown = viewModelScope.launch {
+            while (true) {
+                val left = retryAt - clock.now()
+                _state.update { it.copy(secondsUntilRetry = left.wholeSecondsUp()) }
+                if (left <= Duration.ZERO) break
+                delay(minOf(left, 1.seconds))
+            }
+        }
+    }
+
     private companion object {
         const val STARTED_KEY = "generation_started"
     }
 }
 
-/** Si desde este error se puede pedir un plan de nuevo, sea repitiendo o generando otro. */
-private fun GenerationFailure?.canAskAgain(): Boolean = when (this) {
-    is GenerationFailure.Unavailable, GenerationFailure.Interrupted -> true
-    is GenerationFailure.InvalidPlan -> canGenerateAgain
-    is GenerationFailure.InvalidInput, null -> false
-}
+/**
+ * Si desde este estado se puede pedir un plan de nuevo, sea repitiendo o generando otro. Mientras
+ * dure la espera que pidió el servicio, no.
+ */
+private fun GeneratingUiState.canAskAgain(): Boolean = canRetryNow &&
+    when (failure) {
+        is GenerationFailure.Unavailable, GenerationFailure.Interrupted -> true
+        is GenerationFailure.InvalidPlan -> failure.canGenerateAgain
+        is GenerationFailure.InvalidInput, null -> false
+    }
+
+/** Los segundos que quedan, hacia arriba: con medio segundo por delante todavía se enseña «1». */
+private fun Duration.wholeSecondsUp(): Int = ((inWholeMilliseconds + MILLIS_PER_SECOND - 1) / MILLIS_PER_SECOND)
+    .toInt()
+    .coerceAtLeast(0)
+
+private const val MILLIS_PER_SECOND = 1000L
