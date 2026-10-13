@@ -18,6 +18,7 @@ import app.reporrun.core.model.GymId
 import app.reporrun.core.model.LoadType
 import app.reporrun.core.model.LoadUnit
 import app.reporrun.core.model.ProfileId
+import app.reporrun.core.model.ThemeMode
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -120,6 +121,7 @@ internal class FakeProfileRepository(initial: UserProfile? = null) : ProfileRepo
 
 internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : SettingsRepository {
     private val consent = MutableStateFlow(consentAcceptedAt)
+    private val themeMode = MutableStateFlow(ThemeMode.SYSTEM)
 
     override fun observeConsentAcceptedAt(): Flow<Instant?> = consent
 
@@ -132,6 +134,12 @@ internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : Sett
     }
 
     override suspend fun installId(): String = "install-test"
+
+    override fun observeThemeMode(): Flow<ThemeMode> = themeMode
+
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        themeMode.value = mode
+    }
 }
 
 /** Jueves 8 de octubre de 2026. */

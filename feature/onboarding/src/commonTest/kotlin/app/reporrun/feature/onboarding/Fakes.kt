@@ -1,6 +1,7 @@
 package app.reporrun.feature.onboarding
 
 import app.reporrun.core.domain.repository.SettingsRepository
+import app.reporrun.core.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.time.Clock
@@ -17,6 +18,7 @@ internal class FixedClock(private val instant: Instant) : Clock {
 
 internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : SettingsRepository {
     private val consent = MutableStateFlow(consentAcceptedAt)
+    private val themeMode = MutableStateFlow(ThemeMode.SYSTEM)
 
     /** Cuántas veces se ha escrito el consentimiento. */
     var acceptCalls = 0
@@ -37,4 +39,10 @@ internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : Sett
     }
 
     override suspend fun installId(): String = "install-test"
+
+    override fun observeThemeMode(): Flow<ThemeMode> = themeMode
+
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        themeMode.value = mode
+    }
 }

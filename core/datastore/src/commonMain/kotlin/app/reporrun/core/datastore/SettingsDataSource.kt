@@ -51,9 +51,23 @@ class SettingsDataSource(private val dataStore: DataStore<Preferences>) {
         return checkNotNull(updated[INSTALL_ID]) { "installId no guardado" }
     }
 
+    /**
+     * El tema elegido, tal como se guardó, o `null` si no se ha elegido ninguno. Es texto: qué
+     * valores son válidos lo sabe quien lo traduce, no este módulo.
+     */
+    val themeMode: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[THEME_MODE] }
+        .distinctUntilChanged()
+
+    /** Guarda el tema elegido. */
+    suspend fun setThemeMode(mode: String) {
+        dataStore.edit { preferences -> preferences[THEME_MODE] = mode }
+    }
+
     private companion object {
         val CONSENT_ACCEPTED_AT = longPreferencesKey("consent_accepted_at")
         val INSTALL_ID = stringPreferencesKey("install_id")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
     }
 }
 

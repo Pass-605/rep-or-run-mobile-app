@@ -4,6 +4,7 @@ import app.reporrun.core.data.T0
 import app.reporrun.core.datastore.SETTINGS_FILE_NAME
 import app.reporrun.core.datastore.SettingsDataSource
 import app.reporrun.core.datastore.createSettingsDataStore
+import app.reporrun.core.model.ThemeMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,6 +36,27 @@ class SettingsRepositoryImplTest {
 
         repository.revokeConsent()
         assertNull(repository.observeConsentAcceptedAt().first())
+    }
+
+    @Test
+    fun followsTheSystemThemeUntilOneIsChosen() = runTest {
+        assertEquals(ThemeMode.SYSTEM, SettingsRepositoryImpl(dataSource).observeThemeMode().first())
+    }
+
+    @Test
+    fun storesTheChosenThemeMode() = runTest {
+        val repository = SettingsRepositoryImpl(dataSource)
+
+        repository.setThemeMode(ThemeMode.DARK)
+
+        assertEquals(ThemeMode.DARK, repository.observeThemeMode().first())
+    }
+
+    @Test
+    fun followsTheSystemThemeWhenTheStoredValueIsUnknown() = runTest {
+        dataSource.setThemeMode("SEPIA")
+
+        assertEquals(ThemeMode.SYSTEM, SettingsRepositoryImpl(dataSource).observeThemeMode().first())
     }
 
     @Test

@@ -26,6 +26,7 @@ import app.reporrun.core.model.PlanDayId
 import app.reporrun.core.model.PlanId
 import app.reporrun.core.model.PlanStatus
 import app.reporrun.core.model.PlanSummary
+import app.reporrun.core.model.ThemeMode
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -134,6 +135,10 @@ private object ConsentGiven : SettingsRepository {
     override suspend fun revokeConsent() = error(READ_ONLY)
 
     override suspend fun installId(): String = "install-test"
+
+    override fun observeThemeMode(): Flow<ThemeMode> = flowOf(ThemeMode.SYSTEM)
+
+    override suspend fun setThemeMode(mode: ThemeMode) = error(READ_ONLY)
 }
 
 private object StoredGym : GymRepository {

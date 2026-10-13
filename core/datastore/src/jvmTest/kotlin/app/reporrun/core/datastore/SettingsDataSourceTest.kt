@@ -42,6 +42,34 @@ class SettingsDataSourceTest {
     }
 
     @Test
+    fun themeModeIsNullUntilChosen() = runTest {
+        assertNull(settings.themeMode.first())
+    }
+
+    @Test
+    fun storesTheLastThemeModeChosen() = runTest {
+        settings.setThemeMode("DARK")
+        settings.setThemeMode("LIGHT")
+
+        assertEquals("LIGHT", settings.themeMode.first())
+    }
+
+    @Test
+    fun themeModeSurvivesReopeningTheFile() = runTest {
+        settings.setThemeMode("DARK")
+        job.cancelAndJoin()
+
+        // Como tras reiniciar la app: mismo archivo, DataStore nuevo.
+        val reopenedJob = Job()
+        val reopened =
+            SettingsDataSource(createSettingsDataStore(CoroutineScope(Dispatchers.IO + reopenedJob)) { path })
+        val stored = reopened.themeMode.first()
+        reopenedJob.cancelAndJoin()
+
+        assertEquals("DARK", stored)
+    }
+
+    @Test
     fun generatesInstallIdOnlyOnce() = runTest {
         val generated = AtomicInteger()
         val generate = { "install-${generated.incrementAndGet()}" }

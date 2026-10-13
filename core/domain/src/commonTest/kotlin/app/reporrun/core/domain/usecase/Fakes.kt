@@ -25,6 +25,7 @@ import app.reporrun.core.model.PlanDayId
 import app.reporrun.core.model.PlanId
 import app.reporrun.core.model.PlanStatus
 import app.reporrun.core.model.PlanSummary
+import app.reporrun.core.model.ThemeMode
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -145,6 +146,7 @@ internal class CountingCatalogRepository(private val inserted: Int) : EquipmentC
 
 internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : SettingsRepository {
     private val consent = MutableStateFlow(consentAcceptedAt)
+    private val themeMode = MutableStateFlow(ThemeMode.SYSTEM)
 
     override fun observeConsentAcceptedAt(): Flow<Instant?> = consent
 
@@ -157,6 +159,12 @@ internal class FakeSettingsRepository(consentAcceptedAt: Instant? = null) : Sett
     }
 
     override suspend fun installId(): String = "install-test"
+
+    override fun observeThemeMode(): Flow<ThemeMode> = themeMode
+
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        themeMode.value = mode
+    }
 }
 
 /** Como `PlanRepositoryImpl`: un plan se inserta entero y un id repetido falla. */
