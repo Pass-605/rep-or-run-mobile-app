@@ -52,10 +52,87 @@
     <string name="generating_problems_hint">Lo que devolvió la comprobación del plan, tal cual. No hace falta entenderlo para seguir.</string>
     <string name="generating_problem_line">· %1$s</string>
 
-    <!-- Destino del plan recién generado. Provisional: lo sustituye la vista del plan (C-12). -->
-    <string name="plan_draft_title">Tu plan</string>
-    <string name="plan_draft_back">Volver</string>
-    <string name="plan_draft_headline">Tu plan está guardado como borrador</string>
-    <string name="plan_draft_version">Versión</string>
-    <string name="plan_draft_body">Verlo día por día todavía no está en esta versión de la app.</string>
+    <!-- Vista del plan (pantallas 07 y 07b de Figma). Todos los textos son nuevos: pendientes de
+         revisión. -->
+    <string name="plan_title">Tu plan</string>
+    <string name="plan_back">Volver</string>
+    <string name="plan_version">Versión %1$d · bloque de %2$d días</string>
+    <string name="plan_focus_separator"> · </string>
+    <string name="plan_status_draft">Borrador</string>
+    <string name="plan_status_active">Activo</string>
+    <string name="plan_status_archived">Archivado</string>
+
+    <!-- El selector de día. Los nombres ya están en `plansetup`; un feature no puede leer los
+         textos de otro (CLAUDE.md §3). -->
+    <string name="plan_days">Días</string>
+    <string name="plan_days_approved">%1$d de %2$d aprobados</string>
+    <string name="plan_day_monday">Lun</string>
+    <string name="plan_day_tuesday">Mar</string>
+    <string name="plan_day_wednesday">Mié</string>
+    <string name="plan_day_thursday">Jue</string>
+    <string name="plan_day_friday">Vie</string>
+    <string name="plan_day_saturday">Sáb</string>
+    <string name="plan_day_sunday">Dom</string>
+    <string name="plan_day_monday_name">lunes</string>
+    <string name="plan_day_tuesday_name">martes</string>
+    <string name="plan_day_wednesday_name">miércoles</string>
+    <string name="plan_day_thursday_name">jueves</string>
+    <string name="plan_day_friday_name">viernes</string>
+    <string name="plan_day_saturday_name">sábado</string>
+    <string name="plan_day_sunday_name">domingo</string>
+    <!-- Lo que anuncia el chip de un día: «miércoles, propuesto». -->
+    <string name="plan_day_description">%1$s, %2$s</string>
+    <string name="plan_day_today">%1$s · hoy</string>
+    <string name="plan_day_status_proposed">Propuesto</string>
+    <string name="plan_day_status_approved">Aprobado</string>
+
+    <!-- El día elegido. Las series son las efectivas: las alternativas no cuentan. -->
+    <plurals name="plan_day_exercises">
+        <item quantity="one">%1$d ejercicio</item>
+        <item quantity="other">%1$d ejercicios</item>
+    </plurals>
+    <plurals name="plan_day_sets">
+        <item quantity="one">%1$d serie</item>
+        <item quantity="other">%1$d series</item>
+    </plurals>
+    <string name="plan_day_counts">%1$s · %2$s</string>
+
+    <string name="plan_session">La sesión</string>
+    <string name="plan_session_priority">Prioridad</string>
+    <string name="plan_session_cardio">Cardio</string>
+    <string name="plan_session_warmup">Calentamiento</string>
+    <string name="plan_session_mobility">Movilidad</string>
+    <string name="plan_session_cooldown">Vuelta a la calma</string>
+    <string name="plan_cardio_none">Sin cardio este día</string>
+    <string name="plan_cardio_minutes">%1$d min</string>
+    <string name="plan_cardio_minutes_range">%1$d-%2$d min</string>
+    <string name="plan_cardio_rpe">RPE %1$s</string>
+    <string name="plan_cardio_incline">inclinación %1$s</string>
+    <string name="plan_cardio_separator"> · </string>
+
+    <!-- Un ejercicio. La carga de ensayo y el descanso van tal como los escribe el plan. -->
+    <string name="plan_exercises">Ejercicios</string>
+    <string name="plan_exercise_range">%1$d-%2$d</string>
+    <string name="plan_exercise_reps">%1$d × %2$s</string>
+    <string name="plan_exercise_meters">%1$d × %2$s m</string>
+    <string name="plan_exercise_seconds">%1$d × %2$s s</string>
+    <string name="plan_exercise_rir">RIR %1$s</string>
+    <string name="plan_exercise_rest">descanso %1$s</string>
+    <string name="plan_exercise_separator"> · </string>
+    <string name="plan_exercise_unilateral">Por lado</string>
+    <string name="plan_exercise_trial">Ensayo: %1$s</string>
+    <!-- Las alternativas no son ejercicios más: se elige una en lugar del ejercicio. -->
+    <string name="plan_exercise_alternatives">O elige una: %1$s</string>
+
+    <string name="plan_notes">Notas del bloque</string>
+
+    <string name="plan_approve_day">Aprobar este día</string>
+    <string name="plan_activate">Activar plan</string>
+    <string name="plan_activate_pending">Para activarlo falta aprobar: %1$s.</string>
+    <string name="plan_pending_separator">, </string>
+    <string name="plan_prepare_another">Preparar otro plan</string>
+
+    <string name="plan_empty_title">Aún no hay un plan activo</string>
+    <string name="plan_empty_body">Cuando generes un plan, apruebes sus días y lo actives, lo verás aquí día por día.</string>
+    <string name="plan_empty_action">Preparar un plan</string>
 </resources>

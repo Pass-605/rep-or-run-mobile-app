@@ -8,15 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,6 +38,8 @@ import app.reporrun.core.designsystem.component.RepOrRunButton
 import app.reporrun.core.designsystem.component.RepOrRunButtonStyle
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunIconButton
+import app.reporrun.core.designsystem.component.RepOrRunScreenFrame
+import app.reporrun.core.designsystem.component.RepOrRunScrollContent
 import app.reporrun.core.model.PlanId
 import app.reporrun.core.ui.CollectEffects
 import app.reporrun.feature.plan.resources.Res
@@ -86,7 +84,7 @@ internal fun GeneratingRoute(
  * La pantalla 06: una espera a pantalla completa y, si no hay plan, por qué y qué se puede hacer.
  *
  * No usa `RepOrRunScreenScaffold`, que es la forma «barra, scroll y acción al pie»: aquí no hay
- * barra ni título arriba, solo cerrar. Lo que sí comparte es el pie fijo.
+ * barra ni título arriba, solo cerrar. Usa el marco de debajo, `RepOrRunScreenFrame`.
  *
  * De Figma no se copian el porcentaje ni la lista de tres pasos: la app no sabe cuánto falta ni
  * en qué paso va el servicio. El anillo es indeterminado y el mensaje describe la espera.
@@ -98,19 +96,9 @@ internal fun GeneratingScreen(
     modifier: Modifier = Modifier,
 ) {
     val failure = state.failure?.texts()
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-            .padding(horizontal = RepOrRunDimens.ScreenPadding),
-    ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(vertical = RepOrRunDimens.ScreenPadding),
-            verticalArrangement = Arrangement.spacedBy(RepOrRunDimens.ScreenPadding),
+    RepOrRunScreenFrame(modifier = modifier, footer = { GeneratingFooter(state, failure, onEvent) }) {
+        RepOrRunScrollContent(
+            spacing = RepOrRunDimens.ScreenPadding,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             RepOrRunIconButton(
@@ -124,26 +112,31 @@ internal fun GeneratingScreen(
             Spacer(Modifier.height(RepOrRunDimens.WaitTopSpacing))
             if (failure == null) Waiting() else Failed(failure)
         }
-        if (failure == null) {
-            RepOrRunButton(
-                text = stringResource(Res.string.generating_cancel),
-                onClick = { onEvent(GeneratingEvent.CloseClicked) },
-                modifier = Modifier.fillMaxWidth().padding(vertical = RepOrRunDimens.SectionSpacing),
-                style = RepOrRunButtonStyle.Tonal,
-            )
-        } else {
-            // Tras un límite de peticiones el pie espera lo que pidió el servicio, y lo cuenta.
-            RepOrRunButton(
-                text = if (state.canRetryNow) {
-                    failure.action
-                } else {
-                    stringResource(Res.string.generating_retry_in, state.secondsUntilRetry)
-                },
-                onClick = { onEvent(failure.actionEvent) },
-                modifier = Modifier.fillMaxWidth().padding(vertical = RepOrRunDimens.SectionSpacing),
-                enabled = state.canRetryNow,
-            )
-        }
+    }
+}
+
+/** El pie: cancelar mientras se espera; con un fallo, lo que ese fallo deja hacer. */
+@Composable
+private fun GeneratingFooter(state: GeneratingUiState, failure: FailureTexts?, onEvent: (GeneratingEvent) -> Unit) {
+    if (failure == null) {
+        RepOrRunButton(
+            text = stringResource(Res.string.generating_cancel),
+            onClick = { onEvent(GeneratingEvent.CloseClicked) },
+            modifier = Modifier.fillMaxWidth(),
+            style = RepOrRunButtonStyle.Tonal,
+        )
+    } else {
+        // Tras un límite de peticiones el pie espera lo que pidió el servicio, y lo cuenta.
+        RepOrRunButton(
+            text = if (state.canRetryNow) {
+                failure.action
+            } else {
+                stringResource(Res.string.generating_retry_in, state.secondsUntilRetry)
+            },
+            onClick = { onEvent(failure.actionEvent) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = state.canRetryNow,
+        )
     }
 }
 

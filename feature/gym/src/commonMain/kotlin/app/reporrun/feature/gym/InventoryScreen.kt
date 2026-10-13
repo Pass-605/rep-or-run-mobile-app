@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -34,6 +32,7 @@ import app.reporrun.core.designsystem.component.RepOrRunChip
 import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunListRow
+import app.reporrun.core.designsystem.component.RepOrRunScreenFrame
 import app.reporrun.core.designsystem.component.RepOrRunSearchField
 import app.reporrun.core.designsystem.component.RepOrRunSupportingText
 import app.reporrun.core.designsystem.component.RepOrRunTopBar
@@ -107,12 +106,16 @@ internal fun InventoryScreen(
     onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            // Incluye el teclado: con él abierto la acción sube y la lista sigue haciendo scroll.
-            .safeDrawingPadding()
-            .padding(horizontal = RepOrRunDimens.ScreenPadding),
+    RepOrRunScreenFrame(
+        modifier = modifier,
+        footer = {
+            RepOrRunButton(
+                text = stringResource(Res.string.inventory_continue),
+                onClick = onContinue,
+                modifier = Modifier.fillMaxWidth(),
+                icon = RepOrRunIcons.ArrowForward,
+            )
+        },
     ) {
         Column(
             // El hueco de abajo es del buscador y no de la lista: lo que hace scroll se corta
@@ -135,14 +138,6 @@ internal fun InventoryScreen(
             // Hasta que Room contesta no se pinta nada, para que la lista no parpadee vacía.
             if (!state.isLoading) inventoryItems(state, onEvent)
         }
-        RepOrRunButton(
-            text = stringResource(Res.string.inventory_continue),
-            onClick = onContinue,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = RepOrRunDimens.SectionSpacing),
-            icon = RepOrRunIcons.ArrowForward,
-        )
     }
 }
 

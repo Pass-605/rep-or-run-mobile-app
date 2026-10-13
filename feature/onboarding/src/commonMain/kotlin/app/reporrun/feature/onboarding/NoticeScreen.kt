@@ -2,12 +2,7 @@ package app.reporrun.feature.onboarding
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +11,8 @@ import app.reporrun.core.designsystem.RepOrRunDimens
 import app.reporrun.core.designsystem.RepOrRunIcons
 import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunIconButton
+import app.reporrun.core.designsystem.component.RepOrRunScreenFrame
+import app.reporrun.core.designsystem.component.RepOrRunScrollContent
 import app.reporrun.feature.onboarding.resources.Res
 import app.reporrun.feature.onboarding.resources.notice_back
 import app.reporrun.feature.onboarding.resources.notice_consent_body
@@ -43,30 +40,25 @@ import org.jetbrains.compose.resources.stringResource
  */
 @Composable
 internal fun NoticeScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .safeDrawingPadding()
-            .padding(RepOrRunDimens.ScreenPadding),
-        verticalArrangement = Arrangement.spacedBy(RepOrRunDimens.SectionSpacing),
-    ) {
-        RepOrRunIconButton(
-            icon = RepOrRunIcons.ArrowBack,
-            contentDescription = stringResource(Res.string.notice_back),
-            onClick = onBack,
-        )
-        Text(stringResource(Res.string.notice_title), style = MaterialTheme.typography.headlineSmall)
-        Text(
-            stringResource(Res.string.notice_intro),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        NoticeSection(Res.string.notice_not_medical_title, Res.string.notice_not_medical_body)
-        NoticeSection(Res.string.notice_data_sent_title, Res.string.notice_data_sent_body)
-        NoticeSection(Res.string.notice_recipient_title, Res.string.notice_recipient_body)
-        NoticeSection(Res.string.notice_local_data_title, Res.string.notice_local_data_body)
-        NoticeSection(Res.string.notice_consent_title, Res.string.notice_consent_body)
+    RepOrRunScreenFrame(modifier = modifier) {
+        RepOrRunScrollContent {
+            RepOrRunIconButton(
+                icon = RepOrRunIcons.ArrowBack,
+                contentDescription = stringResource(Res.string.notice_back),
+                onClick = onBack,
+            )
+            Text(stringResource(Res.string.notice_title), style = MaterialTheme.typography.headlineSmall)
+            Text(
+                stringResource(Res.string.notice_intro),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            NoticeSection(Res.string.notice_not_medical_title, Res.string.notice_not_medical_body)
+            NoticeSection(Res.string.notice_data_sent_title, Res.string.notice_data_sent_body)
+            NoticeSection(Res.string.notice_recipient_title, Res.string.notice_recipient_body)
+            NoticeSection(Res.string.notice_local_data_title, Res.string.notice_local_data_body)
+            NoticeSection(Res.string.notice_consent_title, Res.string.notice_consent_body)
+        }
     }
 }
 

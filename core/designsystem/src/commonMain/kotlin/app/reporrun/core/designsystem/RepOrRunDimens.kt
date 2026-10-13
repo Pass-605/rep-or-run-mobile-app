@@ -50,6 +50,9 @@ object RepOrRunDimens {
     /** Separación entre las tarjetas de una lista larga (pantalla 03). */
     val CardListSpacing = 10.dp
 
+    /** El círculo con el número de orden de un ejercicio (pantalla 07). */
+    val ExerciseIndexSize = 40.dp
+
     val SearchFieldVerticalPadding = 15.dp
     val SearchFieldIconSize = 18.dp
     val SearchFieldSpacing = 10.dp

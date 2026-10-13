@@ -10,4 +10,5 @@ import org.koin.dsl.module
  */
 val planModule: Module = module {
     viewModelOf(::GeneratingViewModel)
+    viewModelOf(::PlanViewModel)
 }
