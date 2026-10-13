@@ -49,6 +49,7 @@ kotlin {
             implementation(project(":feature:gym"))
             implementation(project(":feature:plansetup"))
             implementation(project(":feature:plan"))
+            implementation(project(":feature:settings"))
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)

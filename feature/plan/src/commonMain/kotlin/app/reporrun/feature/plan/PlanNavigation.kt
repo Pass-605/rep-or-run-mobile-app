@@ -50,13 +50,16 @@ fun NavController.navigateToGeneratedPlan(planId: PlanId) {
  *   pide corregir datos o porque faltaba algo.
  * @param onPlanGenerated hay plan guardado, y este es su id.
  * @param onOpenSummary ir al resumen previo a generar, desde la vista del plan.
+ * @param onOpenSettings abrir Ajustes, desde la vista del plan.
  */
+@Suppress("LongParameterList") // Una lambda por salida: es la forma de todos los grafos.
 fun NavGraphBuilder.planGraph(
     canLeave: () -> Boolean,
     onBack: () -> Unit,
     onBackToSummary: () -> Unit,
     onPlanGenerated: (PlanId) -> Unit,
     onOpenSummary: () -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     composable<GeneratingRoute> {
         GeneratingRoute(
@@ -71,6 +74,7 @@ fun NavGraphBuilder.planGraph(
             viewModel = koinViewModel(),
             onBack = onBack.takeIf { canLeavePlan },
             onOpenSummary = onOpenSummary,
+            onOpenSettings = onOpenSettings,
         )
     }
 }

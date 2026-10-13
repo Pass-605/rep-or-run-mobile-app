@@ -11,6 +11,7 @@ import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.domain.usecase.ObserveThemeModeUseCase
 import app.reporrun.core.model.DayStatus
 import app.reporrun.core.model.Equipment
 import app.reporrun.core.model.EquipmentCatalogItem
@@ -27,6 +28,7 @@ import app.reporrun.core.model.PlanId
 import app.reporrun.core.model.PlanStatus
 import app.reporrun.core.model.PlanSummary
 import app.reporrun.core.model.ProfileId
+import app.reporrun.core.model.ThemeMode
 import app.reporrun.core.model.UserProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,6 +66,7 @@ class AppViewModelTest {
         observeConsent = ObserveConsentUseCase(settings),
         observeProfile = ObserveProfileUseCase(profiles),
         hasSavedPlans = HasSavedPlansUseCase(plans, gyms),
+        observeThemeMode = ObserveThemeModeUseCase(settings),
         loadCatalogSeed = LoadCatalogSeedUseCase(catalog),
         dispatchers = AppDispatchers(UnconfinedTestDispatcher()),
     )
@@ -183,6 +186,39 @@ class AppViewModelTest {
     }
 
     @Test
+    fun followsTheSystemThemeWhenNothingWasChosen() = runTest {
+        val viewModel = viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
+
+        assertEquals(ThemeMode.SYSTEM, viewModel.state.value.themeMode)
+    }
+
+    @Test
+    fun startsWithTheStoredTheme() = runTest {
+        val viewModel = viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW), ThemeMode.DARK))
+
+        assertEquals(ThemeMode.DARK, viewModel.state.value.themeMode)
+    }
+
+    @Test
+    fun appliesAThemeChosenLaterWithoutChangingTheStart() = runTest {
+        val settings = FakeSettingsRepository(Loaded(consentAcceptedAt = NOW))
+        val viewModel = viewModel(settings)
+
+        settings.setThemeMode(ThemeMode.LIGHT)
+
+        assertEquals(ThemeMode.LIGHT, viewModel.state.value.themeMode)
+        assertEquals(StartDestination.Profile, viewModel.state.value.start)
+    }
+
+    @Test
+    fun appliesTheThemeBeforeTheStartDestinationIsKnown() = runTest {
+        val viewModel = viewModel(FakeSettingsRepository(stored = null, themeMode = ThemeMode.DARK))
+
+        assertEquals(StartDestination.Loading, viewModel.state.value.start)
+        assertEquals(ThemeMode.DARK, viewModel.state.value.themeMode)
+    }
+
+    @Test
     fun loadsTheCatalogSeedOnEveryStart() = runTest {
         viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
         viewModel(FakeSettingsRepository(Loaded(consentAcceptedAt = NOW)))
@@ -208,8 +244,9 @@ class AppViewModelTest {
 private class Loaded(val consentAcceptedAt: Instant?)
 
 /** [stored] en `null` imita a un DataStore que todavía no ha contestado. */
-private class FakeSettingsRepository(stored: Loaded?) : SettingsRepository {
+private class FakeSettingsRepository(stored: Loaded?, themeMode: ThemeMode = ThemeMode.SYSTEM) : SettingsRepository {
     val stored = MutableStateFlow(stored)
+    private val themeMode = MutableStateFlow(themeMode)
 
     override fun observeConsentAcceptedAt(): Flow<Instant?> = stored.filterNotNull().map { it.consentAcceptedAt }
 
@@ -222,6 +259,12 @@ private class FakeSettingsRepository(stored: Loaded?) : SettingsRepository {
     }
 
     override suspend fun installId(): String = "install-test"
+
+    override fun observeThemeMode(): Flow<ThemeMode> = themeMode
+
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        themeMode.value = mode
+    }
 }
 
 /** Cuenta las cargas de la semilla; el catálogo en sí no le importa a la raíz. */
