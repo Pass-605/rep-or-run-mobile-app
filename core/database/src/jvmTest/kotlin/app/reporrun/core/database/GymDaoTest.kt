@@ -110,7 +110,44 @@ class GymDaoTest {
 
     @Test
     fun loadsTheCatalogIdempotently() = runBlocking {
-        val item = EquipmentCatalogEntity(
+        db.equipmentDao().upsertCatalog(listOf(CHEST_PRESS))
+        db.equipmentDao().upsertCatalog(listOf(CHEST_PRESS))
+
+        assertEquals(listOf(CHEST_PRESS), db.equipmentDao().observeCatalog().first())
+    }
+
+    @Test
+    fun reloadingTheCatalogUpdatesTheTextOfAKnownKey() = runBlocking {
+        val renamed = CHEST_PRESS.copy(name = "Press de pecho", aliases = listOf("Chest Press"))
+
+        db.equipmentDao().upsertCatalog(listOf(CHEST_PRESS))
+        db.equipmentDao().upsertCatalog(listOf(renamed))
+
+        assertEquals(listOf(renamed), db.equipmentDao().observeCatalog().first())
+    }
+
+    @Test
+    fun syncingGivesCatalogEquipmentTheNameOfItsEntry() = runBlocking {
+        gymDao.upsertGym(gym("gym_1"))
+        db.equipmentDao().upsertCatalog(listOf(CHEST_PRESS.copy(name = "Press de pecho")))
+        db.equipmentDao().upsertEquipment(
+            listOf(
+                equipment("eq_catalog").copy(catalogKey = "chest_press", name = "Chest Press", isCustom = false),
+                equipment("eq_custom").copy(name = "Chest Press casera"),
+                equipment("eq_gone").copy(catalogKey = "no_longer_there", name = "Vieja", isCustom = false),
+            ),
+        )
+
+        db.equipmentDao().syncCatalogNames()
+
+        assertEquals(
+            mapOf("eq_catalog" to "Press de pecho", "eq_custom" to "Chest Press casera", "eq_gone" to "Vieja"),
+            db.equipmentDao().observeEquipment("gym_1").first().associate { it.id to it.name },
+        )
+    }
+
+    private companion object {
+        val CHEST_PRESS = EquipmentCatalogEntity(
             key = "chest_press",
             name = "Chest Press",
             aliases = listOf("Press de pecho", "Prensa de pecho"),
@@ -119,14 +156,6 @@ class GymDaoTest {
             primaryMuscles = setOf(MuscleGroup.TRICEPS, MuscleGroup.CHEST),
         )
 
-        db.equipmentDao().insertCatalog(listOf(item))
-        db.equipmentDao().insertCatalog(listOf(item.copy(name = "Otro nombre")))
-
-        assertEquals(1, db.equipmentDao().countCatalog())
-        assertEquals(listOf(item), db.equipmentDao().observeCatalog().first())
-    }
-
-    private companion object {
         val TABLES_UNDER_GYM = listOf(
             "gym",
             "equipment",

@@ -1,12 +1,12 @@
 {
-  "catalogVersion": 1,
-  "description": "Semilla de solo lectura del catálogo de equipos (EquipmentCatalog, plan §10). Nombres en inglés, como los rotula el gimnasio, con alias en español para el buscador. No contiene datos de ninguna persona ni de ningún gimnasio concreto.",
+  "catalogVersion": 2,
+  "description": "Semilla de solo lectura del catálogo de equipos (EquipmentCatalog, plan §10). Nombre visible en español, nombre en inglés como lo rotula el gimnasio y alias para el buscador. No contiene datos de ninguna persona ni de ningún gimnasio concreto.",
   "items": [
     {
       "key": "chest_press",
-      "name": "Chest Press",
+      "name": "Press de pecho",
+      "nameEn": "Chest Press",
       "aliases": [
-        "Press de pecho",
         "Chest Press convergente",
         "Press pecho en máquina"
       ],
@@ -19,7 +19,8 @@
     },
     {
       "key": "incline_chest_press",
-      "name": "Incline Chest Press",
+      "name": "Press de pecho inclinado",
+      "nameEn": "Incline Chest Press",
       "aliases": [
         "Press inclinado en máquina",
         "Press pecho inclinado"
@@ -33,10 +34,10 @@
     },
     {
       "key": "pec_deck",
-      "name": "Pec Deck",
+      "name": "Contractor de pecho",
+      "nameEn": "Pec Deck",
       "aliases": [
         "Peck Deck",
-        "Contractor de pecho",
         "Mariposa",
         "Cable Fly en máquina"
       ],
@@ -48,9 +49,9 @@
     },
     {
       "key": "shoulder_press_machine",
-      "name": "Shoulder Press Machine",
+      "name": "Press de hombro en máquina",
+      "nameEn": "Shoulder Press Machine",
       "aliases": [
-        "Press de hombro en máquina",
         "Press militar en máquina"
       ],
       "category": "MACHINE",
@@ -62,9 +63,9 @@
     },
     {
       "key": "lateral_raise_machine",
-      "name": "Lateral Raise Machine",
+      "name": "Elevaciones laterales en máquina",
+      "nameEn": "Lateral Raise Machine",
       "aliases": [
-        "Elevaciones laterales en máquina",
         "Máquina de deltoide lateral"
       ],
       "category": "MACHINE",
@@ -75,9 +76,9 @@
     },
     {
       "key": "triceps_extension_machine",
-      "name": "Triceps Extension Machine",
+      "name": "Extensión de tríceps en máquina",
+      "nameEn": "Triceps Extension Machine",
       "aliases": [
-        "Extensión de tríceps en máquina",
         "Máquina de tríceps"
       ],
       "category": "MACHINE",
@@ -88,9 +89,9 @@
     },
     {
       "key": "dip_machine",
-      "name": "Assisted Dip Machine",
+      "name": "Fondos asistidos",
+      "nameEn": "Assisted Dip Machine",
       "aliases": [
-        "Fondos asistidos",
         "Máquina de fondos"
       ],
       "category": "MACHINE",
@@ -102,9 +103,9 @@
     },
     {
       "key": "lat_pulldown",
-      "name": "Lat Pulldown",
+      "name": "Jalón al pecho",
+      "nameEn": "Lat Pulldown",
       "aliases": [
-        "Jalón al pecho",
         "Jalón dorsal",
         "Polea dorsal",
         "Lat Pulldown neutro"
@@ -118,9 +119,9 @@
     },
     {
       "key": "chest_supported_row",
-      "name": "Chest-Supported Row",
+      "name": "Remo con apoyo pectoral",
+      "nameEn": "Chest-Supported Row",
       "aliases": [
-        "Remo con apoyo pectoral",
         "Remo con pecho apoyado"
       ],
       "category": "MACHINE",
@@ -132,9 +133,9 @@
     },
     {
       "key": "seated_row_machine",
-      "name": "Seated Row Machine",
+      "name": "Remo sentado en máquina",
+      "nameEn": "Seated Row Machine",
       "aliases": [
-        "Remo sentado en máquina",
         "Remo horizontal en máquina"
       ],
       "category": "MACHINE",
@@ -146,9 +147,9 @@
     },
     {
       "key": "high_row",
-      "name": "High Row",
+      "name": "Remo alto",
+      "nameEn": "High Row",
       "aliases": [
-        "Remo alto",
         "Remo en máquina agarre alto"
       ],
       "category": "MACHINE",
@@ -159,11 +160,11 @@
     },
     {
       "key": "reverse_pec_deck",
-      "name": "Reverse Pec Deck",
+      "name": "Contractor inverso",
+      "nameEn": "Reverse Pec Deck",
       "aliases": [
         "Pec Deck inverso",
-        "Deltoide posterior en máquina",
-        "Contractor inverso"
+        "Deltoide posterior en máquina"
       ],
       "category": "MACHINE",
       "loadType": "SELECTOR",
@@ -174,9 +175,9 @@
     },
     {
       "key": "assisted_pullup_machine",
-      "name": "Assisted Pull-Up Machine",
+      "name": "Dominadas asistidas",
+      "nameEn": "Assisted Pull-Up Machine",
       "aliases": [
-        "Dominadas asistidas",
         "Gravitrón"
       ],
       "category": "MACHINE",
@@ -188,9 +189,9 @@
     },
     {
       "key": "biceps_curl_machine",
-      "name": "Biceps Curl Machine",
+      "name": "Curl de bíceps en máquina",
+      "nameEn": "Biceps Curl Machine",
       "aliases": [
-        "Curl de bíceps en máquina",
         "Máquina de bíceps"
       ],
       "category": "MACHINE",
@@ -201,9 +202,9 @@
     },
     {
       "key": "t_bar_row",
-      "name": "T-Bar Row",
+      "name": "Remo en T",
+      "nameEn": "T-Bar Row",
       "aliases": [
-        "Remo en T",
         "Remo en barra T"
       ],
       "category": "MACHINE",
@@ -215,9 +216,9 @@
     },
     {
       "key": "leg_press",
-      "name": "Leg Press",
+      "name": "Prensa de piernas",
+      "nameEn": "Leg Press",
       "aliases": [
-        "Prensa de piernas",
         "Prensa 45",
         "Single-Leg Press"
       ],
@@ -230,9 +231,9 @@
     },
     {
       "key": "hack_squat",
-      "name": "Hack Squat",
+      "name": "Sentadilla hack",
+      "nameEn": "Hack Squat",
       "aliases": [
-        "Sentadilla hack",
         "Máquina hack"
       ],
       "category": "MACHINE",
@@ -244,9 +245,9 @@
     },
     {
       "key": "pendulum_squat",
-      "name": "Pendulum Squat",
+      "name": "Sentadilla péndulo",
+      "nameEn": "Pendulum Squat",
       "aliases": [
-        "Sentadilla péndulo",
         "Péndulo"
       ],
       "category": "MACHINE",
@@ -258,9 +259,9 @@
     },
     {
       "key": "belt_squat",
-      "name": "Belt Squat",
+      "name": "Sentadilla con cinturón",
+      "nameEn": "Belt Squat",
       "aliases": [
-        "Sentadilla con cinturón",
         "Máquina de sentadilla con cinturón"
       ],
       "category": "MACHINE",
@@ -272,9 +273,9 @@
     },
     {
       "key": "leg_extension",
-      "name": "Leg Extension",
+      "name": "Extensión de rodilla",
+      "nameEn": "Leg Extension",
       "aliases": [
-        "Extensión de rodilla",
         "Extensión de cuádriceps",
         "Silla de cuádriceps"
       ],
@@ -286,9 +287,9 @@
     },
     {
       "key": "seated_leg_curl",
-      "name": "Seated Leg Curl",
+      "name": "Curl femoral sentado",
+      "nameEn": "Seated Leg Curl",
       "aliases": [
-        "Curl femoral sentado",
         "Femoral sentado"
       ],
       "category": "MACHINE",
@@ -299,9 +300,9 @@
     },
     {
       "key": "lying_leg_curl",
-      "name": "Lying Leg Curl",
+      "name": "Curl femoral tumbado",
+      "nameEn": "Lying Leg Curl",
       "aliases": [
-        "Curl femoral tumbado",
         "Femoral tumbado",
         "Camilla de femoral"
       ],
@@ -313,9 +314,9 @@
     },
     {
       "key": "hip_thrust_machine",
-      "name": "Hip Thrust Machine",
+      "name": "Máquina de hip thrust",
+      "nameEn": "Hip Thrust Machine",
       "aliases": [
-        "Máquina de hip thrust",
         "Empuje de cadera en máquina"
       ],
       "category": "MACHINE",
@@ -327,9 +328,9 @@
     },
     {
       "key": "glute_kickback_machine",
-      "name": "Glute Kickback Machine",
+      "name": "Patada de glúteo en máquina",
+      "nameEn": "Glute Kickback Machine",
       "aliases": [
-        "Patada de glúteo en máquina",
         "Máquina de glúteo"
       ],
       "category": "MACHINE",
@@ -340,9 +341,9 @@
     },
     {
       "key": "hip_abductor_machine",
-      "name": "Hip Abductor Machine",
+      "name": "Máquina de abductores",
+      "nameEn": "Hip Abductor Machine",
       "aliases": [
-        "Máquina de abductores",
         "Abducción de cadera"
       ],
       "category": "MACHINE",
@@ -354,9 +355,9 @@
     },
     {
       "key": "adductor_machine",
-      "name": "Adductor Machine",
+      "name": "Máquina de aductores",
+      "nameEn": "Adductor Machine",
       "aliases": [
-        "Máquina de aductores",
         "Aducción de cadera"
       ],
       "category": "MACHINE",
@@ -367,10 +368,10 @@
     },
     {
       "key": "standing_calf_raise",
-      "name": "Standing Calf Raise Machine",
+      "name": "Gemelos de pie",
+      "nameEn": "Standing Calf Raise Machine",
       "aliases": [
-        "Elevación de talones de pie",
-        "Gemelos de pie"
+        "Elevación de talones de pie"
       ],
       "category": "MACHINE",
       "loadType": "PLATES_TOTAL",
@@ -380,9 +381,9 @@
     },
     {
       "key": "seated_calf_raise",
-      "name": "Seated Calf Raise Machine",
+      "name": "Gemelos sentado",
+      "nameEn": "Seated Calf Raise Machine",
       "aliases": [
-        "Gemelos sentado",
         "Máquina de sóleo"
       ],
       "category": "MACHINE",
@@ -393,9 +394,9 @@
     },
     {
       "key": "glute_ham_raise",
-      "name": "Glute-Ham Raise Bench",
+      "name": "Banco GHR",
+      "nameEn": "Glute-Ham Raise Bench",
       "aliases": [
-        "Banco GHR",
         "Femoral nórdico"
       ],
       "category": "BENCH",
@@ -407,9 +408,9 @@
     },
     {
       "key": "abdominal_crunch_machine",
-      "name": "Abdominal Crunch Machine",
+      "name": "Máquina de abdominales",
+      "nameEn": "Abdominal Crunch Machine",
       "aliases": [
-        "Máquina de abdominales",
         "Crunch en máquina"
       ],
       "category": "MACHINE",
@@ -420,9 +421,9 @@
     },
     {
       "key": "back_extension_bench",
-      "name": "Back Extension Bench",
+      "name": "Banco de lumbares",
+      "nameEn": "Back Extension Bench",
       "aliases": [
-        "Banco de lumbares",
         "Hiperextensiones",
         "Silla romana"
       ],
@@ -436,9 +437,9 @@
     },
     {
       "key": "captains_chair",
-      "name": "Captain's Chair",
+      "name": "Silla del capitán",
+      "nameEn": "Captain's Chair",
       "aliases": [
-        "Silla del capitán",
         "Paralelas de abdominales",
         "Elevación de rodillas"
       ],
@@ -450,10 +451,9 @@
     },
     {
       "key": "ab_wheel",
-      "name": "Ab Wheel",
-      "aliases": [
-        "Rueda abdominal"
-      ],
+      "name": "Rueda abdominal",
+      "nameEn": "Ab Wheel",
+      "aliases": [],
       "category": "OTHER",
       "loadType": "BODYWEIGHT",
       "primaryMuscles": [
@@ -462,9 +462,9 @@
     },
     {
       "key": "cable_crossover",
-      "name": "Cable Crossover",
+      "name": "Poleas cruzadas",
+      "nameEn": "Cable Crossover",
       "aliases": [
-        "Poleas cruzadas",
         "Torre de poleas doble",
         "Crossover"
       ],
@@ -478,9 +478,9 @@
     },
     {
       "key": "high_pulley",
-      "name": "High Pulley",
+      "name": "Polea alta",
+      "nameEn": "High Pulley",
       "aliases": [
-        "Polea alta",
         "Jalón en polea alta"
       ],
       "category": "CABLE",
@@ -493,9 +493,9 @@
     },
     {
       "key": "low_pulley",
-      "name": "Low Pulley",
+      "name": "Polea baja",
+      "nameEn": "Low Pulley",
       "aliases": [
-        "Polea baja",
         "Remo en polea baja"
       ],
       "category": "CABLE",
@@ -508,11 +508,11 @@
     },
     {
       "key": "functional_trainer",
-      "name": "Functional Trainer",
+      "name": "Poleas ajustables",
+      "nameEn": "Functional Trainer",
       "aliases": [
         "Máquina funcional",
-        "Jaula de poleas ajustables",
-        "Poleas ajustables"
+        "Jaula de poleas ajustables"
       ],
       "category": "CABLE",
       "loadType": "SELECTOR",
@@ -522,10 +522,10 @@
     },
     {
       "key": "smith_machine",
-      "name": "Smith Machine",
+      "name": "Máquina Smith",
+      "nameEn": "Smith Machine",
       "aliases": [
         "Multipower",
-        "Máquina Smith",
         "Smith"
       ],
       "category": "SMITH",
@@ -536,9 +536,9 @@
     },
     {
       "key": "squat_rack",
-      "name": "Squat Rack",
+      "name": "Jaula de sentadillas",
+      "nameEn": "Squat Rack",
       "aliases": [
-        "Jaula de sentadillas",
         "Power rack",
         "Rack de sentadilla"
       ],
@@ -552,9 +552,9 @@
     },
     {
       "key": "olympic_barbell",
-      "name": "Olympic Barbell",
+      "name": "Barra olímpica",
+      "nameEn": "Olympic Barbell",
       "aliases": [
-        "Barra olímpica",
         "Barra de 20 kg",
         "Barra recta"
       ],
@@ -566,9 +566,9 @@
     },
     {
       "key": "ez_curl_bar",
-      "name": "EZ Curl Bar",
+      "name": "Barra Z",
+      "nameEn": "EZ Curl Bar",
       "aliases": [
-        "Barra Z",
         "Barra W"
       ],
       "category": "FREE_WEIGHT",
@@ -580,9 +580,9 @@
     },
     {
       "key": "trap_bar",
-      "name": "Trap Bar",
+      "name": "Barra hexagonal",
+      "nameEn": "Trap Bar",
       "aliases": [
-        "Barra hexagonal",
         "Barra trap"
       ],
       "category": "FREE_WEIGHT",
@@ -594,10 +594,10 @@
     },
     {
       "key": "landmine",
-      "name": "Landmine",
+      "name": "Anclaje landmine",
+      "nameEn": "Landmine",
       "aliases": [
-        "Barra en T",
-        "Anclaje landmine"
+        "Barra en T"
       ],
       "category": "FREE_WEIGHT",
       "loadType": "BARBELL",
@@ -609,9 +609,9 @@
     },
     {
       "key": "dumbbells",
-      "name": "Dumbbells",
+      "name": "Mancuernas",
+      "nameEn": "Dumbbells",
       "aliases": [
-        "Mancuernas",
         "Pesas"
       ],
       "category": "FREE_WEIGHT",
@@ -622,9 +622,9 @@
     },
     {
       "key": "kettlebells",
-      "name": "Kettlebells",
+      "name": "Pesas rusas",
+      "nameEn": "Kettlebells",
       "aliases": [
-        "Pesas rusas",
         "Kettlebell"
       ],
       "category": "FREE_WEIGHT",
@@ -635,9 +635,9 @@
     },
     {
       "key": "medicine_ball",
-      "name": "Medicine Ball",
+      "name": "Balón medicinal",
+      "nameEn": "Medicine Ball",
       "aliases": [
-        "Balón medicinal",
         "Pelota medicinal"
       ],
       "category": "OTHER",
@@ -649,9 +649,9 @@
     },
     {
       "key": "farmers_handles",
-      "name": "Farmer's Walk Handles",
+      "name": "Agarres de granjero",
+      "nameEn": "Farmer's Walk Handles",
       "aliases": [
-        "Agarres de granjero",
         "Maletas de carga"
       ],
       "category": "OTHER",
@@ -663,9 +663,9 @@
     },
     {
       "key": "weight_sled",
-      "name": "Weight Sled",
+      "name": "Trineo",
+      "nameEn": "Weight Sled",
       "aliases": [
-        "Trineo",
         "Prowler"
       ],
       "category": "OTHER",
@@ -678,9 +678,9 @@
     },
     {
       "key": "resistance_bands",
-      "name": "Resistance Bands",
+      "name": "Bandas elásticas",
+      "nameEn": "Resistance Bands",
       "aliases": [
-        "Bandas elásticas",
         "Ligas",
         "Gomas"
       ],
@@ -692,10 +692,9 @@
     },
     {
       "key": "flat_bench",
-      "name": "Flat Bench",
-      "aliases": [
-        "Banco plano"
-      ],
+      "name": "Banco plano",
+      "nameEn": "Flat Bench",
+      "aliases": [],
       "category": "BENCH",
       "loadType": "NONE",
       "primaryMuscles": [
@@ -704,11 +703,11 @@
     },
     {
       "key": "adjustable_bench",
-      "name": "Adjustable Bench",
+      "name": "Banco ajustable",
+      "nameEn": "Adjustable Bench",
       "aliases": [
         "Banco inclinable",
-        "Banco regulable",
-        "Banco ajustable"
+        "Banco regulable"
       ],
       "category": "BENCH",
       "loadType": "NONE",
@@ -719,9 +718,9 @@
     },
     {
       "key": "preacher_bench",
-      "name": "Preacher Bench",
+      "name": "Banco Scott",
+      "nameEn": "Preacher Bench",
       "aliases": [
-        "Banco Scott",
         "Banco predicador"
       ],
       "category": "BENCH",
@@ -732,9 +731,9 @@
     },
     {
       "key": "exercise_mat",
-      "name": "Exercise Mat",
+      "name": "Colchoneta",
+      "nameEn": "Exercise Mat",
       "aliases": [
-        "Colchoneta",
         "Tapete",
         "Mat"
       ],
@@ -746,9 +745,9 @@
     },
     {
       "key": "pullup_bar",
-      "name": "Pull-Up Bar",
+      "name": "Barra de dominadas",
+      "nameEn": "Pull-Up Bar",
       "aliases": [
-        "Barra de dominadas",
         "Barra fija"
       ],
       "category": "BODYWEIGHT",
@@ -760,9 +759,9 @@
     },
     {
       "key": "dip_station",
-      "name": "Dip Station",
+      "name": "Paralelas",
+      "nameEn": "Dip Station",
       "aliases": [
-        "Paralelas",
         "Fondos en paralelas"
       ],
       "category": "BODYWEIGHT",
@@ -774,9 +773,9 @@
     },
     {
       "key": "plyo_box",
-      "name": "Plyo Box",
+      "name": "Cajón pliométrico",
+      "nameEn": "Plyo Box",
       "aliases": [
-        "Cajón pliométrico",
         "Cajón de salto"
       ],
       "category": "BODYWEIGHT",
@@ -788,9 +787,9 @@
     },
     {
       "key": "treadmill",
-      "name": "Treadmill",
+      "name": "Caminadora",
+      "nameEn": "Treadmill",
       "aliases": [
-        "Caminadora",
         "Cinta de correr",
         "Trotadora"
       ],
@@ -802,9 +801,9 @@
     },
     {
       "key": "stationary_bike",
-      "name": "Stationary Bike",
+      "name": "Bicicleta estática",
+      "nameEn": "Stationary Bike",
       "aliases": [
-        "Bicicleta estática",
         "Bici estática",
         "Spinning"
       ],
@@ -817,10 +816,9 @@
     },
     {
       "key": "elliptical",
-      "name": "Elliptical",
-      "aliases": [
-        "Elíptica"
-      ],
+      "name": "Elíptica",
+      "nameEn": "Elliptical",
+      "aliases": [],
       "category": "CARDIO",
       "loadType": "CARDIO",
       "primaryMuscles": [
@@ -829,9 +827,9 @@
     },
     {
       "key": "stair_climber",
-      "name": "Stair Climber",
+      "name": "Escaladora",
+      "nameEn": "Stair Climber",
       "aliases": [
-        "Escaladora",
         "Escalera sin fin",
         "Simulador de escaleras"
       ],
@@ -845,10 +843,10 @@
     },
     {
       "key": "rowing_machine",
-      "name": "Rowing Machine",
+      "name": "Remadora",
+      "nameEn": "Rowing Machine",
       "aliases": [
         "Remo ergómetro",
-        "Remadora",
         "Remo de cardio"
       ],
       "category": "CARDIO",
@@ -860,9 +858,9 @@
     },
     {
       "key": "air_bike",
-      "name": "Air Bike",
+      "name": "Bicicleta de aire",
+      "nameEn": "Air Bike",
       "aliases": [
-        "Bicicleta de aire",
         "Assault bike"
       ],
       "category": "CARDIO",

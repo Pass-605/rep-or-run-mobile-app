@@ -27,10 +27,11 @@ class EquipmentCatalogRepositoryImpl internal constructor(
         dao.observeCatalog().map { rows -> rows.map { it.toModel() } }
 
     /**
-     * Inserta con `IGNORE`: las claves que ya están no se tocan y las nuevas de una versión
-     * posterior de la app se añaden (`seed/README.md`). Una semilla rota es un fallo de la
-     * build, no un error de la persona: lanza con todos los problemas, y el test de la semilla
-     * lo impide antes de publicar.
+     * Las claves nuevas de una versión posterior de la app se añaden y las que ya estaban toman
+     * el texto de la semilla (`seed/README.md`); los aparatos marcados desde el catálogo siguen
+     * el nombre de su entrada. Una semilla rota es un fallo de la build, no un error de la
+     * persona: lanza con todos los problemas, y el test de la semilla lo impide antes de
+     * publicar.
      */
     override suspend fun loadSeed(): Int {
         val items = when (val parsed = SeedCatalog.parse(seedJson)) {
@@ -38,7 +39,8 @@ class EquipmentCatalogRepositoryImpl internal constructor(
             is Mapped.Invalid -> error("Semilla del catálogo inválida: ${parsed.errors.joinToString("; ")}")
         }
         val before = dao.countCatalog()
-        dao.insertCatalog(items.map { it.toEntity() })
+        dao.upsertCatalog(items.map { it.toEntity() })
+        dao.syncCatalogNames()
         return dao.countCatalog() - before
     }
 }
