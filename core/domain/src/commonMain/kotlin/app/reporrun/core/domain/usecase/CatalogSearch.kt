@@ -1,8 +1,9 @@
 package app.reporrun.core.domain.usecase
 
 /**
- * Cómo se busca un aparato por lo que la persona teclea. La semilla trae los nombres en inglés,
- * como los rotula el gimnasio, y los alias en español: se busca en los dos.
+ * Cómo se busca un aparato por lo que la persona teclea. El catálogo trae el nombre en español
+ * y, como alias, otras formas de decirlo y el nombre en inglés que rotula el gimnasio: se busca
+ * en todos.
  *
  * Se ignoran las mayúsculas, los acentos y la diéresis («maquina» encuentra «máquina»). **La ñ
  * no es una n con acento**: es otra letra, así que «pina» no encuentra «piña».

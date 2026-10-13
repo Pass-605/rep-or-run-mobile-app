@@ -12,8 +12,9 @@ interface EquipmentCatalogRepository {
     fun observeCatalog(): Flow<List<EquipmentCatalogItem>>
 
     /**
-     * Carga la semilla empaquetada con la app. Idempotente: se llama en cada arranque, solo
-     * inserta las claves que falten y nunca toca una que ya existe.
+     * Carga la semilla empaquetada con la app. Idempotente: se llama en cada arranque, inserta
+     * las claves que falten y pone al día el nombre y los alias de las que ya estaban, también
+     * en los aparatos que la persona marcó desde el catálogo. Una clave no cambia nunca.
      *
      * @return cuántas entradas nuevas se insertaron.
      */

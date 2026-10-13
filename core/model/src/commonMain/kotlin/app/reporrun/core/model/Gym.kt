@@ -61,7 +61,9 @@ data class Equipment(
  * Entrada del catálogo semilla (`seed/equipment_catalog.json`), de solo lectura. La persona
  * marca las que tiene su gimnasio y se convierten en [Equipment].
  *
- * @property aliases nombres alternativos en español para el buscador.
+ * @property name nombre visible, en español. Es el que toma el [Equipment] al marcarla.
+ * @property aliases otros nombres por los que se busca: los alias en español y el nombre en
+ *   inglés, como lo rotula el gimnasio.
  */
 data class EquipmentCatalogItem(
     val key: CatalogKey,

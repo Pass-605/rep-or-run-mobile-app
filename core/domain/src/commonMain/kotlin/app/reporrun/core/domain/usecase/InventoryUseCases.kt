@@ -38,8 +38,9 @@ class ObserveGymInventoryUseCase(
 }
 
 /**
- * Carga el catálogo semilla. Se llama en cada arranque: es idempotente, solo inserta las claves
- * que falten. Sin esta llamada el catálogo está vacío y el inventario no tiene de dónde marcar.
+ * Carga el catálogo semilla. Se llama en cada arranque: es idempotente, inserta las claves que
+ * falten y pone al día el texto de las demás. Sin esta llamada el catálogo está vacío y el
+ * inventario no tiene de dónde marcar.
  */
 class LoadCatalogSeedUseCase(private val repository: EquipmentCatalogRepository) {
     /** @return cuántas entradas nuevas se insertaron. */

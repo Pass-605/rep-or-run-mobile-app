@@ -3,6 +3,7 @@ package app.reporrun.core.data.seed
 import app.reporrun.core.domain.validation.Mapped
 import app.reporrun.core.domain.validation.ModelErrors
 import app.reporrun.core.model.CatalogKey
+import app.reporrun.core.model.Equipment
 import app.reporrun.core.model.EquipmentCatalogItem
 import app.reporrun.core.model.EquipmentCategory
 import app.reporrun.core.model.LoadType
@@ -18,7 +19,7 @@ import kotlinx.serialization.json.Json
  */
 internal object SeedCatalog {
     /** Versión de la forma del archivo que entiende esta app. */
-    const val SUPPORTED_VERSION: Int = 1
+    const val SUPPORTED_VERSION: Int = 2
 
     /** Mínimo de entradas del catálogo (B-01). */
     const val MIN_ITEMS: Int = 40
@@ -54,7 +55,9 @@ internal object SeedCatalog {
     private fun SeedItem.toModel(path: String, errors: ModelErrors): EquipmentCatalogItem? {
         val before = errors.size
         val catalogKey = errors.build("$path.key") { CatalogKey(key) }
-        if (aliases.isEmpty()) errors.report("$path.aliases", "hace falta al menos un alias")
+        // El nombre visible es el que toma el aparato al marcarlo: tiene que caber en sus límites.
+        if (name.length !in Equipment.NAME_LENGTH) errors.report("$path.name", "fuera de ${Equipment.NAME_LENGTH}")
+        if (nameEn.isBlank()) errors.report("$path.nameEn", "vacío")
         val category = enumOrReport<EquipmentCategory>(category, "$path.category", errors)
         val loadType = enumOrReport<LoadType>(loadType, "$path.loadType", errors)
         val muscles = primaryMuscles.map { enumOrReport<MuscleGroup>(it, "$path.primaryMuscles", errors) }
@@ -63,11 +66,12 @@ internal object SeedCatalog {
         if (errors.size > before) return null
 
         // Sin errores anotados, las piezas están todas: los requireNotNull no pueden fallar.
+        // El nombre en inglés se busca como un alias más; el modelo no lo distingue (B-08).
         return errors.build(path) {
             EquipmentCatalogItem(
                 key = requireNotNull(catalogKey),
                 name = name,
-                aliases = aliases,
+                aliases = (aliases + nameEn).distinctBy(::searchKey),
                 category = requireNotNull(category),
                 loadType = requireNotNull(loadType),
                 primaryMuscles = muscles.filterNotNull().toSet(),
@@ -88,12 +92,14 @@ internal object SeedCatalog {
     }
 
     /**
-     * Ningún `name` ni alias se repite entre entradas distintas, ignorando mayúsculas y
-     * acentos: el buscador quedaría ambiguo. Dentro de una misma entrada da igual.
+     * Ningún `name`, `nameEn` ni alias se repite entre entradas distintas, ignorando mayúsculas
+     * y acentos: el buscador quedaría ambiguo. Dentro de una misma entrada da igual.
      */
     private fun checkUniqueSearchTerms(items: List<SeedItem>, errors: ModelErrors) {
         items
-            .flatMap { item -> (listOf(item.name) + item.aliases).map { searchKey(it) to item.key }.distinct() }
+            .flatMap { item ->
+                (listOf(item.name, item.nameEn) + item.aliases).map { searchKey(it) to item.key }.distinct()
+            }
             .groupBy({ it.first }, { it.second })
             .filterValues { it.size > 1 }
             .forEach { (term, keys) ->
@@ -147,6 +153,7 @@ private data class SeedFile(val catalogVersion: Int, val description: String, va
 private data class SeedItem(
     val key: String,
     val name: String,
+    val nameEn: String,
     val aliases: List<String>,
     val category: String,
     val loadType: String,
