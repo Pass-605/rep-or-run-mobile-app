@@ -15,7 +15,7 @@ import app.reporrun.core.designsystem.resources.outfit_semibold
 import org.jetbrains.compose.resources.Font
 
 /**
- * Outfit en los cuatro pesos que se empaquetan (TTF estáticos, OFL 1.1; ver `LICENSE-OFL.txt`).
+ * Outfit en los cuatro pesos que se empaquetan (TTF estáticos, OFL 1.1; ver [RepOrRunLicenses]).
  * Son estáticos y no la fuente variable para que Android e iOS pinten igual.
  */
 @Composable
