@@ -49,7 +49,7 @@ rep-or-run-mobile-app/
 │   ├── designsystem/            # RepOrRunTheme, colores, tipografía Outfit, componentes
 │   └── ui/                      # utilidades UI compartidas
 ├── feature/
-│   └── onboarding/  profile/  gym/  plansetup/  plan/  review/
+│   └── onboarding/  profile/  gym/  plansetup/  plan/  settings/  review/
 ├── contract/v1/                 # copia versionada de ../docs/contract (schemas + ejemplos)
 ├── seed/equipment_catalog.json  # catálogo semilla (se empaqueta en :core:data)
 └── scripts/sync-contract.sh     # copia ../docs/contract → contract/v<N>/
@@ -109,7 +109,7 @@ En Windows usa `gradlew.bat`.
 - Figma es la fuente de verdad; cuando la pantalla exista allí, implementa desde Figma (Figma MCP).
 - Nunca uses colores ni tamaños de texto hardcodeados: todo sale de `RepOrRunTheme` / `MaterialTheme`.
 
-**Dos temas.** `RepOrRunTheme(darkTheme = …)` sigue el ajuste del sistema (`isSystemInDarkTheme()`) y `ThemeMode` (`System` / `Dark` / `Light`) se guarda en DataStore desde Ajustes. Referencia: páginas *Pantallas · v2 · Claro* y *Pantallas · v2 · Oscuro* del archivo de Figma, y el **Anexo A del plan**, que es la tabla normativa de tokens. Si esta tabla y el Anexo A se contradicen, manda el Anexo A.
+**Dos temas.** `ThemeMode` (`SYSTEM` / `DARK` / `LIGHT`, en `:core:model`) se elige en Ajustes y se guarda en DataStore; `AppViewModel` lo observa y `RepOrRunApp` lo convierte en `RepOrRunTheme(darkTheme = …)`, con `isSystemInDarkTheme()` para `SYSTEM`. Referencia: páginas *Pantallas · v2 · Claro* y *Pantallas · v2 · Oscuro* del archivo de Figma, y el **Anexo A del plan**, que es la tabla normativa de tokens. Si esta tabla y el Anexo A se contradicen, manda el Anexo A.
 
 | Token semántico | Claro | Oscuro | Uso |
 |---|---|---|---|
