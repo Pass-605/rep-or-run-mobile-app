@@ -54,6 +54,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado
 - `checkModuleDependencies` vigila `core:designsystem`: no puede depender de ningún módulo del proyecto, y `CLAUDE.md` §3 lo dice (S-10).
 - Skill `reporrun-pantalla-figma`: tabla de nodos por pantalla de las páginas v2 y el aviso de que `get_metadata` sin `nodeId` no lista todas las páginas.
 - `CLAUDE.md` §3: `core:domain` puede usar `koin-core` únicamente en su archivo `di/`; ningún otro archivo del módulo importa Koin. Resuelve la contradicción que dejó S-09 entre «solo `core:model`» y «cada módulo expone su `val xxxModule`».
+- El catálogo de máquinas se lee en español (B-08). En `seed/equipment_catalog.json`, `name` es ahora el nombre visible en español de las 62 entradas y `nameEn` guarda el inglés que rotula el gimnasio, que sigue sirviendo para buscar; ninguna `key` cambia y `catalogVersion` sube a 2. Cargar la semilla ya no ignora las claves conocidas: pone al día su texto y el nombre de los aparatos marcados desde el catálogo, así una instalación que tenía el catálogo en inglés pasa al español al arrancar, sin migración de Room. Las máquinas personalizadas y los planes guardados no se tocan. En `Gym.equipment[].name` viaja el nombre en español, el mismo que se ve. Sin dependencias nuevas.
 
 ### Eliminado
 
