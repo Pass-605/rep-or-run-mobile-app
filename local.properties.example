@@ -1,0 +1,15 @@
+# Copia este archivo como `local.properties` (ignorado por git) y pon tus valores.
+# Nunca commitees `local.properties`. Si una clave falta aquí, se busca una variable de
+# entorno con el mismo nombre; si no está en ningún sitio, :core:network no compila.
+
+# Lo escribe Android Studio solo.
+sdk.dir=/ruta/al/Android/Sdk
+
+# Clave que la Lambda exige en X-App-Key. La misma que ROR_APP_KEY en el `.env` del runner
+# (rep-or-run-lambda). No es secreta (viaja dentro de la app), pero no entra en git.
+ROR_APP_KEY=cambia-esto-por-la-del-env-del-runner
+
+# El runner local de la Lambda. 10.0.2.2 es el host visto desde el emulador de Android;
+# el simulador de iOS lo ve como localhost.
+ROR_BASE_URL_ANDROID=http://10.0.2.2:8787
+ROR_BASE_URL_IOS=http://localhost:8787
