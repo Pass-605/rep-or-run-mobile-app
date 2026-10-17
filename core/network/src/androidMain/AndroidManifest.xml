@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- El cliente HTTP vive aquí; quien lo use hereda el permiso al fusionar el manifest. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>
