@@ -39,10 +39,13 @@ kotlin {
                 // `api`: los fakes se registran por su port de :core:domain.
                 api(project(":core:domain"))
                 implementation(project(":core:model"))
+                // El cliente HTTP de A-12; el proxy es lo único de aquí que habla por red.
+                implementation(project(":core:network"))
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
             }
         }
+        commonTest.dependencies { implementation(libs.ktor.client.mock) }
     }
 }
 

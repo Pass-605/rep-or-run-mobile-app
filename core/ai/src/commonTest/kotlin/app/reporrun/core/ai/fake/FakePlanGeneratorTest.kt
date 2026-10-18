@@ -189,7 +189,7 @@ class FakePlanGeneratorTest {
         assertTrue(cardio.all { it.mode == "Elíptica" && it.speed == null && it.incline == null })
     }
 
-    // ------------------------------------------------------------ minutos por sesión
+    // ------------------------------------------------------------ minutos por sesión (sin recorte)
 
     @Test
     fun keepsTheWholeExampleWhenTheSessionIsAsLongAsItsOwn() = runTest {
@@ -213,25 +213,12 @@ class FakePlanGeneratorTest {
     }
 
     @Test
-    fun dropsTheLastExercisesWhenTheSessionIsShort() = runTest {
-        val request = generationRequest(preferences = preferences(sessionMinutes = 45))
+    fun doesNotTrimTheExampleToShortSessions() = runTest {
+        // Ajustar el contenido a los minutos es de la Lambda (plan §11.3): el fake ya no recorta.
+        val plan = generate(generationRequest(preferences = preferences(sessionMinutes = 45)))
 
-        val plan = generate(request)
-
-        assertEquals(listOf(4, 4, 4), plan.days.map { it.exercises.size })
-        assertEquals(listOf("L04", "X04", "S04"), plan.days.map { it.exercises.last().code.value })
+        assertEquals(listOf(5, 4, 5), plan.days.map { it.exercises.size })
         assertTrue(plan.days.all { it.cardio != null })
-        assertValidFor(request, plan)
-    }
-
-    @Test
-    fun dropsTheCardioBeforeLeavingADayWithOneExercise() = runTest {
-        val request = generationRequest(preferences = preferences(sessionMinutes = 20))
-
-        val plan = generate(request)
-
-        assertTrue(plan.days.all { it.cardio == null && it.exercises.size >= 2 })
-        assertValidFor(request, plan)
     }
 
     @Test

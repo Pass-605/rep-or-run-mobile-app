@@ -17,8 +17,12 @@ import kotlin.time.Clock
 
 /**
  * [PlanGenerator] sin red ni cuentas: devuelve el plan de ejemplo del contrato
- * (`generate-response.small-gym.json`, sintético) adaptado al inventario, los días, el cardio
- * y los minutos por sesión de la petición. En el MVP es la única implementación; el adaptador del proxy llega con A-13.
+ * (`generate-response.small-gym.json`, sintético) adaptado al inventario, los días y el cardio
+ * de la petición. Es el doble de red de [app.reporrun.core.ai.proxy.ProxyPlanGenerator]: sirve
+ * para trabajar sin el runner, para los tests y para la pantalla de espera.
+ *
+ * **No recorta a los minutos por sesión**: el contenido lo decide la Lambda (plan §11.3). Con
+ * sesiones más cortas que las del ejemplo (75 min), el plan no pasa `PlanValidator`.
  *
  * El plan pasa por el mismo camino que pasará una respuesta real: DTO del contrato → dominio,
  * con sus comprobaciones. Sigue sin ser de fiar hasta `PlanValidator`.
@@ -52,12 +56,7 @@ class FakePlanGenerator(
             PlanGenerationResult.Failure(AiError.InvalidInput(listOf(NO_STRENGTH_EQUIPMENT)))
         } else {
             when (val mapped = response.toGeneratedPlan(ids, snapshot)) {
-                is Mapped.Valid -> PlanGenerationResult.Success(
-                    mapped.value.copy(
-                        days = mapped.value.days.map { it.fittedTo(request.preferences.sessionMinutes) },
-                    ),
-                )
-
+                is Mapped.Valid -> PlanGenerationResult.Success(mapped.value)
                 is Mapped.Invalid -> PlanGenerationResult.Failure(AiError.InvalidResponse(mapped.errors))
             }
         }
