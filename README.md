@@ -38,6 +38,24 @@ scripts/sync-contract.sh --check   # compara sin escribir; sale con 1 si difiere
 
 En Windows, desde Git Bash. Los tests de contrato (`gradlew.bat :core:ai:allTests`) leen la copia del repo, así que no necesitan `../docs/`.
 
+## Red y configuración local
+
+`:core:network` (A-12) es el cliente HTTP. La URL del proxy y la clave de app **no están en el repo**: salen de `local.properties` o, si allí faltan, de una variable de entorno con el mismo nombre. Copia `local.properties.example`:
+
+| Clave | Valor de desarrollo |
+|---|---|
+| `ROR_APP_KEY` | la misma `ROR_APP_KEY` del `.env` del runner (`rep-or-run-lambda`) |
+| `ROR_BASE_URL_ANDROID` | `http://10.0.2.2:8787` (el host visto desde el emulador) |
+| `ROR_BASE_URL_IOS` | `http://localhost:8787` (`10.0.2.2` no existe en el simulador) |
+
+Si falta alguna, `:core:network` **no compila** y el error dice cuál: mejor eso que un `401` en runtime que parece otra cosa. Como `check` compila el módulo, un clon nuevo necesita las tres antes de pasar la verificación.
+
+**La `X-App-Key` no es un secreto.** Viaja dentro del APK: cualquiera que lo descomprima la tiene. Sirve para que el tráfico automático muera en un `401` antes de gastar un token; no autentica a nadie. Aun así **no se commitea**: lo que entra en git queda en el historial, y rotarla no lo limpia.
+
+**Android bloquea HTTP en claro**, y el runner habla HTTP. La build de **debug** lleva `androidApp/src/debug/res/xml/network_security_config.xml`, que lo permite **solo hacia `10.0.2.2`**. Release no lo lleva, y no hay `cleartextTrafficPermitted` global.
+
+**El engine de iOS (Darwin) está escrito pero sin compilar:** necesita un Mac (S-07, `needs:macos`).
+
 ## Estructura
 
 ```text
@@ -110,5 +128,5 @@ La carpeta `iosApp/` tiene el código Swift, pero **el proyecto de Xcode todaví
 ## Primera vez
 
 1. Abre la carpeta en Android Studio y deja que sincronice; descargará Gradle 9.3.1, los plugins y la plataforma android-37.
-2. `local.properties` lo genera Android Studio con la ruta del SDK. **No se versiona.**
+2. `local.properties` lo genera Android Studio con la ruta del SDK. **No se versiona.** Añade las tres claves de `local.properties.example` (ver [Red y configuración local](#red-y-configuración-local)).
 3. Ejecuta `:androidApp:installDebug` en un emulador con API 26 o superior.

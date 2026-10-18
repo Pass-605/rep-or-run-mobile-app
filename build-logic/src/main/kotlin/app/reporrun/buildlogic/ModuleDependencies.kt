@@ -29,6 +29,8 @@ internal object ModuleDependencyRules {
         FEATURES to setOf(":core:domain", ":core:model", ":core:designsystem", ":core:ui"),
         ":core:data" to setOf(":core:domain", ":core:model", ":core:database", ":core:datastore", ":core:ai"),
         ":core:ai" to setOf(":core:network", ":core:domain", ":core:model"),
+        // Fontaneria HTTP: no sabe que existe un plan. Traducir NetworkError a AiError es de :core:ai.
+        ":core:network" to emptySet(),
         ":core:domain" to setOf(":core:model"),
         ":core:model" to emptySet(),
         // Lo visual no sabe de dominio: lo que un componente necesite decir le llega ya como texto.

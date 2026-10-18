@@ -88,6 +88,20 @@ class ModuleDependencyRulesTest {
     }
 
     @Test
+    fun acceptsNetworkWithNoModuleDependencies() {
+        assertEquals(emptyList(), ModuleDependencyRules.violations(":core:network", emptySet()))
+    }
+
+    @Test
+    fun rejectsNetworkDependingOnAnyModule() {
+        // Fontaneria HTTP: ni el dominio. Traducir NetworkError a AiError es de :core:ai.
+        assertEquals(
+            listOf(":core:ai", ":core:domain"),
+            ModuleDependencyRules.violations(":core:network", setOf(":core:domain", ":core:ai")),
+        )
+    }
+
+    @Test
     fun acceptsDataWithItsAllowedDependencies() {
         val dependencies = setOf(":core:domain", ":core:model", ":core:database", ":core:datastore", ":core:ai")
 

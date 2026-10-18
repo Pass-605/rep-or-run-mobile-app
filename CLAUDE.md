@@ -81,6 +81,7 @@ En Windows usa `gradlew.bat`.
   - `feature:*` → `core:domain`, `core:model`, `core:designsystem`, `core:ui`. **Nunca** `core:data`, `core:database`, `core:network`, `core:ai` ni otro `feature:*`.
   - `core:data` → `core:domain`, `core:model`, `core:database`, `core:datastore`, `core:ai`.
   - `core:ai` → `core:network`, `core:domain`, `core:model`.
+  - `core:network` → nada: fontanería HTTP. No conoce `AiError`; traducir `NetworkError` es de `core:ai`.
   - `core:domain` → solo `core:model` (+ coroutines/datetime). Puede usar `koin-core` **únicamente** en su archivo `di/` (`di/DomainModule.kt`, el `val domainModule`); ningún otro archivo del módulo importa Koin: los casos de uso son clases normales con inyección por constructor.
   - `core:model` → nada.
   - `core:designsystem` → nada: ningún módulo del proyecto. Lo que un componente tenga que decir (un error, la descripción de un botón) le llega como `String` desde el feature.
@@ -94,7 +95,7 @@ En Windows usa `gradlew.bat`.
 
 - La app **solo** habla con la Lambda (`POST /v1/plans:generate`, `POST /v1/plans:review`); nunca con OpenAI.
 - Los DTOs viven en `:core:ai` (paquete `contract`) y deben pasar los tests de ida y vuelta con `contract/v1/examples/`.
-- La URL del proxy y la `X-App-Key` salen de BuildKonfig/`local.properties`, nunca del código. Por defecto en debug: `http://10.0.2.2:8787` (runner local) o los fakes.
+- La URL del proxy y la `X-App-Key` salen de `local.properties` (o del entorno), nunca del código: `ROR_APP_KEY`, `ROR_BASE_URL_ANDROID` (`http://10.0.2.2:8787`) y `ROR_BASE_URL_IOS` (`http://localhost:8787`). `GenerateLocalConfigSourceTask` las convierte en `NetworkBuildConfig`; si falta alguna, `:core:network` no compila. Ver `local.properties.example`.
 - Las respuestas se validan con `PlanValidator` / `ProposalValidator` antes de guardarse; un plan inválido nunca llega a Room.
 
 ## 5. Persistencia
