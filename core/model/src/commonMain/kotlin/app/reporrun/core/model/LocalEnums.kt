@@ -53,3 +53,10 @@ enum class Decision { PENDING, APPROVED, REJECTED }
  * cuando no ha elegido nada. Se guarda en DataStore, no en Room.
  */
 enum class ThemeMode { SYSTEM, DARK, LIGHT }
+
+/**
+ * De dónde sale el plan en una build de depuración: los ejemplos del contrato sin red
+ * ([FAKE]) o el proxy ([PROXY]). [FAKE] es el valor cuando no se ha elegido. Una build que no
+ * es de depuración usa siempre [PROXY]. Se guarda en DataStore, no en Room.
+ */
+enum class AiBackend { FAKE, PROXY }

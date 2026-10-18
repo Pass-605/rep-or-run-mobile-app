@@ -64,10 +64,24 @@ class SettingsDataSource(private val dataStore: DataStore<Preferences>) {
         dataStore.edit { preferences -> preferences[THEME_MODE] = mode }
     }
 
+    /**
+     * De dónde sale el plan en depuración, tal como se guardó, o `null` si no se ha elegido.
+     * Texto, como [themeMode].
+     */
+    val aiBackend: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[AI_BACKEND] }
+        .distinctUntilChanged()
+
+    /** Guarda de dónde sale el plan en depuración. */
+    suspend fun setAiBackend(backend: String) {
+        dataStore.edit { preferences -> preferences[AI_BACKEND] = backend }
+    }
+
     private companion object {
         val CONSENT_ACCEPTED_AT = longPreferencesKey("consent_accepted_at")
         val INSTALL_ID = stringPreferencesKey("install_id")
         val THEME_MODE = stringPreferencesKey("theme_mode")
+        val AI_BACKEND = stringPreferencesKey("ai_backend")
     }
 }
 

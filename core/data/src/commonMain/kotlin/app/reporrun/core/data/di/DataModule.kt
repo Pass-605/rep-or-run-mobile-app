@@ -1,5 +1,6 @@
 package app.reporrun.core.data.di
 
+import app.reporrun.core.data.repository.DeveloperSettingsRepositoryImpl
 import app.reporrun.core.data.repository.EquipmentCatalogRepositoryImpl
 import app.reporrun.core.data.repository.GymRepositoryImpl
 import app.reporrun.core.data.repository.PlanRepositoryImpl
@@ -7,6 +8,7 @@ import app.reporrun.core.data.repository.PreferencesRepositoryImpl
 import app.reporrun.core.data.repository.ProfileRepositoryImpl
 import app.reporrun.core.data.repository.ReviewRepositoryImpl
 import app.reporrun.core.data.repository.SettingsRepositoryImpl
+import app.reporrun.core.domain.repository.DeveloperSettingsRepository
 import app.reporrun.core.domain.repository.EquipmentCatalogRepository
 import app.reporrun.core.domain.repository.GymRepository
 import app.reporrun.core.domain.repository.PlanRepository
@@ -33,4 +35,5 @@ val dataModule: Module = module {
     single<PlanRepository> { PlanRepositoryImpl(get(), get()) }
     single<ReviewRepository> { ReviewRepositoryImpl(get(), get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+    single<DeveloperSettingsRepository> { DeveloperSettingsRepositoryImpl(get()) }
 }
