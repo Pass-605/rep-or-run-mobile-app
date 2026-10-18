@@ -2,6 +2,7 @@ package app.reporrun.di
 
 import androidx.room.RoomDatabase
 import app.reporrun.AppViewModel
+import app.reporrun.core.ai.AiBackendSelection
 import app.reporrun.core.ai.di.aiModule
 import app.reporrun.core.data.di.dataModule
 import app.reporrun.core.database.RepOrRunDatabase
@@ -10,6 +11,10 @@ import app.reporrun.core.database.di.databaseModule
 import app.reporrun.core.datastore.di.datastoreModule
 import app.reporrun.core.domain.AppDispatchers
 import app.reporrun.core.domain.di.domainModule
+import app.reporrun.core.domain.repository.DeveloperSettingsRepository
+import app.reporrun.core.domain.repository.SettingsRepository
+import app.reporrun.core.model.AiBackend
+import app.reporrun.core.network.NetworkConfig
 import app.reporrun.feature.gym.gymModule
 import app.reporrun.feature.onboarding.onboardingModule
 import app.reporrun.feature.plan.planModule
@@ -20,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.datetime.TimeZone
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -31,8 +37,9 @@ import kotlin.time.Clock
 
 /**
  * Lo que es del proceso y no de un módulo concreto: el reloj, la zona horaria, los dispatchers,
- * la base de datos y el ViewModel de la raíz. Es el único sitio de la app donde aparecen `Clock.System` y
- * `Dispatchers.*`; el resto los recibe por constructor.
+ * la base de datos, lo que el proxy necesita saber de la app y el ViewModel de la raíz. Es el
+ * único sitio de la app donde aparecen `Clock.System` y `Dispatchers.*`; el resto los recibe
+ * por constructor.
  */
 internal val appModule: Module = module {
     single<Clock> { Clock.System }
@@ -47,6 +54,23 @@ internal val appModule: Module = module {
     // consultas) se termina aquí.
     single<RepOrRunDatabase> {
         get<RoomDatabase.Builder<RepOrRunDatabase>>().buildRepOrRunDatabase(queryContext = get<AppDispatchers>().io)
+    }
+
+    // El proxy: URL y clave de la build, versión de la plataforma e installId de DataStore.
+    single {
+        val settings = get<SettingsRepository>()
+        NetworkConfig.fromBuildConfig(appVersion = get<AppInfo>().versionName, installId = settings::installId)
+    }
+
+    // El cerrojo del conmutador: solo una build de depuración obedece lo elegido en Ajustes.
+    // Cualquier otra genera siempre con el proxy, haya lo que haya guardado.
+    single<AiBackendSelection> {
+        if (get<AppInfo>().isDebug) {
+            val developerSettings = get<DeveloperSettingsRepository>()
+            AiBackendSelection { developerSettings.observeAiBackend().first() }
+        } else {
+            AiBackendSelection { AiBackend.PROXY }
+        }
     }
 
     viewModelOf(::AppViewModel)

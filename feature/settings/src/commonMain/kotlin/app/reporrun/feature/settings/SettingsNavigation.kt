@@ -37,6 +37,8 @@ fun NavController.popBackToSettings(): Boolean = popBackStack<SettingsRoute>(inc
  * El grafo de Ajustes: la pantalla y sus licencias.
  *
  * @param appVersion la versión instalada, tal como la da la plataforma.
+ * @param showDeveloperOptions si se enseña la sección de desarrollo. Solo en una build de
+ *   depuración: lo decide la raíz de composición.
  * @param onBack volver al destino anterior.
  * @param onEditProfile abrir el perfil para editarlo.
  * @param onReadNotice abrir el aviso completo.
@@ -44,6 +46,7 @@ fun NavController.popBackToSettings(): Boolean = popBackStack<SettingsRoute>(inc
  */
 fun NavGraphBuilder.settingsGraph(
     appVersion: String,
+    showDeveloperOptions: Boolean,
     onBack: () -> Unit,
     onEditProfile: () -> Unit,
     onReadNotice: () -> Unit,
@@ -54,6 +57,7 @@ fun NavGraphBuilder.settingsGraph(
             SettingsRoute(
                 viewModel = koinViewModel(),
                 appVersion = appVersion,
+                showDeveloperOptions = showDeveloperOptions,
                 actions = SettingsActions(
                     onBack = onBack,
                     onEditProfile = onEditProfile,

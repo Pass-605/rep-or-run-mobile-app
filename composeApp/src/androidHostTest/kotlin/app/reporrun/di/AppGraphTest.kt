@@ -5,6 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.SavedStateHandle
 import androidx.room.RoomDatabase
 import app.reporrun.core.database.RepOrRunDatabase
+import app.reporrun.core.network.InstallIdProvider
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.HttpClientEngine
 import kotlinx.coroutines.CoroutineDispatcher
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.module
@@ -36,6 +39,11 @@ class AppGraphTest {
                 Context::class,
                 CoroutineDispatcher::class,
                 Function0::class,
+                // El installId de NetworkConfig (`settings::installId`) y el engine y la configuración
+                // del HttpClient, que arma `createHttpClient`: nada de eso se pide al grafo.
+                InstallIdProvider::class,
+                HttpClientEngine::class,
+                HttpClientConfig::class,
                 SavedStateHandle::class,
             ),
         )

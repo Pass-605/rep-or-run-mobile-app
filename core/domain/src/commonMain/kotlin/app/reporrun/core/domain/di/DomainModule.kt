@@ -10,6 +10,8 @@ import app.reporrun.core.domain.usecase.GeneratePlanUseCase
 import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.IdGenerator
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
+import app.reporrun.core.domain.usecase.LoadSampleGymUseCase
+import app.reporrun.core.domain.usecase.ObserveAiBackendUseCase
 import app.reporrun.core.domain.usecase.ObserveCardioOptionsUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveGymInventoryUseCase
@@ -23,6 +25,7 @@ import app.reporrun.core.domain.usecase.RenameGymUseCase
 import app.reporrun.core.domain.usecase.SavePreferencesUseCase
 import app.reporrun.core.domain.usecase.SaveProfileUseCase
 import app.reporrun.core.domain.usecase.SetActiveGymUseCase
+import app.reporrun.core.domain.usecase.SetAiBackendUseCase
 import app.reporrun.core.domain.usecase.SetThemeModeUseCase
 import app.reporrun.core.domain.usecase.ToggleEquipmentUseCase
 import app.reporrun.core.domain.usecase.UpdateEquipmentUseCase
@@ -70,6 +73,9 @@ val domainModule: Module = module {
     factoryOf(::AcceptConsentUseCase)
     factoryOf(::ObserveThemeModeUseCase)
     factoryOf(::SetThemeModeUseCase)
+    factoryOf(::ObserveAiBackendUseCase)
+    factoryOf(::SetAiBackendUseCase)
+    factoryOf(::LoadSampleGymUseCase)
 
     factoryOf(::PlanValidator)
 }

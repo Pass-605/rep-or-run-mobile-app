@@ -34,10 +34,12 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core:model"))
             implementation(project(":core:domain"))
-            // Solo para armar el grafo: de estos cuatro no se usa nada más que su módulo de Koin
+            // Solo para armar el grafo: de estos cinco no se usa nada más que su módulo de Koin
             // y los builders de plataforma.
             implementation(project(":core:ai"))
             implementation(project(":core:data"))
+            // La NetworkConfig del proxy: la versión de AppInfo y el installId solo se juntan aquí.
+            implementation(project(":core:network"))
             implementation(project(":core:database"))
             implementation(project(":core:datastore"))
             // api: :androidApp y el framework de iOS entran por RepOrRunApp(), que
