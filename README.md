@@ -56,6 +56,15 @@ Si falta alguna, `:core:network` **no compila** y el error dice cuál: mejor eso
 
 **El engine de iOS (Darwin) está escrito pero sin compilar:** necesita un Mac (S-07, `needs:macos`).
 
+### Generar contra el runner local (A-13)
+
+En una build de **debug**, Ajustes tiene al final una sección **Desarrollo**:
+
+- **Generar con el proxy local.** Apagado (por defecto), el plan sale de los ejemplos del contrato, sin red. Encendido, se pide al runner de `rep-or-run-lambda` (`./gradlew run`, `FAKE_OPENAI=true` en su `.env`). Vale para la siguiente generación y se conserva al cerrar la app. **En una build que no es de debug la sección no existe y se genera siempre con el proxy.**
+- **Cargar el gimnasio de ejemplo.** Crea el gimnasio de `generate-request.small-gym.json` (11 máquinas con sus ids), lo deja activo y **sustituye tus preferencias** por las del ejemplo (L · X · S, 75 min, caminadora).
+
+El runner en modo fake devuelve **su** plan de ejemplo y lo valida contra la petición, así que **solo el gimnasio de ejemplo recibe `200`**. Con cualquier otro gimnasio la respuesta normal es `422 PLAN_INVALID`, que la app enseña como «plan no completo» con «Generar otra vez»: no es un fallo. Los ejemplos sin red tampoco recortan a los minutos de sesión: por debajo de lo que pide el ejemplo, el plan no pasa la validación.
+
 ## Estructura
 
 ```text
@@ -66,7 +75,7 @@ core/domain/         interfaces de repositorio, ports de IA, casos de uso de cap
 core/data/           repositorios, mappers entidad↔modelo y carga de la semilla del catálogo
 core/database/       Room KMP: entidades, DAOs y RepOrRunDatabase; esquemas en core/database/schemas/
 core/datastore/      DataStore Preferences: consentimiento e identificador de instalación
-core/ai/             DTOs del contrato con la Lambda (paquete contract), su mapeo al dominio y los fakes de generación y revisión
+core/ai/             DTOs del contrato con la Lambda (paquete contract), su mapeo al dominio, el generador por el proxy y los fakes de generación y revisión
 core/designsystem/   RepOrRunTheme: paleta, tipografía Outfit, formas, iconos y componentes
 core/ui/             utilidades de UI que comparten los features (CollectEffects)
 feature/onboarding/  bienvenida, aviso y consentimiento
