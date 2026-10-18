@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ajustes (pantalla 13 de Figma). Todos los textos son nuevos: pendientes de revisión. -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_back">Volver</string>
+
+    <string name="settings_section_appearance">Apariencia</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_theme_light">Claro</string>
+
+    <string name="settings_section_data">Tus datos</string>
+    <string name="settings_profile">Perfil</string>
+    <string name="settings_profile_summary">%1$d años · %2$s</string>
+    <string name="settings_experience_beginner">principiante</string>
+    <string name="settings_experience_intermediate">intermedio</string>
+    <string name="settings_experience_advanced">avanzado</string>
+
+    <string name="settings_section_privacy">Privacidad</string>
+    <string name="settings_notice">Aviso y consentimiento</string>
+    <string name="settings_notice_accepted">Aceptado el %1$s</string>
+
+    <string name="settings_section_about">Acerca de</string>
+    <string name="settings_licenses">Licencias</string>
+    <string name="settings_licenses_summary">Outfit (OFL 1.1) y librerías</string>
+    <string name="settings_version">Rep or Run v%1$s</string>
+
+    <!-- Licencias. No está en Figma. Los nombres propios y el texto de las licencias no se traducen. -->
+    <string name="licenses_title">Licencias</string>
+    <string name="licenses_back">Volver</string>
+    <string name="licenses_intro">Rep or Run usa una tipografía y librerías de código abierto. Estas son sus licencias.</string>
+    <string name="licenses_font_title">Tipografía Outfit</string>
+    <string name="licenses_font_summary">SIL Open Font License 1.1. El texto de la licencia está en inglés, tal como la publican sus autores.</string>
+    <string name="licenses_libraries_title">Librerías</string>
+    <string name="licenses_libraries_summary">Todas se distribuyen bajo la Apache License 2.0, cuyo texto está en apache.org/licenses/LICENSE-2.0.</string>
+</resources>

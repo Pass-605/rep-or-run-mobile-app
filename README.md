@@ -56,6 +56,7 @@ feature/profile/     perfil en dos pasos
 feature/gym/         gimnasios (lista, crear, renombrar, activar) y su inventario de máquinas
 feature/plansetup/   preferencias del bloque y resumen previo a generar
 feature/plan/        pantalla Generando y destino del plan recién generado
+feature/settings/    ajustes (tema, perfil, aviso) y licencias
 iosApp/              proyecto Xcode que consume el framework
 contract/v1/         copia versionada del contrato: schemas y ejemplos (no se edita a mano)
 scripts/             sync-contract.sh

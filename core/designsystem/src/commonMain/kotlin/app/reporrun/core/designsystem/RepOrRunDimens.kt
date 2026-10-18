@@ -47,6 +47,9 @@ object RepOrRunDimens {
     val ListRowLeadingIconSize = 17.dp
     val ListRowChevronSize = 18.dp
 
+    /** Relleno vertical de una tarjeta de filas (pantalla 13): el aire ya lo pone cada fila. */
+    val ListCardVerticalPadding = 4.dp
+
     /** Separación entre las tarjetas de una lista larga (pantalla 03). */
     val CardListSpacing = 10.dp
 

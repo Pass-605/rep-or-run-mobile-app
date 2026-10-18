@@ -56,6 +56,7 @@
          revisión. -->
     <string name="plan_title">Tu plan</string>
     <string name="plan_back">Volver</string>
+    <string name="plan_open_settings">Ajustes</string>
     <string name="plan_version">Versión %1$d · bloque de %2$d días</string>
     <string name="plan_focus_separator"> · </string>
     <string name="plan_status_draft">Borrador</string>

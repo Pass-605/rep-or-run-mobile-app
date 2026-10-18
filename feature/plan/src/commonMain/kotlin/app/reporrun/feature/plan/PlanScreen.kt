@@ -34,6 +34,7 @@ import app.reporrun.core.designsystem.component.RepOrRunCard
 import app.reporrun.core.designsystem.component.RepOrRunChip
 import app.reporrun.core.designsystem.component.RepOrRunDivider
 import app.reporrun.core.designsystem.component.RepOrRunEmphasisCard
+import app.reporrun.core.designsystem.component.RepOrRunIconButton
 import app.reporrun.core.designsystem.component.RepOrRunScreenFrame
 import app.reporrun.core.designsystem.component.RepOrRunScrollContent
 import app.reporrun.core.designsystem.component.RepOrRunSectionTitle
@@ -60,6 +61,7 @@ import app.reporrun.feature.plan.resources.plan_exercise_trial
 import app.reporrun.feature.plan.resources.plan_exercise_unilateral
 import app.reporrun.feature.plan.resources.plan_exercises
 import app.reporrun.feature.plan.resources.plan_notes
+import app.reporrun.feature.plan.resources.plan_open_settings
 import app.reporrun.feature.plan.resources.plan_prepare_another
 import app.reporrun.feature.plan.resources.plan_session
 import app.reporrun.feature.plan.resources.plan_session_cardio
@@ -72,10 +74,21 @@ import org.jetbrains.compose.resources.stringResource
 
 /** La vista del plan, con estado. */
 @Composable
-internal fun PlanRoute(viewModel: PlanViewModel, onBack: (() -> Unit)?, onOpenSummary: () -> Unit) {
+internal fun PlanRoute(
+    viewModel: PlanViewModel,
+    onBack: (() -> Unit)?,
+    onOpenSummary: () -> Unit,
+    onOpenSettings: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    PlanScreen(state = state, onEvent = viewModel::onEvent, onBack = onBack, onOpenSummary = onOpenSummary)
+    PlanScreen(
+        state = state,
+        onEvent = viewModel::onEvent,
+        onBack = onBack,
+        onOpenSummary = onOpenSummary,
+        onOpenSettings = onOpenSettings,
+    )
 }
 
 /**
@@ -89,6 +102,7 @@ internal fun PlanRoute(viewModel: PlanViewModel, onBack: (() -> Unit)?, onOpenSu
  *
  * @param onBack `null` cuando la vista es el destino inicial y no hay a dónde volver.
  * @param onOpenSummary ir al resumen previo a generar. Es la salida cuando no hay atrás.
+ * @param onOpenSettings abrir Ajustes. Está siempre, también mientras carga y sin plan.
  */
 @Composable
 internal fun PlanScreen(
@@ -96,6 +110,7 @@ internal fun PlanScreen(
     onEvent: (PlanEvent) -> Unit,
     onBack: (() -> Unit)?,
     onOpenSummary: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val details = state.details
@@ -109,6 +124,13 @@ internal fun PlanScreen(
                 title = stringResource(Res.string.plan_title),
                 backContentDescription = stringResource(Res.string.plan_back),
                 onBack = onBack,
+                trailing = {
+                    RepOrRunIconButton(
+                        icon = RepOrRunIcons.Settings,
+                        contentDescription = stringResource(Res.string.plan_open_settings),
+                        onClick = onOpenSettings,
+                    )
+                },
             )
             when {
                 // Hasta que Room contesta no se pinta nada, para que no parpadee el estado vacío.

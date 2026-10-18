@@ -47,3 +47,9 @@ enum class ReviewStatus {
 
 /** Decisión de la persona sobre una propuesta. Nada se aplica sin [APPROVED] (plan §4.12). */
 enum class Decision { PENDING, APPROVED, REJECTED }
+
+/**
+ * El tema que la persona elige en Ajustes. [SYSTEM] sigue al del dispositivo y es el valor
+ * cuando no ha elegido nada. Se guarda en DataStore, no en Room.
+ */
+enum class ThemeMode { SYSTEM, DARK, LIGHT }

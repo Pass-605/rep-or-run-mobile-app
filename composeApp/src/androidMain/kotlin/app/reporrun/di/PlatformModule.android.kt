@@ -11,13 +11,15 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 /**
- * Lo que en Android necesita un `Context`: dónde está el archivo de Room y el de DataStore.
+ * Lo que en Android necesita un `Context`: dónde está el archivo de Room y el de DataStore, y
+ * la versión del paquete.
  * El contexto entra como parámetro y no sale de aquí, así que el resto del grafo no sabe que
  * existe (ni hace falta `koin-android`).
  */
 internal fun androidPlatformModule(context: Context): Module = module {
     single<RoomDatabase.Builder<RepOrRunDatabase>> { repOrRunDatabaseBuilder(context) }
     single<DataStore<Preferences>> { settingsDataStore(context, processIoScope()) }
+    single { AppInfo(context.packageManager.getPackageInfo(context.packageName, 0).versionName.orEmpty()) }
 }
 
 /**

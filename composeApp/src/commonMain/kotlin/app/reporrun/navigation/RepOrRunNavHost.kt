@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import app.reporrun.di.AppInfo
 import app.reporrun.feature.gym.GymGraphRoute
 import app.reporrun.feature.gym.gymGraph
 import app.reporrun.feature.gym.navigateToEquipmentEditor
@@ -24,6 +25,11 @@ import app.reporrun.feature.plansetup.popBackToSummary
 import app.reporrun.feature.profile.ProfileGraphRoute
 import app.reporrun.feature.profile.navigateToProfileGoal
 import app.reporrun.feature.profile.profileGraph
+import app.reporrun.feature.settings.navigateToLicenses
+import app.reporrun.feature.settings.navigateToSettings
+import app.reporrun.feature.settings.popBackToSettings
+import app.reporrun.feature.settings.settingsGraph
+import org.koin.compose.koinInject
 
 /**
  * La navegación raíz: el único sitio que tiene el `NavController` y que conoce todos los
@@ -35,6 +41,8 @@ import app.reporrun.feature.profile.profileGraph
  * → gimnasios → inventario → preferencias → resumen. Los formularios no saben cuál de los dos
  * casos es: solo avisan de que han guardado.
  *
+ * El perfil tiene un tercer origen, Ajustes, y se resuelve igual: mirando la pila.
+ *
  * @param startDestination la ruta por la que se empieza; la decide `AppViewModel`.
  */
 @Composable
@@ -43,6 +51,7 @@ internal fun RepOrRunNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
+    val appInfo = koinInject<AppInfo>()
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         onboardingGraph(
             onConsentAccepted = {
@@ -58,19 +67,11 @@ internal fun RepOrRunNavHost(
             // El ViewModel del perfil vive lo que su grafo: los dos pasos lo comparten.
             graphOwner = { navController.getBackStackEntry(ProfileGraphRoute) },
             // En el alta el perfil es lo primero de la pila y su paso 1 no tiene a dónde volver;
-            // abierto desde el resumen, sí.
+            // abierto desde el resumen o desde Ajustes, sí.
             canLeave = { navController.previousBackStackEntry != null },
             onContinue = navController::navigateToProfileGoal,
             onBack = { navController.popBackStack() },
-            onProfileSaved = {
-                if (!navController.popBackToSummary()) {
-                    navController.navigate(GymGraphRoute) {
-                        // El perfil sale de la pila: su formulario ya se guardó y atrás no lo
-                        // reabre a medias. Se vuelve a abrir desde el resumen.
-                        popUpTo<ProfileGraphRoute> { inclusive = true }
-                    }
-                }
-            },
+            onProfileSaved = navController::leaveSavedProfile,
         )
         gymGraph(
             // Los ViewModels de gimnasios viven lo que su grafo: cada lista comparte el suyo con
@@ -110,6 +111,31 @@ internal fun RepOrRunNavHost(
             // Desde el plan, el resumen es la puerta a todo lo demás: el perfil, el gimnasio, las
             // preferencias y generar otro.
             onOpenSummary = navController::navigateToSummary,
+            onOpenSettings = navController::navigateToSettings,
         )
+        settingsGraph(
+            appVersion = appInfo.versionName,
+            onBack = { navController.popBackStack() },
+            // La misma ruta que usa el resumen: no hay una segunda forma de editar el perfil.
+            onEditProfile = { navController.navigate(ProfileGraphRoute) { launchSingleTop = true } },
+            onReadNotice = navController::navigateToNotice,
+            onOpenLicenses = navController::navigateToLicenses,
+        )
+    }
+}
+
+/**
+ * A dónde se va con el perfil ya guardado: a quien lo abrió, o al paso siguiente del alta.
+ *
+ * Ajustes se pregunta primero: desde él no se llega al resumen, así que si está en la pila es
+ * quien abrió el perfil. El resumen, en cambio, puede estar más abajo (plan → resumen → generar
+ * → plan → ajustes), y volver a él desde aquí cerraría Ajustes y el plan de un salto.
+ */
+private fun NavHostController.leaveSavedProfile() {
+    if (popBackToSettings() || popBackToSummary()) return
+    navigate(GymGraphRoute) {
+        // El perfil sale de la pila: su formulario ya se guardó y atrás no lo reabre a medias.
+        // Se vuelve a abrir desde el resumen o desde Ajustes.
+        popUpTo<ProfileGraphRoute> { inclusive = true }
     }
 }

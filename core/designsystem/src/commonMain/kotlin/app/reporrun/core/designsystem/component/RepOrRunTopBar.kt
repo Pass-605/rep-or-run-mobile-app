@@ -21,6 +21,7 @@ import app.reporrun.core.designsystem.RepOrRunIcons
  * @param backContentDescription lo que anuncia el botón de volver.
  * @param onBack `null` cuando la pantalla es el primer destino y no hay a dónde volver; el
  *   hueco se conserva para que el título no se mueva.
+ * @param trailing lo que ocupa el hueco del final: un [RepOrRunIconButton], que mide lo mismo.
  */
 @Composable
 fun RepOrRunTopBar(
@@ -28,6 +29,7 @@ fun RepOrRunTopBar(
     backContentDescription: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -49,6 +51,6 @@ fun RepOrRunTopBar(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
         )
-        Box(Modifier.size(RepOrRunDimens.IconButtonSize))
+        Box(Modifier.size(RepOrRunDimens.IconButtonSize)) { trailing?.invoke() }
     }
 }

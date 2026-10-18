@@ -39,6 +39,7 @@ viejo.
 | 06 · Generando | `106:1004` | `115:1395` |
 | 07 · Plan (v2) | `99:835` | `115:937` |
 | 07b · Detalle del día (v2) | `101:831` | `115:1023` |
+| 13 · Ajustes | `108:1009` | `115:1696` |
 
 **`get_metadata` sin `nodeId` no lista todas las páginas del archivo.** El 08/10 devolvió solo
 *Pantallas · Claro* (la vieja) de un archivo que también tiene las dos `v2`: si te fías de esa

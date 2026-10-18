@@ -1,11 +1,12 @@
 package app.reporrun.core.domain.repository
 
+import app.reporrun.core.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Instant
 
 /**
- * Ajustes de la instalación que no son datos de entrenamiento: consentimiento e identificador
- * de instalación. El gimnasio activo no vive aquí: es [GymRepository.observeActiveGym].
+ * Ajustes de la instalación que no son datos de entrenamiento: consentimiento, identificador
+ * de instalación y tema. El gimnasio activo no vive aquí: es [GymRepository.observeActiveGym].
  */
 interface SettingsRepository {
     /**
@@ -25,4 +26,10 @@ interface SettingsRepository {
      * cambia después. No sale de ningún dato de la persona.
      */
     suspend fun installId(): String
+
+    /** El tema elegido. Sin elección guardada, [ThemeMode.SYSTEM]. */
+    fun observeThemeMode(): Flow<ThemeMode>
+
+    /** Guarda el tema elegido. */
+    suspend fun setThemeMode(mode: ThemeMode)
 }

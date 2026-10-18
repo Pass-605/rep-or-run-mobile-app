@@ -7,6 +7,8 @@ import app.reporrun.core.domain.usecase.HasSavedPlansUseCase
 import app.reporrun.core.domain.usecase.LoadCatalogSeedUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
+import app.reporrun.core.domain.usecase.ObserveThemeModeUseCase
+import app.reporrun.core.model.ThemeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +34,14 @@ sealed interface StartDestination {
     data object Plan : StartDestination
 }
 
-data class AppUiState(val start: StartDestination = StartDestination.Loading)
+/**
+ * @property themeMode el tema elegido en Ajustes. Hasta que DataStore contesta es el del sistema,
+ *   que es también el valor de quien no ha elegido ninguno.
+ */
+data class AppUiState(
+    val start: StartDestination = StartDestination.Loading,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+)
 
 /**
  * Decide el destino inicial: el primer paso que falta. La bienvenida solo aparece mientras no
@@ -44,9 +53,12 @@ data class AppUiState(val start: StartDestination = StartDestination.Loading)
  * ninguno activo y cómo preparar otro. Cuenta cualquier plan y no solo el activo porque quien ya
  * ha generado uno no tiene que volver a recorrer el alta para llegar al resumen.
  *
- * Los datos se leen **una vez**, al arrancar, y no se observan. Si el destino inicial
+ * Los datos del destino se leen **una vez**, al arrancar, y no se observan. Si el destino inicial
  * cambiara al aceptar o al guardar el perfil, `NavHost` reconstruiría el grafo y competiría con
  * la navegación que disparan los efectos de esas pantallas.
+ *
+ * **El tema sí se observa**: es lo que hace que elegirlo en Ajustes se aplique sin reiniciar. No
+ * toca el destino inicial, así que el grafo no se reconstruye.
  *
  * Con un gimnasio ya creado y sin planes el inicio sigue siendo la lista de gimnasios, no su inventario:
  * desde ella «Continuar» lleva a las máquinas del activo, y el arranque no puede saber si el
@@ -61,6 +73,7 @@ class AppViewModel(
     observeConsent: ObserveConsentUseCase,
     observeProfile: ObserveProfileUseCase,
     hasSavedPlans: HasSavedPlansUseCase,
+    observeThemeMode: ObserveThemeModeUseCase,
     loadCatalogSeed: LoadCatalogSeedUseCase,
     dispatchers: AppDispatchers,
 ) : ViewModel() {
@@ -72,6 +85,9 @@ class AppViewModel(
         // observa, así que las máquinas aparecen cuando terminan de cargarse. Fuera del hilo
         // principal: leer la semilla es parsear un JSON justo cuando se pinta el primer fotograma.
         viewModelScope.launch(dispatchers.default) { loadCatalogSeed() }
+        viewModelScope.launch {
+            observeThemeMode().collect { mode -> _state.update { it.copy(themeMode = mode) } }
+        }
         viewModelScope.launch {
             val start = when {
                 observeConsent().first() == null -> StartDestination.Onboarding
