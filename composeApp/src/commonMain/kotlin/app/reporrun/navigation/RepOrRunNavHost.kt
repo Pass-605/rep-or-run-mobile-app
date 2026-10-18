@@ -115,6 +115,7 @@ internal fun RepOrRunNavHost(
         )
         settingsGraph(
             appVersion = appInfo.versionName,
+            showDeveloperOptions = appInfo.isDebug,
             onBack = { navController.popBackStack() },
             // La misma ruta que usa el resumen: no hay una segunda forma de editar el perfil.
             onEditProfile = { navController.navigate(ProfileGraphRoute) { launchSingleTop = true } },

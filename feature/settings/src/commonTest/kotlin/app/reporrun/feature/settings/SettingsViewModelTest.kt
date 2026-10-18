@@ -1,14 +1,19 @@
 package app.reporrun.feature.settings
 
 import app.cash.turbine.test
+import app.reporrun.core.domain.usecase.LoadSampleGymUseCase
+import app.reporrun.core.domain.usecase.ObserveAiBackendUseCase
 import app.reporrun.core.domain.usecase.ObserveConsentUseCase
 import app.reporrun.core.domain.usecase.ObserveProfileUseCase
 import app.reporrun.core.domain.usecase.ObserveThemeModeUseCase
+import app.reporrun.core.domain.usecase.SetAiBackendUseCase
 import app.reporrun.core.domain.usecase.SetThemeModeUseCase
+import app.reporrun.core.model.AiBackend
 import app.reporrun.core.model.Experience
 import app.reporrun.core.model.ThemeMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -20,12 +25,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.time.Clock
 import kotlin.time.Instant
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
     private var settings = FakeSettingsRepository(consentAcceptedAt = ACCEPTED_AT)
     private var profiles = FakeProfileRepository(profile())
+    private val developerSettings = FakeDeveloperSettingsRepository()
+    private val gyms = FakeGymRepository()
 
     @BeforeTest
     fun setMainDispatcher() = Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -37,7 +45,10 @@ class SettingsViewModelTest {
         observeThemeMode = ObserveThemeModeUseCase(settings),
         observeProfile = ObserveProfileUseCase(profiles),
         observeConsent = ObserveConsentUseCase(settings),
+        observeAiBackend = ObserveAiBackendUseCase(developerSettings),
         setThemeMode = SetThemeModeUseCase(settings),
+        setAiBackend = SetAiBackendUseCase(developerSettings),
+        loadSampleGym = LoadSampleGymUseCase(SampleGymFixture, gyms, FakePreferencesRepository(), FixedClock),
         timeZone = timeZone,
     )
 
@@ -151,6 +162,41 @@ class SettingsViewModelTest {
             assertEquals(SettingsEffect.LicensesRequested, awaitItem())
             expectNoEvents()
         }
+    }
+
+    // ------------------------------------------------------------ depuración
+
+    @Test
+    fun generatesWithTheExamplesUntilTheProxyIsChosen() = runTest {
+        assertEquals(AiBackend.FAKE, viewModel().state.value.aiBackend)
+    }
+
+    @Test
+    fun turningTheProxyOnStoresItAndShowsIt() = runTest {
+        val viewModel = viewModel()
+
+        viewModel.onEvent(SettingsEvent.ProxyToggled(useProxy = true))
+
+        assertEquals(AiBackend.PROXY, developerSettings.stored)
+        assertEquals(AiBackend.PROXY, viewModel.state.value.aiBackend)
+
+        viewModel.onEvent(SettingsEvent.ProxyToggled(useProxy = false))
+
+        assertEquals(AiBackend.FAKE, viewModel.state.value.aiBackend)
+    }
+
+    @Test
+    fun loadsTheSampleGymAsTheActiveOne() = runTest {
+        val viewModel = viewModel()
+
+        viewModel.onEvent(SettingsEvent.SampleGymClicked)
+
+        assertEquals(SampleGymLoad.LOADED, viewModel.state.value.sampleGym)
+        assertEquals(LoadSampleGymUseCase.SAMPLE_GYM_ID, gyms.observeActiveGym().first()?.id)
+    }
+
+    private object FixedClock : Clock {
+        override fun now(): Instant = ACCEPTED_AT
     }
 
     private companion object {

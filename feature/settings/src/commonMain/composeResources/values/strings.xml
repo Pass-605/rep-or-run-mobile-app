@@ -25,6 +25,16 @@
     <string name="settings_licenses_summary">Outfit (OFL 1.1) y librerías</string>
     <string name="settings_version">Rep or Run v%1$s</string>
 
+    <!-- Solo en builds de depuración -->
+    <string name="settings_section_developer">Desarrollo</string>
+    <string name="settings_proxy">Generar con el proxy local</string>
+    <string name="settings_proxy_on">El plan se pide al runner de la Lambda</string>
+    <string name="settings_proxy_off">El plan sale de los ejemplos, sin red</string>
+    <string name="settings_sample_gym">Cargar el gimnasio de ejemplo</string>
+    <string name="settings_sample_gym_summary">Lo deja activo y sustituye tus preferencias</string>
+    <string name="settings_sample_gym_loading">Cargando…</string>
+    <string name="settings_sample_gym_loaded">Cargado y activo</string>
+
     <!-- Licencias. No está en Figma. Los nombres propios y el texto de las licencias no se traducen. -->
     <string name="licenses_title">Licencias</string>
     <string name="licenses_back">Volver</string>
